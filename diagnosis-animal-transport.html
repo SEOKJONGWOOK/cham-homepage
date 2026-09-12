@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>동물운송업 자가진단 | 행정사사무소 참</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h2>
+        <a href="index.html"
+           style="text-decoration:none; color:#222;">
+            행정사사무소 참
+        </a>
+    </h2>
+
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="about.html">사무소 소개</a>
+        <a href="services.html">업무 안내</a>
+        <a href="diagnosis.html">자가진단</a>
+        <a href="consult.html">상담 신청</a>
+    </nav>
+</header>
+
+
+<section class="diagnosis-hero">
+
+    <p class="hero-label">
+        ANIMAL TRANSPORT BUSINESS
+    </p>
+
+    <h1>동물운송업 자가진단</h1>
+
+    <p>
+        자동차를 이용하여 반려동물을 운송하는 사업을 준비하기 전에
+        차량과 안전시설, 운송환경 및 운송인력 등의
+        준비상태를 간단하게 점검해 보세요.
+    </p>
+
+</section>
+
+
+<main class="diagnosis-container">
+
+    <div class="diagnosis-notice">
+
+        <h3>자가진단 안내</h3>
+
+        <p>
+            아래 질문은 동물운송업 등록을 준비하기 위한
+            기본사항을 확인하는 것입니다.
+            실제 등록기준은 사용하는 자동차의 종류와 구조,
+            운송방법 및 운송인력 등을 함께 검토해야 합니다.
+        </p>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">01</span>
+
+        <h3>자동차를 이용하여 고객의 반려동물을 운송하는 영업을 계획하고 있습니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportType" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportType" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportType" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">02</span>
+
+        <h3>동물운송에 사용할 자동차를 확보했거나 후보 차량이 정해져 있습니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportVehicle" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportVehicle" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportVehicle" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">03</span>
+
+        <h3>차량 안에서 동물이 비바람이나 더위·추위로부터 보호받을 수 있도록 운송환경을 마련할 계획입니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportEnvironment" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportEnvironment" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportEnvironment" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">04</span>
+
+        <h3>운행 중 갑작스러운 출발이나 제동으로 동물이 다치지 않도록 안전시설을 마련할 계획입니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportSafety" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportSafety" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportSafety" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">05</span>
+
+        <h3>사람과 동물의 공간을 안전하게 나누고, 동물을 고정하여 운송할 수 있는 시설을 마련할 계획입니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportSpace" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportSpace" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportSpace" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <div class="question-card">
+
+        <span class="question-number">06</span>
+
+        <h3>동물을 운송할 사람의 운전경력과 필요한 교육·등록 준비사항을 확인하셨습니까?</h3>
+
+        <label>
+            <input type="radio" name="animalTransportPlan" value="yes">
+            예
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportPlan" value="no">
+            아니오
+        </label>
+
+        <label>
+            <input type="radio" name="animalTransportPlan" value="unknown">
+            잘 모르겠습니다
+        </label>
+
+    </div>
+
+
+    <button id="diagnosisButton"
+            class="diagnosis-submit-button">
+        진단 결과 확인
+    </button>
+
+</main>
+
+
+<footer>
+    <p>행정사사무소 참</p>
+
+    <p style="font-size:14px; margin-top:12px;">
+        <a href="privacy.html"
+           style="color:#ccc; text-decoration:none;">
+            개인정보처리방침
+        </a>
+    </p>
+</footer>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>외국인환자 유치업 등록 자가진단 | 행정사사무소 참</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h2>
+        <a href="index.html" style="text-decoration:none; color:#222;">
+            행정사사무소 참
+        </a>
+    </h2>
+
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="about.html">사무소 소개</a>
+        <a href="services.html">업무 안내</a>
+        <a href="diagnosis.html">자가진단</a>
+        <a href="consult.html">상담 신청</a>
+    </nav>
+</header>
+
+
+<section class="diagnosis-hero">
+
+    <p class="diagnosis-label">CHAM SELF CHECK</p>
+
+    <h1>외국인환자 유치업 등록 자가진단</h1>
+
+    <p>
+        몇 가지 항목을 확인하면 등록요건의 충족 여부를
+        간단하게 확인할 수 있습니다.
+    </p>
+
+</section>
+
+
+<main class="diagnosis-container">
+
+    <div class="diagnosis-notice">
+
+        <strong>자가진단 안내</strong>
+
+        <p>
+            본 자가진단은 기본적인 등록요건을 확인하기 위한 참고용입니다.
+            실제 등록 가능 여부는 신청인의 구체적인 상황과 관련 서류에 따라
+            달라질 수 있습니다.
+        </p>
+
+    </div>
+
+
+    <form id="diagnosisForm">
+
+        <div class="question-card">
+
+            <span class="question-number">01</span>
+
+            <h3>외국인환자 유치사업자 등록을 신청하려는 사업자의 형태는 무엇입니까?</h3>
+
+            <label>
+                <input type="radio"
+                       name="applicantType"
+                       value="corporation">
+                개인사업자
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="applicantType"
+                       value="individual">
+                법인사업자
+            </label>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <span class="question-number">02</span>
+
+            <h3>사업자등록증과 함께 사업장의 임대차계약서 또는 건물등기사항증명서를 준비할 수 있습니까?</h3>
+
+            <label>
+                <input type="radio"
+                       name="newRegistration"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="newRegistration"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="newRegistration"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <span class="question-number">03</span>
+
+            <h3>사업자 형태에 따라 등록에 필요한 재정 관련 증빙서류를 준비할 수 있습니까?</h3>
+
+            <label>
+                <input type="radio"
+                       name="financial"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="financial"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="financial"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <div class="question-card">
+
+            <span class="question-number">04</span>
+
+            <h3>
+                법인인 경우 법인등기 목적, 여행업을 등록한 경우 관광사업등록증 등 신청인의 사업 형태에 따른 추가 구비서류를 확인하셨습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="additionalRequirement"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="additionalRequirement"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="additionalRequirement"
+                       value="unknown">
+                해당 없음 / 잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <div class="diagnosis-submit">
+
+            <button type="button" id="diagnosisButton">
+                진단 결과 확인
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+<footer>
+    <p>행정사사무소 참</p>
+
+    <p style="font-size:14px; margin-top:12px;">
+        <a href="privacy.html"
+           style="color:#ccc; text-decoration:none;">
+            개인정보처리방침
+        </a>
+    </p>
+</footer>
+
+
+<!-- 자가진단 프로그램 연결 -->
+<script src="script.js"></script>
+
+</body>
+
+</html>

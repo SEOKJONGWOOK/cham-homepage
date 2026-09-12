@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>유해화학물질 알선판매업 신고 자가진단 | 행정사사무소 참</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 상단 메뉴 -->
+    <header>
+        <h2>
+            <a href="index.html"
+               style="text-decoration:none; color:#222;">
+                행정사사무소 참
+            </a>
+        </h2>
+
+        <nav>
+            <a href="index.html">홈</a>
+            <a href="about.html">사무소 소개</a>
+            <a href="services.html">업무 안내</a>
+            <a href="diagnosis.html">자가진단</a>
+            <a href="consult.html">상담 신청</a>
+        </nav>
+    </header>
+
+
+    <!-- 상단 소개 -->
+    <section class="diagnosis-hero">
+
+        <p class="hero-label">SELF DIAGNOSIS</p>
+
+        <h1>유해화학물질 알선판매업 신고 자가진단</h1>
+
+        <p>
+            판매하려는 물질과 사업장 및 현재 준비상태를 기준으로
+            신고 전에 추가로 확인하거나 준비할 사항이 있는지
+            간단하게 살펴보세요.
+        </p>
+
+    </section>
+
+
+    <main class="diagnosis-container">
+
+        <!-- 안내 -->
+        <div class="diagnosis-notice">
+
+            <h3>자가진단 안내</h3>
+
+            <p>
+                전문적인 신고기준을 모르셔도 괜찮습니다.
+                판매하려는 물질과 현재 준비하고 있는 사업장을 기준으로
+                답변해 주세요.
+            </p>
+
+        </div>
+
+
+        <!-- 질문 01 -->
+        <div class="question-card">
+
+            <span class="question-number">01</span>
+
+            <h3>
+                판매하려는 유해화학물질이 정해져 있습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="brokerChemical"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerChemical"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerChemical"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 질문 02 -->
+        <div class="question-card">
+
+            <span class="question-number">02</span>
+
+            <h3>
+                판매업을 하려는 사무실에서
+                해당 영업이 가능한지 확인하셨습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="brokerLocation"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerLocation"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerLocation"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 질문 03 -->
+        <div class="question-card">
+
+            <span class="question-number">03</span>
+
+            <h3>
+                판매하려는 물질의 MSDS 등
+                제품정보를 확인할 수 있는 자료가 있습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="brokerMsds"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerMsds"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerMsds"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 질문 04 -->
+        <div class="question-card">
+
+            <span class="question-number">04</span>
+
+            <h3>
+                판매하는 물질을 직접 보관하지 않거나,
+                필요한 경우 적절한 업체에 위탁하여
+                보관할 준비가 되어 있습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="brokerStorage"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerStorage"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerStorage"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 질문 05 -->
+        <div class="question-card">
+
+            <span class="question-number">05</span>
+
+            <h3>
+                유해화학물질 관리자 선임 등
+                신고에 필요한 준비를 하셨습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="brokerManager"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerManager"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="brokerManager"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 진단 버튼 -->
+        <button id="diagnosisButton"
+                class="diagnosis-button">
+            진단결과 확인
+        </button>
+
+    </main>
+
+
+    <footer>
+    <p>행정사사무소 참</p>
+
+    <p style="font-size:14px; margin-top:12px;">
+        <a href="privacy.html"
+           style="color:#ccc; text-decoration:none;">
+            개인정보처리방침
+        </a>
+    </p>
+</footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>여행업 등록 자가진단 | 행정사사무소 참</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- 상단 영역 -->
+    <section class="diagnosis-hero">
+
+        <p class="hero-label">CHAM SELF CHECK</p>
+
+        <h1>여행업 등록 자가진단</h1>
+
+        <p>
+            몇 가지 항목을 확인하면 여행업 등록요건의 충족 여부를
+            간단하게 확인할 수 있습니다.
+        </p>
+
+    </section>
+
+
+    <main class="diagnosis-container">
+
+        <!-- 안내 -->
+        <div class="diagnosis-notice">
+
+            <h3>자가진단 안내</h3>
+
+            <p>
+                본 자가진단은 기본적인 여행업 등록요건을 확인하기 위한
+                참고용입니다. 실제 등록 가능 여부는 신청인의 구체적인 상황과
+                관련 서류에 따라 달라질 수 있습니다.
+            </p>
+
+        </div>
+
+
+        <!-- 01 -->
+        <div class="question-card">
+
+            <span class="question-number">01</span>
+
+            <h3>등록하려는 여행업의 종류는 무엇입니까?</h3>
+
+            <label>
+                <input type="radio"
+                       name="travelType"
+                       value="domestic">
+                국내여행업
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="travelType"
+                       value="domesticOverseas">
+                국내외여행업
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="travelType"
+                       value="general">
+                종합여행업
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="travelType"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 02 -->
+        <div class="question-card">
+
+            <span class="question-number">02</span>
+
+            <h3>
+                등록하려는 여행업 종류에 따른 자본금 또는
+                자산평가액 요건을 충족하고 있습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="capital"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="capital"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="capital"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 03 -->
+        <div class="question-card">
+
+            <span class="question-number">03</span>
+
+            <h3>
+                여행업 사무실로 사용할 장소에 대한 소유권 또는 사용권을
+                확보하고 있으며, 해당 장소가 주거용 공간이 아닙니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="office"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="office"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="office"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 04 -->
+        <div class="question-card">
+
+            <span class="question-number">04</span>
+
+            <h3>
+                대표자 및 법인의 경우 임원에게 여행업 등록을 제한하는
+                결격사유가 없는지 확인하셨습니까?
+            </h3>
+
+            <label>
+                <input type="radio"
+                       name="disqualification"
+                       value="yes">
+                예
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="disqualification"
+                       value="no">
+                아니오
+            </label>
+
+            <label>
+                <input type="radio"
+                       name="disqualification"
+                       value="unknown">
+                잘 모르겠습니다
+            </label>
+
+        </div>
+
+
+        <!-- 진단 버튼 -->
+<div class="diagnosis-submit">
+
+    <button type="button" id="diagnosisButton">
+        진단 결과 확인
+    </button>
+
+</div>
+    </main>
+
+
+    <footer>
+    <p>행정사사무소 참</p>
+
+    <p style="font-size:14px; margin-top:12px;">
+        <a href="privacy.html"
+           style="color:#ccc; text-decoration:none;">
+            개인정보처리방침
+        </a>
+    </p>
+</footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>

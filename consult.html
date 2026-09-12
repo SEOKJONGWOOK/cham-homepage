@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>상담 신청 | 행정사사무소 참</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h2>
+        <a href="index.html" style="text-decoration:none; color:#222;">
+            행정사사무소 참
+        </a>
+    </h2>
+
+    <nav>
+        <a href="index.html">홈</a>
+        <a href="about.html">사무소 소개</a>
+        <a href="index.html#services">업무 안내</a>
+        <a href="diagnosis.html">자가진단</a>
+        <a href="consult.html">상담 신청</a>
+    </nav>
+</header>
+
+
+<section class="diagnosis-hero">
+
+    <p class="diagnosis-label">CHAM CONSULTATION</p>
+
+    <h1>상담 신청</h1>
+
+    <p>
+        상담이 필요한 업무와 문의 내용을 남겨주시면
+        확인 후 연락드리겠습니다.
+    </p>
+
+</section>
+
+
+<main class="consult-container">
+
+    <div class="consult-notice">
+
+        <strong>상담 신청 안내</strong>
+
+        <p>
+            업무 분야와 상담 업무를 선택한 후 내용을 작성해 주세요.
+            구체적인 내용을 작성해 주시면 보다 정확한 상담에 도움이 됩니다.
+        </p>
+
+    </div>
+
+
+    <form id="consultForm">
+
+        <div class="form-group">
+
+            <label for="clientName">
+                성명 <span class="required">*</span>
+            </label>
+
+            <input
+                type="text"
+                id="clientName"
+                name="clientName"
+                placeholder="성명을 입력해 주세요."
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="phone">
+                연락처 <span class="required">*</span>
+            </label>
+
+            <input
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="010-0000-0000"
+                required
+            >
+
+        </div>
+
+
+        <!-- 업무 분야 -->
+        <div class="form-group">
+
+            <label for="serviceCategory">
+                업무 분야 <span class="required">*</span>
+            </label>
+
+            <select id="serviceCategory" required>
+
+                <option value="">
+                    업무 분야를 선택해 주세요.
+                </option>
+
+                <option value="등록 업무">등록 업무</option>
+                <option value="비자·출입국">비자·출입국</option>
+                <option value="화학물질·제품안전">화학물질·제품안전</option>
+                <option value="폐기물·환경">폐기물·환경</option>
+                <option value="공공조달·기업인증">공공조달·기업인증</option>
+                <option value="민원·문서작성">민원·문서작성</option>
+                <option value="기타 행정업무">기타 행정업무</option>
+
+            </select>
+
+        </div>
+
+
+        <!-- 세부 상담 업무 -->
+        <div class="form-group">
+
+            <label for="consultType">
+                상담 업무 <span class="required">*</span>
+            </label>
+
+            <select
+                id="consultType"
+                name="consultType"
+                required
+                disabled
+            >
+
+                <option value="">
+                    먼저 업무 분야를 선택해 주세요.
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="message">
+                문의 내용 <span class="required">*</span>
+            </label>
+
+            <textarea
+                id="message"
+                name="message"
+                rows="7"
+                placeholder="상담이 필요한 내용을 입력해 주세요."
+                required
+            ></textarea>
+
+        </div>
+
+
+        <div class="privacy-box">
+
+<p class="privacy-notice">
+    입력하신 정보는 상담 요청 확인 및 연락을 위해서만 이용됩니다.
+</p>
+        </div>
+
+
+        <div class="consult-submit">
+
+            <button type="submit">
+                상담 신청하기
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+<footer>
+    <p>행정사사무소 참</p>
+
+    <p style="font-size:14px; margin-top:12px;">
+        <a href="privacy.html"
+           style="color:#ccc; text-decoration:none;">
+            개인정보처리방침
+        </a>
+    </p>
+</footer>
+
+
+<script>
+
+    /* 업무분야별 세부 상담업무 */
+
+    const serviceData = {
+
+        "등록 업무": [
+            "여행업 등록",
+            "국제회의기획업 등록",
+            "외국인환자 유치업자 등록",
+            "외국인환자 유치의료기관 등록",
+            "동물판매업 허가",
+            "동물생산업 허가",
+            "동물수입업 허가",
+            "동물전시업 등록",
+            "동물위탁관리업 등록",
+            "동물미용업 등록",
+            "동물운송업 등록",
+            "야생동물 판매업 허가",
+            "야생동물 수입업 허가",
+            "야생동물 생산업 허가",
+            "야생동물 위탁관리업 허가",
+            "고유번호증 등록",
+            "민간자격 등록",
+            "사업계획서 작성"
+        ],
+
+        "비자·출입국": [
+            "결혼이민(F-6-1)",
+            "단기상용비자(C-3-4)",
+            "결혼이민 배우자 단기초청(C-3-1)",
+            "결혼이민자의 부모 등 방문동거(F-1-5)"
+        ],
+
+        "화학물질·제품안전": [
+            "MSDS 등록",
+            "화학물질 확인명세서 제출",
+            "인체등유해성물질 수입신고",
+            "기존물질 사전신고",
+            "안전확인대상생활화학제품 신고",
+            "유해화학물질 운반업 허가",
+            "유해화학물질 알선판매업 신고",
+            "전자담배 판매업 신고",
+            "유해화학물질 시약 판매업 신고"
+        ],
+
+        "폐기물·환경": [
+            "생활폐기물 수집·운반업",
+            "사업장폐기물 수집·운반업",
+            "건설폐기물 수집·운반업",
+            "지정폐기물 수집·운반업",
+            "의료폐기물 수집·운반업",
+            "일반폐기물 중간처분업(소각)",
+            "일반폐기물 중간처분업(기계식)"
+        ],
+
+        "공공조달·기업인증": [
+            "경쟁입찰참가자등록",
+            "물품식별번호 등록",
+            "MAS(다수공급자계약)",
+            "벤처나라 등록",
+            "여성기업 확인",
+            "직접생산확인증명",
+            "기업부설연구소",
+            "연구개발전담부서",
+            "벤처확인"
+        ],
+
+        "민원·문서작성": [
+            "탄원서",
+            "반성문",
+            "부양기피 관련 신청·소명",
+            "상가관리 관련 계약서",
+            "기타 민원서류 및 계약서"
+        ],
+
+        "기타 행정업무": [
+            "각종 인허가·등록·신고",
+            "행정절차 상담",
+            "사업계획서 작성",
+            "기타 맞춤형 행정업무"
+        ]
+
+    };
+
+
+    const serviceCategory =
+        document.getElementById("serviceCategory");
+
+    const consultType =
+        document.getElementById("consultType");
+
+
+    /* 업무 분야 선택 시 세부업무 표시 */
+
+    serviceCategory.addEventListener("change", function () {
+
+        const category = this.value;
+
+        consultType.innerHTML = "";
+
+        if (!category) {
+
+            consultType.disabled = true;
+
+            consultType.innerHTML =
+                '<option value="">먼저 업무 분야를 선택해 주세요.</option>';
+
+            return;
+        }
+
+        consultType.disabled = false;
+
+        const firstOption = document.createElement("option");
+
+        firstOption.value = "";
+        firstOption.textContent = "상담 업무를 선택해 주세요.";
+
+        consultType.appendChild(firstOption);
+
+
+        serviceData[category].forEach(function (service) {
+
+            const option = document.createElement("option");
+
+            option.value = service;
+            option.textContent = service;
+
+            consultType.appendChild(option);
+
+        });
+
+    });
+
+    /* 자가진단에서 넘어온 업무 자동 선택 */
+
+    const params = new URLSearchParams(window.location.search);
+    const type = params.get("type");
+
+if (type === "foreign-patient") {
+
+    // 1. 업무 분야 자동 선택
+    serviceCategory.value = "등록 업무";
+
+    // 2. 세부업무 목록 생성
+    serviceCategory.dispatchEvent(new Event("change"));
+
+    // 3. 상담 업무 자동 선택
+    consultType.value = "외국인환자 유치업자 등록";
+}
+
+else if (type === "travel") {
+
+    // 1. 업무 분야 자동 선택
+    serviceCategory.value = "등록 업무";
+
+    // 2. 세부업무 목록 생성
+    serviceCategory.dispatchEvent(new Event("change"));
+
+    // 3. 상담 업무 자동 선택
+    consultType.value = "여행업 등록";
+}
+
+else if (type === "convention") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "국제회의기획업 등록";
+}
+
+else if (type === "foreign-patient-medical") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "외국인환자 유치의료기관 등록";
+}
+
+else if (type === "animal-sale") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물판매업 허가";
+}
+
+else if (type === "wildlife-sale") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "야생동물 판매업 허가";
+}
+
+else if (type === "wildlife-import") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "야생동물 수입업 허가";
+}
+
+else if (type === "wildlife-production") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "야생동물 생산업 허가";
+}
+
+else if (type === "wildlife-consignment") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "야생동물 위탁관리업 허가";
+}
+
+else if (type === "private-qualification") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "민간자격 등록";
+}
+
+else if (type === "unique-number") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "고유번호증 등록";
+}
+
+else if (type === "business-visa") {
+    serviceCategory.value = "비자·출입국";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "단기상용비자(C-3-4)";
+}
+
+else if (type === "marriage-visa-f61") {
+    serviceCategory.value = "비자·출입국";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "결혼이민(F-6-1)";
+}
+
+else if (type === "family-visit-f15") {
+    serviceCategory.value = "비자·출입국";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "결혼이민자의 부모 등 방문동거(F-1-5)";
+}
+
+else if (type === "spouse-short-visit") {
+    serviceCategory.value = "비자·출입국";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "결혼이민 배우자 단기초청(C-3-1)";
+}
+
+else if (type === "chemical-confirmation") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "화학물질 확인명세서 제출";
+}
+
+else if (type === "msds-registration") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "MSDS 등록";
+}
+
+else if (type === "hazardous-import") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "인체등유해성물질 수입신고";
+}
+
+else if (type === "existing-chemical-import") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "기존물질 사전신고";
+}
+
+else if (type === "consumer-chemical-product") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "안전확인대상생활화학제품 신고";
+}
+
+else if (type === "hazardous-chemical-transport") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "유해화학물질 운반업 허가";
+}
+
+else if (type === "chemical-broker-sales") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "유해화학물질 알선판매업 신고";
+}
+
+else if (type === "e-cigarette-sales") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "전자담배 판매업 신고";
+}
+
+else if (type === "reagent-sales") {
+    serviceCategory.value = "화학물질·제품안전";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "유해화학물질 시약 판매업 신고";
+}
+
+else if (type === "procurement-bid-registration") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "경쟁입찰참가자등록";
+}
+
+else if (type === "product-identification-number") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "물품식별번호 등록";
+}
+
+else if (type === "mas-contract") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "MAS(다수공급자계약)";
+}
+
+else if (type === "venture-confirmation") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "벤처확인";
+}
+
+else if (type === "women-business-confirmation") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "여성기업 확인";
+}
+
+else if (type === "direct-production-confirmation") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "직접생산확인증명";
+}
+
+else if (type === "corporate-research-institute") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "기업부설연구소";
+}
+
+else if (type === "research-development-department") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "연구개발전담부서";
+}
+
+else if (type === "venture-nara") {
+    serviceCategory.value = "공공조달·기업인증";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "벤처나라 등록";
+}
+
+else if (type === "petition") {
+    serviceCategory.value = "민원·문서작성";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "탄원서";
+}
+
+else if (type === "reflection-letter") {
+    serviceCategory.value = "민원·문서작성";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "반성문";
+}
+
+else if (type === "support-refusal-statement") {
+    serviceCategory.value = "민원·문서작성";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "부양기피 관련 신청·소명";
+}
+
+else if (type === "commercial-premium-contract") {
+    serviceCategory.value = "민원·문서작성";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "상가관리 관련 계약서";
+}
+
+else if (type === "waste-household-collection") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "생활폐기물 수집·운반업";
+}
+
+else if (type === "waste-business-collection") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "사업장폐기물 수집·운반업";
+}
+
+else if (type === "waste-designated-collection") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "지정폐기물 수집·운반업";
+}
+
+else if (type === "waste-medical-collection") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "의료폐기물 수집·운반업";
+}
+
+else if (type === "waste-construction-collection") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "건설폐기물 수집·운반업";
+}
+
+else if (type === "waste-general-mechanical-treatment") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "일반폐기물 중간처분업(기계식)";
+}
+
+else if (type === "waste-general-incineration-treatment") {
+    serviceCategory.value = "폐기물·환경";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "일반폐기물 중간처분업(소각)";
+}
+
+else if (type === "animal-production") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물생산업 허가";
+}
+
+else if (type === "animal-import") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물수입업 허가";
+}
+
+else if (type === "animal-exhibition") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물전시업 등록";
+}
+
+else if (type === "animal-consignment") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물위탁관리업 등록";
+}
+
+else if (type === "animal-grooming") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물미용업 등록";
+}
+
+else if (type === "animal-transport") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "동물운송업 등록";
+}
+
+    /* Google Apps Script 웹 앱 주소 */
+
+    const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbyEgadDcZQ5OfyKna4mgIDmMQUT7nNrN4E6FTQGevyJbe0EjDEy_M02ckuiPx4Gv1FA/exec";
+
+
+    /* 상담 신청 */
+
+    const consultForm =
+        document.getElementById("consultForm");
+
+
+    consultForm.addEventListener("submit", async function (event) {
+
+        event.preventDefault();
+
+        const submitButton =
+            consultForm.querySelector('button[type="submit"]');
+
+        const originalText =
+            submitButton.textContent;
+
+
+        const data = {
+
+            name:
+                document.getElementById("clientName").value.trim(),
+
+            phone:
+                document.getElementById("phone").value.trim(),
+
+            service:
+                consultType.value,
+
+            message:
+                document.getElementById("message").value.trim()
+
+        };
+
+
+        try {
+
+            submitButton.disabled = true;
+            submitButton.textContent = "접수 중...";
+
+
+            await fetch(WEB_APP_URL, {
+
+                method: "POST",
+
+                mode: "no-cors",
+
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8"
+                },
+
+                body: JSON.stringify(data)
+
+            });
+
+
+            alert("상담 신청이 접수되었습니다.");
+
+            consultForm.reset();
+
+            consultType.disabled = true;
+
+            consultType.innerHTML =
+                '<option value="">먼저 업무 분야를 선택해 주세요.</option>';
+
+
+        } catch (error) {
+
+            alert(
+                "상담 신청 중 오류가 발생했습니다. 다시 시도해 주세요."
+            );
+
+            console.error(error);
+
+
+        } finally {
+
+            submitButton.disabled = false;
+
+            submitButton.textContent = originalText;
+
+        }
+
+    });
+
+</script>
+
+</body>
+
+</html>
