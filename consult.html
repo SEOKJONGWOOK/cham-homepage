@@ -252,6 +252,7 @@
             "야생동물 위탁관리업 허가",
             "고유번호증 등록",
             "민간자격 등록",
+            "화장품책임판매업 등록",
             "사업계획서 작성"
         ],
 
@@ -677,6 +678,12 @@ else if (type === "animal-transport") {
     serviceCategory.value = "등록 업무";
     serviceCategory.dispatchEvent(new Event("change"));
     consultType.value = "동물운송업 등록";
+}
+
+else if (type === "cosmetics-responsible-sales") {
+    serviceCategory.value = "등록 업무";
+    serviceCategory.dispatchEvent(new Event("change"));
+    consultType.value = "화장품책임판매업 등록";
 }
 
     /* Google Apps Script 웹 앱 주소 */
