@@ -7239,4 +7239,259 @@ if (document.querySelector('input[name="wildlifeConsignmentType"]')) {
     return;
 }
 
+// =====================================================
+// 화장품책임판매업 등록 자가진단
+// =====================================================
+
+if (document.querySelector('input[name="cosmeticsType"]')) {
+
+    button.addEventListener("click", function () {
+
+        const cosmeticsType =
+            document.querySelector('input[name="cosmeticsType"]:checked');
+
+        const manager =
+            document.querySelector('input[name="manager"]:checked');
+
+        const managerQualification =
+            document.querySelector('input[name="managerQualification"]:checked');
+
+        const qualitySafety =
+            document.querySelector('input[name="qualitySafety"]:checked');
+
+        const qualityTest =
+            document.querySelector('input[name="qualityTest"]:checked');
+
+
+        // 모든 문항 응답 여부 확인
+        if (
+            !cosmeticsType ||
+            !manager ||
+            !managerQualification ||
+            !qualitySafety ||
+            !qualityTest
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 책임판매관리자가 없는 경우
+        // -------------------------------------------------
+
+        if (manager.value === "no") {
+
+            showResult(
+                "책임판매관리자 지정이 필요합니다.",
+                "화장품책임판매업 등록을 위해서는 책임판매관리자를 두어야 합니다. 현재 지정할 사람이 없다면 자격요건을 갖춘 책임판매관리자를 확보할 수 있는지 먼저 검토하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=cosmetics-responsible-sales"
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 책임판매관리자 자격 확인이 필요한 경우
+        // -------------------------------------------------
+
+        if (managerQualification.value === "no") {
+
+            showResult(
+                "책임판매관리자의 자격요건을 확인해 보세요.",
+                "책임판매관리자는 관련 법령에서 정한 자격요건을 갖추어야 합니다. 학력·자격 또는 관련 경력 등을 확인하여 책임판매관리자로 인정될 수 있는지 검토하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=cosmetics-responsible-sales"
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 품질관리·판매 후 안전관리 기준
+        // -------------------------------------------------
+
+        if (qualitySafety.value === "no") {
+
+            showResult(
+                "품질관리 및 안전관리 기준을 준비해야 합니다.",
+                "화장품책임판매업자는 화장품의 품질관리와 판매 후 안전관리를 위한 기준을 갖추고 관련 업무를 수행해야 합니다. 등록 준비과정에서 해당 기준과 관리체계를 함께 확인하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=cosmetics-responsible-sales"
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 품질검사 방법
+        // -------------------------------------------------
+
+        if (qualityTest.value === "no") {
+
+            showResult(
+                "품질검사 방법을 확인해 보세요.",
+                "판매하려는 화장품에 대해 필요한 품질검사를 실시할 수 있는 방법을 마련해야 합니다. 자체 시험 가능 여부 또는 시험검사기관과의 위탁 방법 등을 확인하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=cosmetics-responsible-sales"
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 잘 모르겠습니다가 하나라도 있는 경우
+        // -------------------------------------------------
+
+        if (
+            cosmeticsType.value === "unknown" ||
+            manager.value === "unknown" ||
+            managerQualification.value === "unknown" ||
+            qualitySafety.value === "unknown" ||
+            qualityTest.value === "unknown"
+        ) {
+
+            showResult(
+                "추가 확인이 필요한 사항이 있습니다.",
+                "화장품책임판매업의 유형이나 책임판매관리자의 자격, 품질·안전관리 기준 등 일부 사항에 대한 확인이 필요합니다. 현재 준비상황을 기준으로 등록요건을 구체적으로 검토하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=cosmetics-responsible-sales"
+            );
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // 기본사항이 모두 준비된 경우
+        // -------------------------------------------------
+
+        showResult(
+            "기본적인 등록 준비사항이 어느 정도 갖추어져 있습니다.",
+            "책임판매 유형, 책임판매관리자, 품질관리 및 판매 후 안전관리와 품질검사 방법을 확인하셨다면 다음 단계로 실제 등록신청에 필요한 서류와 세부요건을 검토하는 것이 좋습니다.",
+            "result-success",
+            "consult.html?type=cosmetics-responsible-sales"
+        );
+
+    });
+
+    return;
+}
+
+// =====================================================
+// 국제회의기획업 등록 자가진단
+// =====================================================
+
+if (document.querySelector('input[name="conferenceBusiness"]')) {
+
+    const button = document.getElementById("diagnosisButton");
+
+    button.addEventListener("click", function () {
+
+        const business =
+            document.querySelector('input[name="conferenceBusiness"]:checked');
+
+        const capital =
+            document.querySelector('input[name="conferenceCapital"]:checked');
+
+        const office =
+            document.querySelector('input[name="conferenceOffice"]:checked');
+
+        const officeDocument =
+            document.querySelector('input[name="conferenceOfficeDocument"]:checked');
+
+        const plan =
+            document.querySelector('input[name="conferencePlan"]:checked');
+
+        const documents =
+            document.querySelector('input[name="conferenceDocuments"]:checked');
+
+
+        // 모든 질문에 답했는지 확인
+        if (
+            !business ||
+            !capital ||
+            !office ||
+            !officeDocument ||
+            !plan ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
+
+
+        // 국제회의기획업 해당 여부 확인
+        if (business.value === "no") {
+
+            showResult(
+                "국제회의기획업 등록대상 여부를 먼저 확인해 보세요.",
+                "하려는 사업의 내용이 국제회의의 기획·준비·진행 등 국제회의기획업에 해당하는지 먼저 확인할 필요가 있습니다. 실제 사업내용을 기준으로 등록대상 여부를 검토하는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=international-conference"
+            );
+
+            return;
+        }
+
+
+        // 준비되지 않은 항목이 있는 경우
+        if (
+            capital.value === "no" ||
+            office.value === "no" ||
+            officeDocument.value === "no" ||
+            plan.value === "no" ||
+            documents.value === "no"
+        ) {
+
+            showResult(
+                "등록 신청 전에 추가로 준비할 사항이 있습니다.",
+                "현재 답변 중 준비되지 않은 항목이 있습니다. 자본금, 사무실, 사업계획 및 관련 증빙서류 등 부족한 부분을 확인한 후 등록을 준비하는 것이 좋습니다.",
+                "result-warning",
+                "consult.html?type=international-conference"
+            );
+
+            return;
+        }
+
+
+        // 잘 모르겠습니다가 하나라도 있는 경우
+        if (
+            business.value === "unknown" ||
+            capital.value === "unknown" ||
+            office.value === "unknown" ||
+            officeDocument.value === "unknown" ||
+            plan.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
+
+            showResult(
+                "등록요건에 대한 추가 확인이 필요합니다.",
+                "일부 항목의 적용 여부를 정확히 판단하기 어려운 상태입니다. 사업내용과 현재 준비상황을 기준으로 국제회의기획업 등록요건과 필요한 서류를 구체적으로 확인해 보는 것이 좋습니다.",
+                "result-check",
+                "consult.html?type=international-conference"
+            );
+
+            return;
+        }
+
+
+        // 기본사항이 모두 준비된 경우
+        showResult(
+            "기본적인 등록 준비사항이 어느 정도 갖추어져 있습니다.",
+            "현재 답변을 기준으로 국제회의기획업 등록을 위한 기본적인 준비사항은 확인된 것으로 보입니다. 실제 신청 전에는 자본금, 사무실, 사업계획 및 관련 증빙서류의 구체적인 내용을 최종 검토하는 것이 좋습니다.",
+            "result-success",
+            "consult.html?type=international-conference"
+        );
+
+    });
+
+    return;
+}
+
 });
