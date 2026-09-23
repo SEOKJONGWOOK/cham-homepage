@@ -7433,7 +7433,7 @@ if (document.querySelector('input[name="conferenceBusiness"]')) {
                 "국제회의기획업 등록대상 여부를 먼저 확인해 보세요.",
                 "하려는 사업의 내용이 국제회의의 기획·준비·진행 등 국제회의기획업에 해당하는지 먼저 확인할 필요가 있습니다. 실제 사업내용을 기준으로 등록대상 여부를 검토하는 것이 좋습니다.",
                 "result-check",
-                "consult.html?type=international-conference"
+                "consult.html?type=convention"
             );
 
             return;
@@ -7453,7 +7453,7 @@ if (document.querySelector('input[name="conferenceBusiness"]')) {
                 "등록 신청 전에 추가로 준비할 사항이 있습니다.",
                 "현재 답변 중 준비되지 않은 항목이 있습니다. 자본금, 사무실, 사업계획 및 관련 증빙서류 등 부족한 부분을 확인한 후 등록을 준비하는 것이 좋습니다.",
                 "result-warning",
-                "consult.html?type=international-conference"
+                "consult.html?type=convention"
             );
 
             return;
@@ -7474,7 +7474,7 @@ if (document.querySelector('input[name="conferenceBusiness"]')) {
                 "등록요건에 대한 추가 확인이 필요합니다.",
                 "일부 항목의 적용 여부를 정확히 판단하기 어려운 상태입니다. 사업내용과 현재 준비상황을 기준으로 국제회의기획업 등록요건과 필요한 서류를 구체적으로 확인해 보는 것이 좋습니다.",
                 "result-check",
-                "consult.html?type=international-conference"
+                "consult.html?type=convention"
             );
 
             return;
@@ -7486,7 +7486,7 @@ if (document.querySelector('input[name="conferenceBusiness"]')) {
             "기본적인 등록 준비사항이 어느 정도 갖추어져 있습니다.",
             "현재 답변을 기준으로 국제회의기획업 등록을 위한 기본적인 준비사항은 확인된 것으로 보입니다. 실제 신청 전에는 자본금, 사무실, 사업계획 및 관련 증빙서류의 구체적인 내용을 최종 검토하는 것이 좋습니다.",
             "result-success",
-            "consult.html?type=international-conference"
+            "consult.html?type=convention"
         );
 
     });
