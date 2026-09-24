@@ -638,368 +638,415 @@ if (document.querySelector('input[name="wildlifeType"]')) {
     return;
 }
 
-    // =====================================================
-    // 민간자격 등록 자가진단
-    // =====================================================
+// =====================================================
+// 민간자격 등록 자가진단
+// =====================================================
 
-    if (document.querySelector('input[name="privateQualificationName"]')) {
+if (document.querySelector('input[name="privateQualificationName"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const qualificationName =
-                document.querySelector('input[name="privateQualificationName"]:checked');
+        const qualificationName =
+            document.querySelector('input[name="privateQualificationName"]:checked');
 
-            const qualificationTest =
-                document.querySelector('input[name="privateQualificationTest"]:checked');
+        const qualificationProhibited =
+            document.querySelector('input[name="privateQualificationProhibited"]:checked');
 
-            const qualificationNational =
-                document.querySelector('input[name="privateQualificationNational"]:checked');
+        const qualificationNational =
+            document.querySelector('input[name="privateQualificationNational"]:checked');
 
-            const qualificationOperation =
-                document.querySelector('input[name="privateQualificationOperation"]:checked');
+        const qualificationTest =
+            document.querySelector('input[name="privateQualificationTest"]:checked');
 
-            const qualificationDocuments =
-                document.querySelector('input[name="privateQualificationDocuments"]:checked');
+        const qualificationOperation =
+            document.querySelector('input[name="privateQualificationOperation"]:checked');
 
 
-            // 모든 질문 답변 여부 확인
-            if (
-                !qualificationName ||
-                !qualificationTest ||
-                !qualificationNational ||
-                !qualificationOperation ||
-                !qualificationDocuments
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        // 모든 질문 답변 여부 확인
+        if (
+            !qualificationName ||
+            !qualificationProhibited ||
+            !qualificationNational ||
+            !qualificationTest ||
+            !qualificationOperation
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // 아니오가 하나라도 있는 경우
-            if (
-                qualificationName.value === "no" ||
-                qualificationTest.value === "no" ||
-                qualificationNational.value === "no" ||
-                qualificationOperation.value === "no" ||
-                qualificationDocuments.value === "no"
-            ) {
+        // 등록 가능성과 직접 관련된 사항을 확인하지 않은 경우
+        if (
+            qualificationProhibited.value === "no" ||
+            qualificationNational.value === "no"
+        ) {
 
-                resultTitle = "추가 준비가 필요합니다.";
+            resultTitle =
+                "등록 가능 여부를 먼저 확인해 보세요.";
 
-                resultMessage =
-                    "현재 답변 중 민간자격 등록을 위해 추가로 준비하거나 " +
-                    "검토해야 할 사항이 있습니다. 자격명칭과 직무내용, " +
-                    "검정기준 및 운영계획 등을 구체적으로 확인한 후 " +
-                    "등록을 준비하는 것이 좋습니다.";
+            resultMessage =
+                "민간자격 등록을 준비하기 전에 등록 금지분야 해당 여부와 " +
+                "국가자격과 동일한 명칭을 사용하는지 확인할 필요가 있습니다. " +
+                "자격명과 직무내용을 기준으로 관련 제한사항을 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
-            else if (
-                qualificationName.value === "unknown" ||
-                qualificationTest.value === "unknown" ||
-                qualificationNational.value === "unknown" ||
-                qualificationOperation.value === "unknown" ||
-                qualificationDocuments.value === "unknown"
-            ) {
+        // 자격의 기본내용 또는 검정·운영체계가 준비되지 않은 경우
+        else if (
+            qualificationName.value === "no" ||
+            qualificationTest.value === "no" ||
+            qualificationOperation.value === "no"
+        ) {
 
-                resultTitle = "전문적인 검토를 권장합니다.";
+            resultTitle =
+                "민간자격의 세부 설계가 필요합니다.";
 
-                resultMessage =
-                    "일부 민간자격 등록사항에 대한 확인이 필요합니다. " +
-                    "등록하려는 자격의 명칭과 직무내용 및 운영계획을 기준으로 " +
-                    "등록 가능 여부와 준비사항을 구체적으로 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변상 자격명·직무내용 또는 검정·운영방법 중 " +
+                "추가로 정해야 할 사항이 있습니다. " +
+                "자격의 직무범위와 검정기준, 검정방법 및 운영방식을 " +
+                "구체적으로 정리한 후 등록을 준비하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예인 경우
-            else {
+        // 잘 모르겠습니다가 하나라도 있는 경우
+        else if (
+            qualificationName.value === "unknown" ||
+            qualificationProhibited.value === "unknown" ||
+            qualificationNational.value === "unknown" ||
+            qualificationTest.value === "unknown" ||
+            qualificationOperation.value === "unknown"
+        ) {
 
-                resultTitle = "기본적인 준비사항을 확인하셨습니다.";
+            resultTitle =
+                "추가 확인이 필요한 사항이 있습니다.";
 
-                resultMessage =
-                    "현재 입력하신 내용상 민간자격 등록을 위한 기본적인 " +
-                    "준비사항은 갖추어진 것으로 보입니다. 다만 실제 등록 가능 여부는 " +
-                    "자격명칭, 직무내용 및 관련 제한사항 등을 추가로 검토해야 합니다.";
+            resultMessage =
+                "민간자격의 내용이나 등록 제한사항, 검정·운영방법 중 " +
+                "확인이 필요한 부분이 있습니다. " +
+                "등록하려는 자격의 명칭과 직무내용을 기준으로 " +
+                "등록 가능성과 준비사항을 구체적으로 검토하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=private-qualification"
-            );
+        // 기본적인 준비사항이 확인된 경우
+        else {
 
-        });
+            resultTitle =
+                "기본적인 준비사항이 어느 정도 갖추어져 있습니다.";
 
-        return;
-    }
+            resultMessage =
+                "현재 답변상 자격명과 직무내용, 등록 제한사항, " +
+                "검정기준 및 운영방법 등 기본적인 사항을 확인하셨습니다. " +
+                "실제 신청 전에는 자격의 세부내용과 등록자료를 최종적으로 검토하는 것이 좋습니다.";
 
-    // =====================================================
-    // 고유번호증 발급 자가진단
-    // =====================================================
+            resultClass = "result-success";
+        }
 
-    if (document.querySelector('input[name="uniqueNumberRules"]')) {
 
-        button.addEventListener("click", function () {
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=private-qualification"
+        );
 
-            const rules =
-                document.querySelector('input[name="uniqueNumberRules"]:checked');
+    });
 
-            const representative =
-                document.querySelector('input[name="uniqueNumberRepresentative"]:checked');
+    return;
+}
+ // =====================================================
+// 고유번호증 발급 자가진단
+// =====================================================
 
-            const property =
-                document.querySelector('input[name="uniqueNumberProperty"]:checked');
+if (document.querySelector('input[name="uniqueNumberPurpose"]')) {
 
-            const distribution =
-                document.querySelector('input[name="uniqueNumberDistribution"]:checked');
+    button.addEventListener("click", function () {
 
-            const documents =
-                document.querySelector('input[name="uniqueNumberDocuments"]:checked');
+        const purpose =
+            document.querySelector('input[name="uniqueNumberPurpose"]:checked');
 
+        const rules =
+            document.querySelector('input[name="uniqueNumberRules"]:checked');
 
-            // 모든 질문 답변 여부 확인
-            if (
-                !rules ||
-                !representative ||
-                !property ||
-                !distribution ||
-                !documents
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        const representative =
+            document.querySelector('input[name="uniqueNumberRepresentative"]:checked');
 
+        const property =
+            document.querySelector('input[name="uniqueNumberProperty"]:checked');
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        const distribution =
+            document.querySelector('input[name="uniqueNumberDistribution"]:checked');
 
 
-            // 핵심요건 중 아니오가 있는 경우
-            if (
-                rules.value === "no" ||
-                representative.value === "no" ||
-                property.value === "no" ||
-                distribution.value === "no"
-            ) {
+        // 모든 질문 답변 여부 확인
+        if (
+            !purpose ||
+            !rules ||
+            !representative ||
+            !property ||
+            !distribution
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultTitle = "신청 전 요건 검토가 필요합니다.";
 
-                resultMessage =
-                    "현재 답변 중 법인으로 보는 단체의 승인을 위해 " +
-                    "추가로 갖추거나 검토해야 할 사항이 있습니다. " +
-                    "단체의 조직·운영규정, 대표자 선임, 재산 및 수익의 관리방식, " +
-                    "수익의 구성원 분배 여부 등을 먼저 확인하는 것이 좋습니다.";
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultClass = "result-warning";
-            }
 
+        // -------------------------------------------------
+        // 영리사업 여부 등에 대한 검토가 필요한 경우
+        // -------------------------------------------------
+        if (purpose.value === "no") {
 
-            // 핵심요건을 잘 모르는 경우
-            else if (
-                rules.value === "unknown" ||
-                representative.value === "unknown" ||
-                property.value === "unknown" ||
-                distribution.value === "unknown"
-            ) {
+            resultTitle =
+                "고유번호 신청 대상인지 먼저 확인해 보세요.";
 
-                resultTitle = "단체의 운영형태에 대한 검토가 필요합니다.";
+            resultMessage =
+                "현재 답변상 단체의 주된 활동이 비영리 목적의 단체활동에 해당하는지 " +
+                "추가 확인이 필요합니다. 실제 활동내용에 따라 고유번호 신청이 적절한지 " +
+                "또는 사업자등록 등 다른 절차가 필요한지를 먼저 검토하는 것이 좋습니다.";
 
-                resultMessage =
-                    "법인으로 보는 단체의 승인요건 중 확인이 필요한 사항이 있습니다. " +
-                    "단체의 정관·규약과 실제 운영방식을 함께 검토하여 " +
-                    "신청 가능 여부를 확인하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // -------------------------------------------------
+        // 단체의 기본적인 조직체계가 부족한 경우
+        // -------------------------------------------------
+        else if (
+            rules.value === "no" ||
+            representative.value === "no"
+        ) {
 
-            // 핵심요건은 충족하지만 서류 준비가 안 된 경우
-            else if (
-                documents.value === "no" ||
-                documents.value === "unknown"
-            ) {
+            resultTitle =
+                "단체의 조직과 운영체계를 먼저 확인해 보세요.";
 
-                resultTitle = "신청서류 준비가 필요합니다.";
+            resultMessage =
+                "정관·규약·회칙이나 대표자·관리인 선임 등 " +
+                "단체의 조직과 운영을 확인할 수 있는 사항이 아직 충분히 준비되지 않았습니다. " +
+                "단체의 실제 구성과 운영방식을 확인한 후 고유번호 신청을 준비하는 것이 좋습니다.";
 
-                resultMessage =
-                    "현재 답변상 기본적인 단체요건은 갖춘 것으로 보이나 " +
-                    "신청에 필요한 관련 자료의 준비 또는 검토가 필요합니다. " +
-                    "정관·규약, 회의록 등 단체의 설립과 운영을 확인할 수 있는 " +
-                    "자료를 정리한 후 신청하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // -------------------------------------------------
+        // 재산관리 또는 수익분배 구조 확인 필요
+        // -------------------------------------------------
+        else if (
+            property.value === "no" ||
+            distribution.value === "no"
+        ) {
 
-            // 모두 예인 경우
-            else {
+            resultTitle =
+                "단체의 재산·수익 관리방식에 대한 검토가 필요합니다.";
 
-                resultTitle = "기본적인 신청요건을 확인하셨습니다.";
+            resultMessage =
+                "단체의 재산과 수익을 어떤 방식으로 관리하고 " +
+                "구성원에게 이익이 분배되는지를 확인할 필요가 있습니다. " +
+                "이러한 운영방식에 따라 단체의 세법상 유형과 적용되는 절차가 달라질 수 있습니다.";
 
-                resultMessage =
-                    "현재 입력하신 내용상 법인으로 보는 단체의 승인 및 " +
-                    "고유번호증 발급을 위한 기본적인 사항은 갖추어진 것으로 보입니다. " +
-                    "다만 실제 신청 전에는 단체의 정관·규약과 운영내용 및 " +
-                    "관련 신청서류를 구체적으로 확인할 필요가 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-success";
-            }
 
+        // -------------------------------------------------
+        // 잘 모르겠습니다가 하나라도 있는 경우
+        // -------------------------------------------------
+        else if (
+            purpose.value === "unknown" ||
+            rules.value === "unknown" ||
+            representative.value === "unknown" ||
+            property.value === "unknown" ||
+            distribution.value === "unknown"
+        ) {
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=unique-number"
-            );
+            resultTitle =
+                "추가 확인이 필요한 사항이 있습니다.";
 
-        });
+            resultMessage =
+                "단체의 목적이나 조직·운영형태, 재산 및 수익의 관리방식 중 " +
+                "확인이 필요한 사항이 있습니다. 정관·규약과 실제 운영내용을 함께 살펴 " +
+                "단체의 유형과 적절한 신청방법을 확인하는 것이 좋습니다.";
 
-        return;
-    }
+            resultClass = "result-check";
+        }
 
-    // =====================================================
-    // 단기상용비자(C-3-4) 자가진단
-    // =====================================================
 
-    if (document.querySelector('input[name="businessVisaPurpose"]')) {
+        // -------------------------------------------------
+        // 기본적인 준비사항이 확인된 경우
+        // -------------------------------------------------
+        else {
 
-        button.addEventListener("click", function () {
+            resultTitle =
+                "기본적인 준비사항이 어느 정도 갖추어져 있습니다.";
 
-            const purpose =
-                document.querySelector('input[name="businessVisaPurpose"]:checked');
+            resultMessage =
+                "현재 답변상 단체의 목적, 조직·운영규정, 대표자 선임, " +
+                "재산·수익 관리와 수익분배 여부 등 기본적인 사항을 확인하셨습니다. " +
+                "실제 신청 전에는 단체의 구체적인 유형과 신청서류를 확인하는 것이 좋습니다.";
 
-            const inviter =
-                document.querySelector('input[name="businessVisaInviter"]:checked');
+            resultClass = "result-success";
+        }
 
-            const paidWork =
-                document.querySelector('input[name="businessVisaPaidWork"]:checked');
 
-            const schedule =
-                document.querySelector('input[name="businessVisaSchedule"]:checked');
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=unique-number"
+        );
 
-            const evidence =
-                document.querySelector('input[name="businessVisaEvidence"]:checked');
+    });
 
+    return;
+}
 
-            // 모든 질문 답변 여부 확인
-            if (
-                !purpose ||
-                !inviter ||
-                !paidWork ||
-                !schedule ||
-                !evidence
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+// =====================================================
+// 단기상용비자(C-3-4) 자가진단
+// =====================================================
 
+if (document.querySelector('input[name="businessVisaPurpose"]')) {
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+    button.addEventListener("click", function () {
 
+        const purpose =
+            document.querySelector('input[name="businessVisaPurpose"]:checked');
 
-            // C-3-4 목적과 맞지 않을 가능성이 큰 경우
-            // 3번은 "예"가 부정적인 답변
-            if (
-                purpose.value === "no" ||
-                paidWork.value === "yes"
-            ) {
+        const inviter =
+            document.querySelector('input[name="businessVisaInviter"]:checked');
 
-                resultTitle = "체류자격에 대한 검토가 필요합니다.";
+        const paidWork =
+            document.querySelector('input[name="businessVisaPaidWork"]:checked');
 
-                resultMessage =
-                    "현재 답변상 예정된 활동이 단기상용비자(C-3-4)의 " +
-                    "활동범위와 맞는지 추가 검토가 필요합니다. " +
-                    "특히 국내에서 노무·기술을 제공하고 보수를 받는 활동은 " +
-                    "방문목적과 실제 활동내용을 구체적으로 확인해야 합니다.";
+        const schedule =
+            document.querySelector('input[name="businessVisaSchedule"]:checked');
 
-                resultClass = "result-warning";
-            }
+        const evidence =
+            document.querySelector('input[name="businessVisaEvidence"]:checked');
 
 
-            // 핵심사항을 잘 모르는 경우
-            else if (
-                purpose.value === "unknown" ||
-                inviter.value === "unknown" ||
-                paidWork.value === "unknown"
-            ) {
+        // 모든 질문 답변 여부 확인
+        if (
+            !purpose ||
+            !inviter ||
+            !paidWork ||
+            !schedule ||
+            !evidence
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultTitle = "방문목적에 대한 사전 검토가 필요합니다.";
 
-                resultMessage =
-                    "단기상용비자 신청에 필요한 핵심사항 중 " +
-                    "확인이 필요한 내용이 있습니다. " +
-                    "신청인의 방문목적과 국내 초청관계 및 실제 활동내용을 " +
-                    "확인한 후 적합한 체류자격을 검토하는 것이 좋습니다.";
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultClass = "result-check";
-            }
 
+        // 방문목적이 C-3-4와 다르거나
+        // 국내에서 보수를 받는 노무·기술 제공이 예정된 경우
+        if (
+            purpose.value === "no" ||
+            paidWork.value === "yes"
+        ) {
 
-            // 초청관계 또는 입증자료가 부족한 경우
-            else if (
-                inviter.value === "no" ||
-                schedule.value === "no" ||
-                schedule.value === "unknown" ||
-                evidence.value === "no" ||
-                evidence.value === "unknown"
-            ) {
+            resultTitle =
+                "체류자격에 대한 추가 검토가 필요합니다.";
 
-                resultTitle = "신청자료에 대한 추가 준비가 필요합니다.";
+            resultMessage =
+                "현재 답변상 예정된 활동이 단기상용비자(C-3-4)의 " +
+                "활동범위에 해당하는지 확인할 필요가 있습니다. " +
+                "특히 대한민국에서 노무나 기술을 제공하고 그 대가로 " +
+                "보수를 받는 활동이라면 다른 체류자격을 검토해야 할 수 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 단기상용 목적은 확인되지만 " +
-                    "초청관계, 방문일정 또는 상용목적을 설명할 자료에 대한 " +
-                    "추가 준비가 필요합니다. 관련 자료를 검토한 후 " +
-                    "사증 신청을 준비하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // 방문목적·국내 사업관계·보수활동 여부를 잘 모르는 경우
+        else if (
+            purpose.value === "unknown" ||
+            inviter.value === "unknown" ||
+            paidWork.value === "unknown"
+        ) {
 
-            // 1·2·4·5 예 + 3 아니오
-            else {
+            resultTitle =
+                "방문목적과 예정 활동을 먼저 확인해 보세요.";
 
-                resultTitle = "기본적인 신청사항을 확인하셨습니다.";
+            resultMessage =
+                "현재 답변 중 단기상용비자 해당 여부를 판단하기 위해 " +
+                "확인이 필요한 사항이 있습니다. 방문목적과 국내 회사·기관·거래처와의 " +
+                "관계 및 대한민국에서 실제로 수행할 활동을 확인한 후 " +
+                "적합한 체류자격을 검토하는 것이 좋습니다.";
 
-                resultMessage =
-                    "현재 입력하신 내용상 단기상용비자(C-3-4) 신청을 위한 " +
-                    "기본적인 사항은 확인된 것으로 보입니다. " +
-                    "다만 실제 사증 발급 여부는 신청인의 구체적인 방문목적, " +
-                    "초청관계 및 제출자료 등에 대한 심사를 거쳐 결정됩니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-success";
-            }
 
+        // 국내 사업관계·일정·입증자료가 부족하거나 불명확한 경우
+        else if (
+            inviter.value === "no" ||
+            schedule.value === "no" ||
+            schedule.value === "unknown" ||
+            evidence.value === "no" ||
+            evidence.value === "unknown"
+        ) {
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=business-visa"
-            );
+            resultTitle =
+                "신청 전에 추가로 준비할 사항이 있습니다.";
 
-        });
+            resultMessage =
+                "현재 답변상 방문목적은 단기상용 활동에 해당할 가능성이 있으나 " +
+                "국내 회사·기관·거래처와의 관계, 구체적인 방문일정 또는 " +
+                "상용목적을 확인할 자료에 대한 추가 검토가 필요합니다.";
 
-        return;
-    }
+            resultClass = "result-check";
+        }
+
+
+        // 1·2·4·5번 예 + 3번 아니오
+        else {
+
+            resultTitle =
+                "기본적인 준비사항을 확인하셨습니다.";
+
+            resultMessage =
+                "현재 답변상 단기상용비자(C-3-4)를 준비하기 위한 " +
+                "주요 사항은 어느 정도 확인된 것으로 보입니다. " +
+                "실제 신청 전에는 신청인의 국적과 관할 재외공관, " +
+                "방문목적 및 관련 자료를 최종적으로 확인하는 것이 좋습니다.";
+
+            resultClass = "result-success";
+        }
+
+
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=business-visa"
+        );
+
+    });
+
+    return;
+}
 
     // =====================================================
     // 방문동거(F-1-5) 자가진단
@@ -1021,8 +1068,8 @@ if (document.querySelector('input[name="wildlifeType"]')) {
             const humanitarian =
                 document.querySelector('input[name="f15Humanitarian"]:checked');
 
-            const violation =
-                document.querySelector('input[name="f15Violation"]:checked');
+            const childCondition =
+                document.querySelector('input[name="f15ChildCondition"]:checked');
 
 
             // 모든 질문 답변 여부 확인
@@ -1031,7 +1078,7 @@ if (document.querySelector('input[name="wildlifeType"]')) {
                 !parent ||
                 !childCare ||
                 !humanitarian ||
-                !violation
+                !childCondition
             ) {
                 alert("모든 질문에 답변해 주세요.");
                 return;
@@ -1043,100 +1090,124 @@ if (document.querySelector('input[name="wildlifeType"]')) {
             let resultClass;
 
 
-            // ① 기본적인 초청인 자격에 해당하지 않는 경우
+            // ① 결혼이민자 가정 여부 확인
             if (marriageImmigrant.value === "no") {
 
-                resultTitle = "초청인 자격에 대한 검토가 필요합니다.";
+                resultTitle = "초청인과 가족관계에 대한 확인이 필요합니다.";
 
                 resultMessage =
-                    "현재 답변상 방문동거(F-1-5) 초청인의 기본적인 자격에 " +
-                    "해당하는지 추가 확인이 필요합니다. " +
-                    "결혼이민자의 체류자격과 가족관계 등을 확인하여 " +
-                    "적합한 초청 또는 체류자격을 검토하는 것이 좋습니다.";
-
-                resultClass = "result-warning";
-            }
-
-
-            // ② 불법체류·불법취업 등 문제가 있었던 경우
-            // 5번은 '예'가 부정적인 답변
-            else if (violation.value === "yes") {
-
-                resultTitle = "사증 발급 제한사항에 대한 검토가 필요합니다.";
-
-                resultMessage =
-                    "과거 초청 또는 체류 과정의 위반사항이 있는 경우 " +
-                    "사증 발급에 영향을 줄 수 있습니다. " +
-                    "구체적인 위반내용과 경과기간 등을 확인한 후 " +
-                    "신청 가능 여부를 검토하는 것이 좋습니다.";
-
-                resultClass = "result-warning";
-            }
-
-
-            // ③ 부모가 아닌 경우 → 예외대상 검토
-            else if (parent.value === "no") {
-
-                resultTitle = "예외적인 초청대상에 해당하는지 확인이 필요합니다.";
-
-                resultMessage =
-                    "초청하려는 사람이 결혼이민자의 부모가 아닌 경우에도 " +
-                    "가족관계와 가정의 구체적인 상황에 따라 " +
-                    "예외적인 초청 가능성을 검토할 수 있습니다. " +
-                    "피초청인과 결혼이민자의 관계를 구체적으로 확인해야 합니다.";
+                    "현재 답변만으로는 방문동거(F-1-5) 초청대상에 " +
+                    "해당하는지 확인하기 어렵습니다. " +
+                    "한국에 거주하는 결혼이민자의 체류상태와 " +
+                    "피초청인과의 가족관계를 먼저 검토하는 것이 좋습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ④ 자녀양육도 아니고 인도적 사유도 없는 경우
+            // ② 부모가 아닌 가족을 초청하려는 경우
+            else if (parent.value === "no") {
+
+                resultTitle = "부모 외 가족의 초청요건을 확인해 보세요.";
+
+                resultMessage =
+                    "자녀 양육지원을 위한 초청은 결혼이민자의 부모가 " +
+                    "우선적인 대상입니다. 부모가 입국할 수 없는 부득이한 사정 등이 있다면 " +
+                    "성년 형제자매 또는 전혼관계에서 출생한 자녀 등 " +
+                    "다른 가족의 초청 가능성을 별도로 검토할 수 있습니다.";
+
+                resultClass = "result-check";
+            }
+
+
+            // ③ 양육지원과 인도적 사유가 모두 없는 경우
             else if (
                 childCare.value === "no" &&
                 humanitarian.value === "no"
             ) {
 
-                resultTitle = "초청사유에 대한 검토가 필요합니다.";
+                resultTitle = "F-1-5 초청사유에 대한 확인이 필요합니다.";
 
                 resultMessage =
-                    "현재 답변상 자녀 양육지원 또는 인도적 사유가 " +
-                    "확인되지 않습니다. 방문동거(F-1-5)에 해당하는 " +
-                    "다른 초청사유가 있는지 구체적인 검토가 필요합니다.";
+                    "현재 답변상 자녀 양육지원이나 중증질환·중증장애 등 " +
+                    "인도적 초청사유가 확인되지 않습니다. " +
+                    "실제 가정상황을 확인하여 방문동거(F-1-5)에 해당하는 " +
+                    "초청사유가 있는지 검토하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
+                resultClass = "result-check";
             }
 
 
-            // ⑤ 잘 모르겠다는 답변이 있는 경우
+            // ④ 양육지원 목적이면서 자녀 요건을 확인하지 못한 경우
+            else if (
+                childCare.value === "yes" &&
+                childCondition.value === "no"
+            ) {
+
+                resultTitle = "자녀의 연령과 가정상황을 확인해 보세요.";
+
+                resultMessage =
+                    "자녀 양육지원을 목적으로 초청하는 경우에는 " +
+                    "자녀의 연령과 가정상황 등에 따라 적용되는 기준이 달라질 수 있습니다. " +
+                    "현재 가정이 F-1-5 양육지원 초청요건에 해당하는지 " +
+                    "구체적으로 확인하는 것이 좋습니다.";
+
+                resultClass = "result-check";
+            }
+
+
+            // ⑤ 확인되지 않은 답변이 있는 경우
             else if (
                 marriageImmigrant.value === "unknown" ||
                 parent.value === "unknown" ||
                 childCare.value === "unknown" ||
                 humanitarian.value === "unknown" ||
-                violation.value === "unknown"
+                (
+                    childCare.value === "yes" &&
+                    childCondition.value === "unknown"
+                )
             ) {
 
                 resultTitle = "구체적인 초청요건 확인이 필요합니다.";
 
                 resultMessage =
                     "현재 답변 중 확인되지 않은 사항이 있습니다. " +
-                    "결혼이민자와 피초청인의 가족관계, 초청사유 및 " +
-                    "기존 체류이력 등을 확인하여 신청 가능성을 " +
-                    "검토하는 것이 좋습니다.";
+                    "결혼이민자와 피초청인의 가족관계, 자녀의 연령과 가정상황, " +
+                    "양육지원 또는 인도적 사유 등을 확인하여 " +
+                    "F-1-5 신청 가능성을 검토하는 것이 좋습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑥ 기본조건 확인
+            // ⑥ 인도적 사유가 있는 경우
+            else if (
+                childCare.value === "no" &&
+                humanitarian.value === "yes"
+            ) {
+
+                resultTitle = "인도적 사유에 따른 초청요건을 검토할 수 있습니다.";
+
+                resultMessage =
+                    "현재 답변상 중증질환·중증장애 등 인도적 사유를 중심으로 " +
+                    "방문동거(F-1-5) 초청 가능성을 검토할 수 있습니다. " +
+                    "구체적인 가족관계와 인도적 사유 및 관련 자료를 " +
+                    "함께 확인하는 것이 좋습니다.";
+
+                resultClass = "result-success";
+            }
+
+
+            // ⑦ 기본조건 확인
             else {
 
                 resultTitle = "기본적인 초청요건을 확인하셨습니다.";
 
                 resultMessage =
-                    "현재 입력하신 내용상 방문동거(F-1-5) 신청을 위한 " +
-                    "기본적인 사항은 확인된 것으로 보입니다. " +
-                    "다만 실제 사증 발급 여부는 가족관계, 초청사유, " +
-                    "자녀의 연령 및 관련 입증자료 등을 종합하여 결정됩니다.";
+                    "현재 입력하신 내용상 자녀 양육지원을 위한 " +
+                    "방문동거(F-1-5) 신청의 기본적인 사항은 확인되었습니다. " +
+                    "실제 사증 발급 여부는 가족관계, 자녀의 연령과 가정상황, " +
+                    "초청 필요성 및 관할 재외공관의 심사를 통해 결정됩니다.";
 
                 resultClass = "result-success";
             }
@@ -1154,328 +1225,345 @@ if (document.querySelector('input[name="wildlifeType"]')) {
         return;
     }
 
-    // =====================================================
-    // 결혼이민(F-6-1) 자가진단
-    // =====================================================
 
-    if (document.querySelector('input[name="f61Marriage"]')) {
+// =====================================================
+// 결혼이민(F-6-1) 자가진단
+// =====================================================
 
-        button.addEventListener("click", function () {
+if (document.querySelector('input[name="f61Marriage"]')) {
 
-            const marriage =
-                document.querySelector('input[name="f61Marriage"]:checked');
+    button.addEventListener("click", function () {
 
-            const communication =
-                document.querySelector('input[name="f61Communication"]:checked');
+        const marriage =
+            document.querySelector('input[name="f61Marriage"]:checked');
 
-            const income =
-                document.querySelector('input[name="f61Income"]:checked');
+        const communication =
+            document.querySelector('input[name="f61Communication"]:checked');
 
-            const housing =
-                document.querySelector('input[name="f61Housing"]:checked');
+        const income =
+            document.querySelector('input[name="f61Income"]:checked');
 
-            const additional =
-                document.querySelector('input[name="f61Additional"]:checked');
+        const housing =
+            document.querySelector('input[name="f61Housing"]:checked');
 
+        const additional =
+            document.querySelector('input[name="f61Additional"]:checked');
 
-            // 모든 질문 답변 여부 확인
-            if (
-                !marriage ||
-                !communication ||
-                !income ||
-                !housing ||
-                !additional
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
 
+        // 모든 질문 답변 여부 확인
+        if (
+            !marriage ||
+            !communication ||
+            !income ||
+            !housing ||
+            !additional
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-            // ① 혼인관계 또는 혼인의 진정성 확인 필요
-            if (marriage.value === "no") {
 
-                resultTitle = "혼인관계 및 혼인경위에 대한 검토가 필요합니다.";
+        // ① 혼인관계 및 교제·혼인경위
+        if (marriage.value === "no") {
 
-                resultMessage =
-                    "혼인관계의 성립 여부와 외국인 배우자 국적국에서 필요한 절차, " +
-                    "실제 교제 및 혼인경위를 확인할 필요가 있습니다. " +
-                    "관련 사실관계와 입증자료를 먼저 검토하는 것이 좋습니다.";
+            resultTitle =
+                "혼인관계와 혼인경위에 대한 확인이 필요합니다.";
 
-                resultClass = "result-warning";
-            }
+            resultMessage =
+                "결혼이민 사증을 준비하려면 혼인이 적법하게 성립되어 있는지와 " +
+                "두 분의 교제과정 및 혼인경위를 확인할 필요가 있습니다. " +
+                "현재 상황과 관련 자료를 먼저 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ② 의사소통 요건
-            else if (communication.value === "no") {
 
-                resultTitle = "의사소통 요건에 대한 검토가 필요합니다.";
+        // ② 의사소통
+        else if (communication.value === "no") {
 
-                resultMessage =
-                    "의사소통 요건은 한국어능력뿐만 아니라 " +
-                    "부부의 체류경력이나 사용하는 언어 등 구체적인 상황에 따라 " +
-                    "인정 또는 심사면제 여부가 달라질 수 있으므로 " +
-                    "추가적인 검토가 필요합니다.";
+            resultTitle =
+                "부부의 의사소통 요건을 확인해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "결혼이민 사증 심사에서는 부부가 서로 의사소통할 수 있는지도 " +
+                "중요하게 확인합니다. 한국어뿐 아니라 두 분이 사용하는 언어와 " +
+                "체류경력 등 개별 상황을 함께 검토할 필요가 있습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ③ 소득요건
-            else if (income.value === "no") {
 
-                resultTitle = "소득요건의 보완 또는 면제 여부를 확인해야 합니다.";
+        // ③ 소득
+        else if (income.value === "no") {
 
-                resultMessage =
-                    "초청인의 소득이 기준에 미달하더라도 재산이나 " +
-                    "일정한 가족의 소득·재산을 활용할 수 있는 경우가 있으며, " +
-                    "상황에 따라 소득요건 심사가 면제되는 경우도 있으므로 " +
-                    "구체적인 검토가 필요합니다.";
+            resultTitle =
+                "소득요건에 대한 추가 검토가 필요합니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "소득요건을 충족하지 못한다고 생각되는 경우에도 " +
+                "인정되는 소득·재산의 범위와 가족의 소득·재산 활용 가능 여부, " +
+                "면제사유 해당 여부 등을 함께 확인할 필요가 있습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ④ 주거요건
-            else if (housing.value === "no") {
 
-                resultTitle = "주거요건에 대한 준비가 필요합니다.";
+        // ④ 주거
+        else if (housing.value === "no") {
 
-                resultMessage =
-                    "결혼 후 함께 생활할 주거지와 이를 입증할 수 있는 " +
-                    "관련 자료를 준비할 필요가 있습니다. " +
-                    "주거형태와 사용관계를 확인하여 신청자료를 준비하는 것이 좋습니다.";
+            resultTitle =
+                "부부가 생활할 주거여건을 확인해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "결혼 후 함께 생활할 주거지가 마련되어 있는지와 " +
+                "해당 주거지의 소유·임차 등 사용관계를 확인할 필요가 있습니다. " +
+                "현재 주거상황을 기준으로 준비할 자료를 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑤ 국제결혼 안내프로그램 등
-            else if (additional.value === "no") {
 
-                resultTitle = "추가 심사항목에 대한 확인이 필요합니다.";
+        // ⑤ 기타 확인사항
+        else if (additional.value === "no") {
 
-                resultMessage =
-                    "국제결혼 안내프로그램 이수 대상 여부와 " +
-                    "건강상태·범죄경력 등 신청에 필요한 추가 심사항목을 " +
-                    "확인하여야 합니다. 면제대상에 해당하는지도 함께 검토할 수 있습니다.";
+            resultTitle =
+                "추가로 확인해야 할 사항이 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "국제결혼 안내프로그램 대상 여부와 최근 배우자 초청이력 등 " +
+                "신청인의 개별 상황에 따라 추가로 확인해야 할 사항이 있을 수 있습니다. " +
+                "신청 전 해당 사항과 면제 여부를 함께 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑥ 잘 모르겠다는 답변이 하나라도 있는 경우
-            else if (
-                marriage.value === "unknown" ||
-                communication.value === "unknown" ||
-                income.value === "unknown" ||
-                housing.value === "unknown" ||
-                additional.value === "unknown"
-            ) {
 
-                resultTitle = "신청요건에 대한 사전 검토를 권장합니다.";
+        // ⑥ 잘 모르겠습니다가 하나라도 있는 경우
+        else if (
+            marriage.value === "unknown" ||
+            communication.value === "unknown" ||
+            income.value === "unknown" ||
+            housing.value === "unknown" ||
+            additional.value === "unknown"
+        ) {
 
-                resultMessage =
-                    "현재 확인되지 않은 사항이 있습니다. " +
-                    "혼인관계와 교제경위, 의사소통, 소득·주거 및 " +
-                    "추가 심사항목을 확인하면 결혼이민(F-6-1) " +
-                    "사증 신청 가능성을 보다 정확하게 판단할 수 있습니다.";
+            resultTitle =
+                "신청 전에 확인이 필요한 사항이 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "현재 답변 중 확인되지 않은 부분이 있습니다. " +
+                "혼인관계와 교제경위, 의사소통, 소득·주거 및 " +
+                "추가 확인사항을 살펴보면 결혼이민(F-6-1) 사증을 " +
+                "준비하는 데 필요한 사항을 보다 구체적으로 파악할 수 있습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑦ 기본사항 충족
-            else {
 
-                resultTitle = "기본적인 신청사항을 확인하셨습니다.";
+        // ⑦ 기본사항 확인
+        else {
 
-                resultMessage =
-                    "현재 입력하신 내용상 결혼이민(F-6-1) 사증 신청을 위한 " +
-                    "기본적인 사항은 확인된 것으로 보입니다. " +
-                    "실제 사증 심사에서는 혼인의 진정성 및 관련 입증자료 등을 " +
-                    "종합적으로 검토하게 됩니다.";
+            resultTitle =
+                "기본적인 준비사항을 확인하셨습니다.";
 
-                resultClass = "result-success";
-            }
+            resultMessage =
+                "현재 답변상 결혼이민(F-6-1) 사증을 준비하기 위한 " +
+                "주요 사항은 어느 정도 확인된 것으로 보입니다. " +
+                "실제 신청 전에는 혼인관계와 교제경위 및 각 요건의 " +
+                "입증자료를 최종적으로 점검하는 것이 좋습니다.";
 
+            resultClass = "result-success";
+        }
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=marriage-visa-f61"
-            );
 
-        });
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=marriage-visa-f61"
+        );
 
-        return;
-    }
+    });
 
-    // =====================================================
-    // 결혼이민 배우자 단기초청(C-3-1) 자가진단
-    // =====================================================
+    return;
+}
 
-    if (document.querySelector('input[name="spouseVisitMarriage"]')) {
+// =====================================================
+// 결혼이민 배우자 단기초청(C-3-1) 자가진단
+// =====================================================
 
-        button.addEventListener("click", function () {
+if (document.querySelector('input[name="spouseVisitMarriage"]')) {
 
-            const marriage =
-                document.querySelector('input[name="spouseVisitMarriage"]:checked');
+    button.addEventListener("click", function () {
 
-            const f6Reason =
-                document.querySelector('input[name="spouseVisitF6Reason"]:checked');
+        const marriage =
+            document.querySelector('input[name="spouseVisitMarriage"]:checked');
 
-            const purpose =
-                document.querySelector('input[name="spouseVisitPurpose"]:checked');
+        const f6Reason =
+            document.querySelector('input[name="spouseVisitF6Reason"]:checked');
 
-            const plan =
-                document.querySelector('input[name="spouseVisitPlan"]:checked');
+        const purpose =
+            document.querySelector('input[name="spouseVisitPurpose"]:checked');
 
-            const violation =
-                document.querySelector('input[name="spouseVisitViolation"]:checked');
+        const plan =
+            document.querySelector('input[name="spouseVisitPlan"]:checked');
 
+        const returnPlan =
+            document.querySelector('input[name="spouseVisitReturn"]:checked');
 
-            // 모든 질문 답변 여부 확인
-            if (
-                !marriage ||
-                !f6Reason ||
-                !purpose ||
-                !plan ||
-                !violation
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
 
+        // 모든 질문 답변 여부 확인
+        if (
+            !marriage ||
+            !f6Reason ||
+            !purpose ||
+            !plan ||
+            !returnPlan
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-            // ① 혼인관계가 유지되고 있지 않은 경우
-            if (marriage.value === "no") {
 
-                resultTitle = "혼인관계에 대한 검토가 필요합니다.";
+        // ① 혼인관계 확인이 어려운 경우
+        if (marriage.value === "no") {
 
-                resultMessage =
-                    "현재 답변상 결혼이민 배우자의 단기초청 업무에 " +
-                    "해당하는지 확인이 필요합니다. " +
-                    "혼인관계와 현재 부부의 상황을 먼저 검토하는 것이 좋습니다.";
+            resultTitle =
+                "혼인관계에 대한 확인이 필요합니다.";
 
-                resultClass = "result-warning";
-            }
+            resultMessage =
+                "현재 답변상 결혼이민 배우자의 단기초청 업무에 " +
+                "해당하는지 먼저 확인할 필요가 있습니다. " +
+                "한국인 초청인과 외국인 배우자의 혼인관계 및 " +
+                "현재 부부의 상황을 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ② 과거 출입국·체류상 문제가 있는 경우
-            else if (violation.value === "yes") {
 
-                resultTitle = "출입국·체류이력에 대한 검토가 필요합니다.";
+        // ② 단기방문 목적이 아닌 경우
+        else if (purpose.value === "no") {
 
-                resultMessage =
-                    "과거 불법체류·불법취업 등 출입국 또는 체류상 문제가 있는 경우 " +
-                    "사증 심사에 영향을 줄 수 있으므로 " +
-                    "구체적인 사실관계와 과거 처분내용을 확인할 필요가 있습니다.";
+            resultTitle =
+                "방문목적과 체류자격에 대한 검토가 필요합니다.";
 
-                resultClass = "result-warning";
-            }
+            resultMessage =
+                "C-3-1은 단기방문을 전제로 검토하는 사증입니다. " +
+                "대한민국에서 장기간 배우자와 함께 생활하는 것이 " +
+                "주된 목적이라면 결혼이민(F-6-1) 등 " +
+                "적합한 체류자격을 함께 검토할 필요가 있습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ③ F-6 불허 또는 신청 곤란 사유가 불분명
-            else if (f6Reason.value === "no") {
 
-                resultTitle = "결혼비자와 단기초청의 관계를 먼저 검토해야 합니다.";
+        // ③ 귀국계획을 설명하기 어려운 경우
+        else if (returnPlan.value === "no") {
 
-                resultMessage =
-                    "현재 답변상 결혼이민(F-6-1) 사증을 신청하지 못하는 " +
-                    "구체적인 사유가 확인되지 않습니다. " +
-                    "단기초청이 필요한 이유와 현재 결혼비자 신청 가능 여부를 " +
-                    "함께 검토하는 것이 좋습니다.";
+            resultTitle =
+                "귀국계획에 대한 추가 검토가 필요합니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "단기방문을 마친 후 출국할 계획과 " +
+                "본국의 생활기반 등을 확인할 필요가 있습니다. " +
+                "방문목적과 체류기간, 귀국계획을 함께 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ④ 단기초청 목적이 불분명
-            else if (purpose.value === "no") {
 
-                resultTitle = "단기초청의 목적과 필요성을 보완해야 합니다.";
+        // ④ F-6 불허 또는 현재 미충족 요건을 확인하지 못한 경우
+        else if (f6Reason.value === "no") {
 
-                resultMessage =
-                    "배우자를 현재 한국에 단기간 초청해야 하는 이유를 " +
-                    "구체적으로 설명할 필요가 있습니다. " +
-                    "입국목적과 초청 필요성을 뒷받침할 자료도 함께 검토하는 것이 좋습니다.";
+            resultTitle =
+                "결혼비자와 단기방문의 관계를 먼저 확인해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "현재 결혼이민(F-6-1) 사증이 불허된 사유 또는 " +
+                "소득 등 충족하지 못한 요건이 무엇인지 확인할 필요가 있습니다. " +
+                "현재 F-6 신청이 어려운 사정과 이번 단기방문의 목적을 " +
+                "구분하여 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑤ 체류계획이 불분명
-            else if (plan.value === "no") {
 
-                resultTitle = "체류계획에 대한 준비가 필요합니다.";
+        // ⑤ 체류계획이 불분명한 경우
+        else if (plan.value === "no") {
 
-                resultMessage =
-                    "예정 체류기간과 한국에서의 체류계획을 " +
-                    "구체적으로 정리할 필요가 있습니다. " +
-                    "초청목적과 체류계획이 서로 일관되도록 준비하는 것이 중요합니다.";
+            resultTitle =
+                "체류기간과 체류계획에 대한 준비가 필요합니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "한국에서 어느 기간 동안 무엇을 할 것인지 " +
+                "구체적으로 확인할 필요가 있습니다. " +
+                "단기방문의 목적과 예정 체류기간 및 귀국계획이 " +
+                "서로 일관되는지 함께 검토하는 것이 중요합니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑥ 잘 모르겠다는 답변이 있는 경우
-            else if (
-                marriage.value === "unknown" ||
-                f6Reason.value === "unknown" ||
-                purpose.value === "unknown" ||
-                plan.value === "unknown" ||
-                violation.value === "unknown"
-            ) {
 
-                resultTitle = "단기초청 가능성에 대한 사전 검토를 권장합니다.";
+        // ⑥ 잘 모르겠다는 답변이 있는 경우
+        else if (
+            marriage.value === "unknown" ||
+            f6Reason.value === "unknown" ||
+            purpose.value === "unknown" ||
+            plan.value === "unknown" ||
+            returnPlan.value === "unknown"
+        ) {
 
-                resultMessage =
-                    "현재 확인되지 않은 사항이 있습니다. " +
-                    "혼인관계, 결혼비자를 신청하기 어려운 사유, " +
-                    "단기초청 목적과 체류계획 등을 확인하면 " +
-                    "신청 가능성을 보다 구체적으로 검토할 수 있습니다.";
+            resultTitle =
+                "배우자 단기방문에 대한 사전 검토가 필요합니다.";
 
-                resultClass = "result-check";
-            }
+            resultMessage =
+                "현재 확인되지 않은 사항이 있습니다. " +
+                "혼인관계, F-6 신청이 어려운 사정, 단기방문의 목적, " +
+                "체류계획 및 귀국계획 등을 확인한 후 " +
+                "관할 재외공관의 기준과 함께 검토하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // ⑦ 기본사항 확인
-            else {
 
-                resultTitle = "기본적인 단기초청 사항을 확인하셨습니다.";
+        // ⑦ 기본사항 확인
+        else {
 
-                resultMessage =
-                    "현재 입력하신 내용상 결혼이민 배우자 단기초청(C-3-1)을 " +
-                    "검토하기 위한 기본사항은 확인된 것으로 보입니다. " +
-                    "실제 사증 발급 여부는 초청목적, 결혼비자 신청이 어려운 사유, " +
-                    "체류계획 및 관련 입증자료 등을 종합하여 심사됩니다.";
+            resultTitle =
+                "기본적인 단기방문 검토사항을 확인하셨습니다.";
 
-                resultClass = "result-success";
-            }
+            resultMessage =
+                "현재 답변상 결혼이민 배우자 단기초청(C-3-1)을 " +
+                "검토하기 위한 주요 사항은 어느 정도 확인된 것으로 보입니다. " +
+                "실제 신청 전에는 방문목적과 체류계획, 귀국계획 및 " +
+                "관할 재외공관의 최신 신청기준을 최종적으로 확인하는 것이 좋습니다.";
 
+            resultClass = "result-success";
+        }
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=spouse-short-visit"
-            );
 
-        });
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=spouse-short-visit"
+        );
 
-        return;
-    }
+    });
+
+    return;
+}
+
 
     // =====================================================
     // 화학물질 확인명세서 자가진단
