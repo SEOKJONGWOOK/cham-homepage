@@ -1576,8 +1576,8 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             const manufactureImport =
                 document.querySelector('input[name="chemicalManufactureImport"]:checked');
 
-            const msds =
-                document.querySelector('input[name="chemicalMsds"]:checked');
+            const ingredientData =
+                document.querySelector('input[name="chemicalIngredientData"]:checked');
 
             const composition =
                 document.querySelector('input[name="chemicalComposition"]:checked');
@@ -1585,17 +1585,17 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             const regulation =
                 document.querySelector('input[name="chemicalRegulation"]:checked');
 
-            const submission =
-                document.querySelector('input[name="chemicalSubmission"]:checked');
+            const submissionHelp =
+                document.querySelector('input[name="chemicalSubmissionHelp"]:checked');
 
 
             // 모든 질문 답변 여부 확인
             if (
                 !manufactureImport ||
-                !msds ||
+                !ingredientData ||
                 !composition ||
                 !regulation ||
-                !submission
+                !submissionHelp
             ) {
                 alert("모든 질문에 답변해 주세요.");
                 return;
@@ -1607,109 +1607,105 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             let resultClass;
 
 
-            // ① 제조·수입 대상이 아닌 경우
-            if (manufactureImport.value === "no") {
+            // ① 제조·수입 여부가 확인되지 않은 경우
+            if (
+                manufactureImport.value === "no" ||
+                manufactureImport.value === "unknown"
+            ) {
 
-                resultTitle = "확인명세서 제출 대상 여부를 먼저 확인해야 합니다.";
+                resultTitle = "화학물질 확인 대상 여부를 먼저 확인해 보세요.";
 
                 resultMessage =
-                    "현재 답변상 화학물질 또는 화학제품의 제조·수입에 " +
-                    "해당하지 않는 것으로 보입니다. " +
-                    "제품과 거래형태를 확인하여 화학물질 확인명세서 " +
-                    "제출 대상인지 먼저 검토하는 것이 좋습니다.";
+                    "화학물질 확인명세서 제출 여부를 판단하려면 " +
+                    "국내에서 제조하거나 해외에서 수입하려는 제품과 " +
+                    "거래형태를 먼저 확인하는 것이 좋습니다. " +
+                    "현재 상황을 기준으로 상담을 받아보실 수 있습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ② MSDS 또는 성분명세서가 없는 경우
-            else if (msds.value === "no") {
+            // ② 성분자료가 확보되지 않은 경우
+            else if (
+                ingredientData.value === "no" ||
+                ingredientData.value === "unknown"
+            ) {
 
-                resultTitle = "제품의 성분자료 확보가 필요합니다.";
+                resultTitle = "제품의 성분자료를 먼저 확인해 주세요.";
 
                 resultMessage =
-                    "화학물질 확인을 위해서는 제품에 포함된 성분을 " +
-                    "확인할 수 있는 자료가 필요합니다. " +
-                    "MSDS 또는 성분명세서 등 제품의 성분자료를 " +
-                    "우선 확보하는 것이 좋습니다.";
+                    "화학물질 확인을 위해서는 제품에 어떤 화학물질이 " +
+                    "포함되어 있는지 확인할 수 있는 자료가 중요합니다. " +
+                    "성분명세서 또는 제조자·공급자가 제공한 관련 자료를 " +
+                    "우선 확인하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
+                resultClass = "result-check";
             }
 
 
-            // ③ 물질명·CAS No.·함량 확인 불가
-            else if (composition.value === "no") {
+            // ③ 물질명·CAS No.·함량 확인이 어려운 경우
+            else if (
+                composition.value === "no" ||
+                composition.value === "unknown"
+            ) {
 
-                resultTitle = "제품의 성분정보에 대한 추가 확인이 필요합니다.";
+                resultTitle = "구성성분의 상세정보를 추가로 확인해 주세요.";
 
                 resultMessage =
-                    "제품에 포함된 물질명, CAS No. 및 함량정보를 " +
-                    "확인할 수 있어야 화학물질별 해당사항을 검토할 수 있습니다. " +
-                    "제조사 또는 공급자로부터 성분정보를 추가로 확보할 필요가 있습니다.";
+                    "각 구성성분의 물질명, CAS No. 및 함량을 확인해야 " +
+                    "화학물질별 해당사항을 구체적으로 검토할 수 있습니다. " +
+                    "현재 보유자료에서 확인하기 어려운 경우 제조자 또는 공급자로부터 " +
+                    "관련 정보를 추가로 확보할 필요가 있습니다.";
 
-                resultClass = "result-warning";
+                resultClass = "result-check";
             }
 
 
-            // ④ 규제대상 검토를 하지 않은 경우
-            else if (regulation.value === "no") {
+            // ④ 화학물질별 해당 여부를 확인하지 않은 경우
+            else if (
+                regulation.value === "no" ||
+                regulation.value === "unknown"
+            ) {
 
-                resultTitle = "화학물질별 규제사항 검토가 필요합니다.";
+                resultTitle = "구성성분별 해당사항을 확인해 보세요.";
 
                 resultMessage =
                     "제품에 포함된 각 화학물질에 대해 기존·신규화학물질 여부와 " +
-                    "관련 규제대상 물질 해당 여부를 확인할 필요가 있습니다. " +
-                    "성분별 검토 후 확인명세서 작성 여부를 판단하는 것이 좋습니다.";
+                    "관련 규제대상 물질 해당 여부를 확인하는 과정이 필요합니다. " +
+                    "성분자료를 기준으로 화학물질별 해당사항을 검토해 보세요.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑤ 제출 준비가 되지 않은 경우
-            else if (submission.value === "no") {
-
-                resultTitle = "확인명세서 작성 및 제출 준비가 필요합니다.";
-
-                resultMessage =
-                    "제품과 성분자료가 확보되어 있다면 이를 바탕으로 " +
-                    "화학물질정보처리시스템에 제품 및 성분정보를 등록하고 " +
-                    "확인명세서 제출을 준비할 수 있습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ⑥ 잘 모르겠다는 답변이 있는 경우
+            // ⑤ 제출방법에 대한 도움이 필요한 경우
             else if (
-                manufactureImport.value === "unknown" ||
-                msds.value === "unknown" ||
-                composition.value === "unknown" ||
-                regulation.value === "unknown" ||
-                submission.value === "unknown"
+                submissionHelp.value === "yes" ||
+                submissionHelp.value === "unknown"
             ) {
 
-                resultTitle = "화학물질 확인명세서에 대한 사전 검토를 권장합니다.";
+                resultTitle = "확인명세서 제출절차를 확인해 보세요.";
 
                 resultMessage =
-                    "현재 확인되지 않은 사항이 있습니다. " +
-                    "제품의 제조·수입 형태와 MSDS, 성분명, CAS No., 함량정보 등을 " +
-                    "확인하면 확인명세서 제출에 필요한 사항을 " +
-                    "보다 구체적으로 검토할 수 있습니다.";
+                    "제품과 성분자료가 확인되었다면 이를 바탕으로 " +
+                    "화학물질 확인명세서 제출을 준비할 수 있습니다. " +
+                    "제출방법이나 준비사항이 명확하지 않은 경우 " +
+                    "현재 보유자료를 기준으로 상담을 받아보실 수 있습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑦ 기본 준비사항이 모두 확인된 경우
+            // ⑥ 기본 준비사항이 모두 확인된 경우
             else {
 
                 resultTitle = "기본적인 제출 준비사항을 확인하셨습니다.";
 
                 resultMessage =
-                    "현재 입력하신 내용상 화학물질 확인명세서 제출을 검토하기 위한 " +
-                    "기본적인 자료는 준비된 것으로 보입니다. " +
-                    "실제 제출 전에는 제품별 성분정보와 화학물질별 해당사항을 " +
-                    "구체적으로 확인하는 것이 필요합니다.";
+                    "현재 답변상 제품과 구성성분에 관한 기본자료 및 " +
+                    "화학물질별 해당사항을 확인하신 것으로 보입니다. " +
+                    "실제 제출 전에는 제품별 성분정보와 제출내용을 " +
+                    "구체적으로 다시 확인하는 것이 좋습니다.";
 
                 resultClass = "result-success";
             }
@@ -1726,9 +1722,9 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
 
         return;
     }
-
+       
     // =====================================================
-    // MSDS 등록 자가진단
+    // MSDS 작성·제출 자가진단
     // =====================================================
 
     if (document.querySelector('input[name="msdsProduct"]')) {
@@ -1738,26 +1734,26 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             const product =
                 document.querySelector('input[name="msdsProduct"]:checked');
 
+            const target =
+                document.querySelector('input[name="msdsTarget"]:checked');
+
             const ingredientInfo =
                 document.querySelector('input[name="msdsIngredientInfo"]:checked');
-
-            const supplierInfo =
-                document.querySelector('input[name="msdsSupplierInfo"]:checked');
 
             const amountInfo =
                 document.querySelector('input[name="msdsAmountInfo"]:checked');
 
-            const needHelp =
-                document.querySelector('input[name="msdsNeedHelp"]:checked');
+            const confidential =
+                document.querySelector('input[name="msdsConfidential"]:checked');
 
 
             // 모든 질문에 답했는지 확인
             if (
                 !product ||
+                !target ||
                 !ingredientInfo ||
-                !supplierInfo ||
                 !amountInfo ||
-                !needHelp
+                !confidential
             ) {
                 alert("모든 질문에 답변해 주세요.");
                 return;
@@ -1769,107 +1765,101 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             let resultClass;
 
 
-            // ① 대상 제품 자체가 불분명
-            if (product.value === "no") {
-
-                resultTitle = "MSDS 작성 대상부터 확인해 보세요.";
-
-                resultMessage =
-                    "현재 MSDS를 작성하거나 등록하려는 제품이 명확하지 않습니다. " +
-                    "어떤 제품에 대한 MSDS가 필요한지 먼저 확인하는 것이 좋습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ② 성분자료도 없고 공급자로부터 받을 수도 없음
-            else if (
-                ingredientInfo.value === "no" &&
-                supplierInfo.value === "no"
+            // ① 제조·수입 제품 자체가 불분명한 경우
+            if (
+                product.value === "no" ||
+                product.value === "unknown"
             ) {
 
-                resultTitle = "제품의 성분자료 확보가 우선 필요합니다.";
+                resultTitle = "먼저 대상 제품을 확인해 보세요.";
 
                 resultMessage =
-                    "현재 제품에 어떤 성분이 들어 있는지 확인하기 어려운 상태입니다. " +
-                    "제조사나 공급업체를 통해 제품의 성분자료를 확보할 수 있는지 " +
-                    "먼저 확인하는 것이 좋습니다.";
-
-                resultClass = "result-warning";
-            }
-
-
-            // ③ 성분자료가 아직 없음
-            else if (ingredientInfo.value === "no") {
-
-                resultTitle = "제품의 성분자료를 먼저 준비해 주세요.";
-
-                resultMessage =
-                    "MSDS를 작성하려면 제품에 어떤 성분이 들어 있는지 " +
-                    "확인할 수 있는 자료가 필요합니다. " +
-                    "제조사나 공급업체로부터 관련 자료를 받아 확인하는 것이 좋습니다.";
+                    "MSDS 작성·제출 여부를 판단하려면 국내에서 제조하거나 " +
+                    "해외에서 수입하려는 제품을 먼저 확인해야 합니다. " +
+                    "제품의 용도와 현재 보유하고 있는 자료를 기준으로 상담을 받아보실 수 있습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ④ 여러 성분의 함량을 확인할 수 없음
-            else if (amountInfo.value === "no") {
-
-                resultTitle = "각 성분의 함량을 추가로 확인해 주세요.";
-
-                resultMessage =
-                    "여러 성분으로 이루어진 제품이라면 각 성분이 얼마나 들어 있는지 " +
-                    "확인하는 것이 필요합니다. 가지고 있는 자료에서 확인되지 않는다면 " +
-                    "제조사나 공급업체에 추가 자료를 요청하는 것이 좋습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ⑤ 잘 모르겠다는 답변이 있는 경우
+            // ② MSDS 작성·제출 대상 여부를 확인하지 못한 경우
             else if (
-                product.value === "unknown" ||
-                ingredientInfo.value === "unknown" ||
-                supplierInfo.value === "unknown" ||
-                amountInfo.value === "unknown" ||
-                needHelp.value === "unknown"
+                target.value === "no" ||
+                target.value === "unknown"
             ) {
 
-                resultTitle = "가지고 있는 자료를 먼저 검토해 보는 것이 좋습니다.";
+                resultTitle = "MSDS 작성·제출 대상 여부를 먼저 확인해 보세요.";
 
                 resultMessage =
-                    "확인하기 어려운 사항이 있습니다. " +
-                    "현재 가지고 있는 제품자료를 검토하면 MSDS 작성에 " +
-                    "추가로 필요한 자료가 무엇인지 확인할 수 있습니다.";
+                    "제품이 있다고 해서 모두 동일하게 MSDS 작성·제출 대상이 되는 것은 아닙니다. " +
+                    "제품의 구성성분과 관련 자료를 확인하여 대상 여부를 먼저 검토하는 것이 좋습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑥ 자료는 있으나 작성·등록이 어려운 경우
-            else if (needHelp.value === "yes") {
+            // ③ 구성성분 자료가 부족한 경우
+            else if (
+                ingredientInfo.value === "no" ||
+                ingredientInfo.value === "unknown"
+            ) {
 
-                resultTitle = "MSDS 작성·등록에 대한 상담을 권장합니다.";
+                resultTitle = "제품의 구성성분 자료를 확인해 주세요.";
 
                 resultMessage =
-                    "제품과 성분에 관한 기본자료는 가지고 있지만 " +
-                    "MSDS 작성·등록 방법에 어려움이 있는 것으로 보입니다. " +
-                    "보유자료를 기준으로 작성에 필요한 사항을 검토할 수 있습니다.";
+                    "MSDS 작성·제출을 위해서는 제품에 어떤 화학물질이 들어 있는지 " +
+                    "확인할 수 있는 자료가 중요합니다. " +
+                    "현재 보유자료를 확인하고 필요한 경우 제조자 또는 공급자로부터 " +
+                    "관련 자료를 추가로 확보할 필요가 있습니다.";
 
-                resultClass = "result-success";
+                resultClass = "result-check";
             }
 
 
-            // ⑦ 기본적인 준비가 된 경우
+            // ④ 물질명·CAS No.·함유량 등의 확인이 어려운 경우
+            else if (
+                amountInfo.value === "no" ||
+                amountInfo.value === "unknown"
+            ) {
+
+                resultTitle = "구성성분의 상세정보를 추가로 확인해 주세요.";
+
+                resultMessage =
+                    "구성성분의 물질명, CAS No. 및 함유량 또는 함유량 범위 등 " +
+                    "MSDS 작성에 필요한 정보를 추가로 확인하는 것이 좋습니다. " +
+                    "보유자료에서 확인하기 어려운 경우 관련 자료를 검토해 볼 필요가 있습니다.";
+
+                resultClass = "result-check";
+            }
+
+
+            // ⑤ 비공개 승인 여부를 확인하지 못한 경우
+            else if (
+                confidential.value === "no" ||
+                confidential.value === "unknown"
+            ) {
+
+                resultTitle = "영업비밀 성분의 비공개 승인 여부를 확인해 보세요.";
+
+                resultMessage =
+                    "공개하기 어려운 구성성분이 있는 경우에는 " +
+                    "대체자료 기재를 위한 비공개 승인 대상인지 검토할 필요가 있습니다. " +
+                    "해당되는 성분이 없다면 별도의 비공개 승인 절차가 필요하지 않을 수 있습니다.";
+
+                resultClass = "result-check";
+            }
+
+
+            // ⑥ 기본적인 준비가 된 경우
             else {
 
-                resultTitle = "MSDS 작성에 필요한 기본자료를 확인하셨습니다.";
+                resultTitle = "MSDS 작성·제출을 위한 기본사항을 확인하셨습니다.";
 
                 resultMessage =
-                    "현재 답변상 제품과 성분에 관한 기본자료는 " +
-                    "준비되어 있는 것으로 보입니다. " +
-                    "실제 작성 전에는 제품자료와 구성성분 정보를 구체적으로 확인해 주세요.";
+                    "현재 답변상 대상 여부와 구성성분 관련 기본사항을 " +
+                    "확인하신 것으로 보입니다. " +
+                    "실제 MSDS 작성·제출 전에는 제품자료와 구성성분 정보를 " +
+                    "구체적으로 검토하는 것이 좋습니다.";
 
                 resultClass = "result-success";
             }
@@ -1887,1920 +1877,1961 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
         return;
     }
 
-    // =====================================================
-    // 인체등유해성물질 수입신고 자가진단
-    // =====================================================
+// =====================================================
+// 인체등유해성물질 수입신고 자가진단
+// =====================================================
 
-    if (document.querySelector('input[name="hazardousProduct"]')) {
+if (document.querySelector('input[name="hazardousProduct"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const product =
-                document.querySelector('input[name="hazardousProduct"]:checked');
+        const product =
+            document.querySelector('input[name="hazardousProduct"]:checked');
 
-            const ingredients =
-                document.querySelector('input[name="hazardousIngredients"]:checked');
+        const ingredients =
+            document.querySelector('input[name="hazardousIngredients"]:checked');
 
-            const amount =
-                document.querySelector('input[name="hazardousAmount"]:checked');
+        const composition =
+            document.querySelector('input[name="hazardousComposition"]:checked');
 
-            const importAmount =
-                document.querySelector('input[name="hazardousImportAmount"]:checked');
+        const substanceCheck =
+            document.querySelector('input[name="hazardousSubstanceCheck"]:checked');
 
-            const reportCheck =
-                document.querySelector('input[name="hazardousReportCheck"]:checked');
+        const reportCheck =
+            document.querySelector('input[name="hazardousReportCheck"]:checked');
 
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !ingredients ||
-                !amount ||
-                !importAmount ||
-                !reportCheck
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !ingredients ||
+            !composition ||
+            !substanceCheck ||
+            !reportCheck
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // 수입하려는 제품이 없는 경우
-            if (product.value === "no") {
+        // 01. 수입제품 확인
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-                resultTitle = "수입하려는 제품부터 확인해 주세요.";
+            resultTitle = "수입하려는 제품을 먼저 확인해 보세요.";
 
-                resultMessage =
-                    "현재 수입하려는 화학제품이 정해져 있지 않은 것으로 보입니다. " +
-                    "제품이 정해진 후 제품자료를 기준으로 수입신고 필요 여부를 검토할 수 있습니다.";
+            resultMessage =
+                "인체등유해성물질 수입신고 대상 여부를 검토하려면 " +
+                "해외에서 수입하려는 화학물질 또는 화학제품을 먼저 확인해야 합니다. " +
+                "현재 상황을 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 성분자료가 없는 경우
-            else if (ingredients.value === "no") {
+        // 02. 성분자료 확인
+        else if (
+            ingredients.value === "no" ||
+            ingredients.value === "unknown"
+        ) {
 
-                resultTitle = "제품의 성분자료를 먼저 준비해 주세요.";
+            resultTitle = "제품의 성분자료를 먼저 확인해 주세요.";
 
-                resultMessage =
-                    "수입신고 대상 여부를 검토하려면 제품에 어떤 성분이 들어 있는지 " +
-                    "확인할 수 있는 자료가 필요합니다. 제조사나 공급업체를 통해 " +
-                    "성분자료를 확보하는 것이 좋습니다.";
+            resultMessage =
+                "수입신고 대상 여부를 검토하려면 제품에 어떤 화학물질이 " +
+                "포함되어 있는지 확인할 수 있는 자료가 필요합니다. " +
+                "제조자·수출자 또는 공급자가 제공한 성분자료를 " +
+                "우선 확인하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 성분별 함유량을 모르는 경우
-            else if (amount.value === "no") {
+        // 03. 물질명·CAS No.·함량 확인
+        else if (
+            composition.value === "no" ||
+            composition.value === "unknown"
+        ) {
 
-                resultTitle = "각 성분의 함유량을 확인해 주세요.";
+            resultTitle = "구성성분의 상세정보를 추가로 확인해 주세요.";
 
-                resultMessage =
-                    "제품에 포함된 성분뿐 아니라 각 성분이 얼마나 들어 있는지 " +
-                    "확인할 필요가 있습니다. 가지고 있는 제품자료에서 확인되지 않는다면 " +
-                    "제조사나 공급업체에 추가 자료를 요청하는 것이 좋습니다.";
+            resultMessage =
+                "각 구성성분의 물질명, CAS No. 및 함량을 확인해야 " +
+                "인체등유해성물질 해당 여부와 함량기준을 구체적으로 검토할 수 있습니다. " +
+                "현재 자료에서 확인하기 어려운 경우 제조자·수출자 또는 공급자에게 " +
+                "관련 정보를 추가로 요청하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 수입예정량을 모르는 경우
-            else if (importAmount.value === "no") {
+        // 04. 인체등유해성물질 및 함량기준 확인
+        else if (
+            substanceCheck.value === "no" ||
+            substanceCheck.value === "unknown"
+        ) {
 
-                resultTitle = "수입 예정량을 확인해 주세요.";
+            resultTitle = "인체등유해성물질 해당 여부를 확인해 보세요.";
 
-                resultMessage =
-                    "수입신고를 준비하려면 제품을 어느 정도 수입할 예정인지 " +
-                    "확인할 필요가 있습니다. 예상되는 수입량을 먼저 확인해 주세요.";
+            resultMessage =
+                "구성성분 중 인체급성유해성물질, 인체만성유해성물질 또는 " +
+                "생태유해성물질이 있는지 확인하고, 해당 물질의 " +
+                "혼합물 함량기준과 제품 내 실제 함량을 함께 검토할 필요가 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 신고대상 여부를 확인하지 않은 경우
-            else if (reportCheck.value === "no") {
+        // 05. 신고대상 및 제외사유 확인
+        else if (
+            reportCheck.value === "no" ||
+            reportCheck.value === "unknown"
+        ) {
 
-                resultTitle = "수입신고 대상 여부를 확인해 보세요.";
+            resultTitle = "수입신고 대상 여부를 최종 확인해 보세요.";
 
-                resultMessage =
-                    "제품의 성분과 함유량을 기준으로 인체등유해성물질 수입신고 " +
-                    "대상에 해당하는지 검토할 필요가 있습니다. " +
-                    "보유하고 있는 제품자료를 기준으로 확인할 수 있습니다.";
+            resultMessage =
+                "인체등유해성물질 해당 여부와 함량을 확인했다면 " +
+                "수입신고 대상에 해당하는지와 법령상 신고 제외사유가 있는지를 " +
+                "함께 검토해야 합니다. 현재 보유자료를 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 잘 모르겠다는 답변이 하나라도 있는 경우
-            else if (
-                product.value === "unknown" ||
-                ingredients.value === "unknown" ||
-                amount.value === "unknown" ||
-                importAmount.value === "unknown" ||
-                reportCheck.value === "unknown"
-            ) {
+        // 기본 확인사항을 모두 확인한 경우
+        else {
 
-                resultTitle = "가지고 있는 제품자료를 검토해 보는 것이 좋습니다.";
+            resultTitle = "수입신고 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultMessage =
-                    "현재 답변만으로는 수입신고 필요 여부를 판단하기 어려운 사항이 있습니다. " +
-                    "제품의 성분자료와 수입계획을 함께 검토하면 필요한 절차를 확인할 수 있습니다.";
+            resultMessage =
+                "현재 답변상 제품의 구성성분과 함량, 인체등유해성물질 해당 여부 및 " +
+                "신고 대상 여부를 확인하신 것으로 보입니다. " +
+                "실제 수입 전에는 해당 제품의 신고 대상 여부와 제출자료를 " +
+                "구체적으로 다시 확인하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-success";
+        }
 
 
-            // 기본자료가 모두 준비된 경우
-            else {
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=hazardous-import"
+        );
 
-                resultTitle = "수입신고 검토를 위한 기본자료가 준비되어 있습니다.";
+    });
 
-                resultMessage =
-                    "현재 답변상 제품의 성분, 함유량 및 수입예정량을 " +
-                    "확인할 수 있는 것으로 보입니다. 실제 신고 전에는 " +
-                    "해당 제품의 신고 대상 여부와 제출자료를 구체적으로 확인해 주세요.";
+    return;
+}
 
-                resultClass = "result-success";
-            }
+ 
+// =====================================================
+// 기존물질 사전신고 자가진단
+// =====================================================
 
+if (document.querySelector('input[name="existingProduct"]')) {
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=hazardous-import"
-            );
+    button.addEventListener("click", function () {
 
-        });
+        const product =
+            document.querySelector('input[name="existingProduct"]:checked');
 
-        return;
-    }
+        const ingredients =
+            document.querySelector('input[name="existingIngredients"]:checked');
 
-    // =====================================================
-    // 기존물질 사전신고 자가진단
-    // =====================================================
+        const existingCheck =
+            document.querySelector('input[name="existingCheck"]:checked');
 
-    if (document.querySelector('input[name="existingProduct"]')) {
+        const importAmount =
+            document.querySelector('input[name="existingImportAmount"]:checked');
 
-        button.addEventListener("click", function () {
+        const priorReport =
+            document.querySelector('input[name="existingPriorReport"]:checked');
 
-            const product =
-                document.querySelector('input[name="existingProduct"]:checked');
 
-            const ingredients =
-                document.querySelector('input[name="existingIngredients"]:checked');
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !ingredients ||
+            !existingCheck ||
+            !importAmount ||
+            !priorReport
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            const amount =
-                document.querySelector('input[name="existingAmount"]:checked');
 
-            const existingCheck =
-                document.querySelector('input[name="existingCheck"]:checked');
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-            const importAmount =
-                document.querySelector('input[name="existingImportAmount"]:checked');
 
+        // ① 제조·수입하려는 화학물질이 불분명한 경우
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !ingredients ||
-                !amount ||
-                !existingCheck ||
-                !importAmount
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultTitle = "제조·수입하려는 화학물질을 먼저 확인해 보세요.";
 
+            resultMessage =
+                "기존물질 사전신고 대상 여부를 검토하려면 " +
+                "제조하거나 수입하려는 화학물질을 먼저 확인해야 합니다. " +
+                "현재 상황을 기준으로 상담을 받아보실 수 있습니다.";
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+            resultClass = "result-check";
+        }
 
 
-            // ① 제조·수입 대상이 정해지지 않은 경우
-            if (product.value === "no") {
+        // ② 물질 식별정보가 부족한 경우
+        else if (
+            ingredients.value === "no" ||
+            ingredients.value === "unknown"
+        ) {
 
-                resultTitle = "제조·수입하려는 제품부터 확인해 주세요.";
+            resultTitle = "화학물질의 식별정보를 확인해 주세요.";
 
-                resultMessage =
-                    "현재 제조하거나 수입하려는 화학물질 또는 제품이 " +
-                    "정해져 있지 않은 것으로 보입니다. 제품이 정해진 후 " +
-                    "관련 자료를 기준으로 사전신고 필요 여부를 검토할 수 있습니다.";
+            resultMessage =
+                "해당 물질이 기존화학물질인지 확인하려면 " +
+                "물질명이나 CAS No. 등 물질을 식별할 수 있는 정보가 필요합니다. " +
+                "현재 보유자료에서 확인하기 어려운 경우 제조자나 공급자에게 " +
+                "관련 정보를 추가로 요청하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ② 성분자료가 없는 경우
-            else if (ingredients.value === "no") {
+        // ③ 기존화학물질 여부를 확인하지 않은 경우
+        else if (
+            existingCheck.value === "no" ||
+            existingCheck.value === "unknown"
+        ) {
 
-                resultTitle = "제품의 성분자료를 먼저 준비해 주세요.";
+            resultTitle = "기존화학물질 해당 여부를 확인해 보세요.";
 
-                resultMessage =
-                    "어떤 화학물질이 들어 있는지 확인할 수 있어야 " +
-                    "기존물질 여부와 필요한 절차를 검토할 수 있습니다. " +
-                    "제조사나 공급업체를 통해 성분자료를 확보하는 것이 좋습니다.";
+            resultMessage =
+                "사전신고를 검토하려면 해당 물질이 기존화학물질에 " +
+                "해당하는지를 먼저 확인해야 합니다. " +
+                "확인된 물질정보를 기준으로 적용되는 절차를 검토하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ③ 함유량을 확인할 수 없는 경우
-            else if (amount.value === "no") {
+        // ④ 연간 제조·수입량을 모르는 경우
+        else if (
+            importAmount.value === "no" ||
+            importAmount.value === "unknown"
+        ) {
 
-                resultTitle = "각 성분의 함유량을 확인해 주세요.";
+            resultTitle = "연간 제조·수입량을 확인해 주세요.";
 
-                resultMessage =
-                    "여러 성분으로 이루어진 제품이라면 각 성분이 얼마나 " +
-                    "들어 있는지 확인할 필요가 있습니다. 제품자료에서 확인되지 않는다면 " +
-                    "제조사나 공급업체에 추가 자료를 요청하는 것이 좋습니다.";
+            resultMessage =
+                "기존화학물질의 등록 및 사전신고 절차를 검토하려면 " +
+                "해당 물질의 연간 제조량 또는 수입량을 확인할 필요가 있습니다. " +
+                "예상되는 연간 물량을 기준으로 적용되는 절차를 검토해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ④ 기존물질 여부를 확인하지 않은 경우
-            else if (existingCheck.value === "no") {
+        // ⑤ 등록유예기간·사전신고 여부를 확인하지 않은 경우
+        else if (
+            priorReport.value === "no" ||
+            priorReport.value === "unknown"
+        ) {
 
-                resultTitle = "기존물질 해당 여부를 확인해 보세요.";
+            resultTitle = "등록유예기간과 사전신고 필요 여부를 확인해 보세요.";
 
-                resultMessage =
-                    "해당 화학물질이 기존물질인지 확인하지 않은 상태입니다. " +
-                    "보유하고 있는 성분자료를 기준으로 물질정보를 확인한 후 " +
-                    "사전신고에 필요한 절차를 검토하는 것이 좋습니다.";
+            resultMessage =
+                "기존화학물질에 해당하고 연간 제조·수입량을 확인했다면 " +
+                "해당 물질에 적용되는 등록유예기간과 " +
+                "사전신고 필요 여부를 함께 검토해야 합니다. " +
+                "현재 자료를 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ⑤ 제조·수입 예정량을 모르는 경우
-            else if (importAmount.value === "no") {
+        // 기본사항을 모두 확인한 경우
+        else {
 
-                resultTitle = "제조·수입 예정량을 확인해 주세요.";
+            resultTitle = "사전신고 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultMessage =
-                    "사전신고를 준비하려면 해당 화학물질을 어느 정도 " +
-                    "제조하거나 수입할 예정인지 확인할 필요가 있습니다.";
+            resultMessage =
+                "현재 답변상 화학물질의 식별정보, 기존화학물질 해당 여부, " +
+                "연간 제조·수입량 및 사전신고 필요 여부를 확인하신 것으로 보입니다. " +
+                "실제 제조·수입 전에는 적용되는 등록유예기간과 신고사항을 " +
+                "구체적으로 다시 확인하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-success";
+        }
 
 
-            // 잘 모르겠다는 답변이 하나라도 있는 경우
-            else if (
-                product.value === "unknown" ||
-                ingredients.value === "unknown" ||
-                amount.value === "unknown" ||
-                existingCheck.value === "unknown" ||
-                importAmount.value === "unknown"
-            ) {
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=existing-chemical-import"
+        );
 
-                resultTitle = "가지고 있는 자료를 먼저 검토해 보는 것이 좋습니다.";
+    });
 
-                resultMessage =
-                    "현재 답변 중 확인하기 어려운 사항이 있습니다. " +
-                    "제품의 성분자료와 제조·수입 계획을 함께 검토하면 " +
-                    "기존물질 여부와 필요한 절차를 확인할 수 있습니다.";
+    return;
+}
 
-                resultClass = "result-check";
-            }
+// =====================================================
+// 안전확인대상생활화학제품 신고 자가진단
+// =====================================================
 
+if (document.querySelector('input[name="consumerProduct"]')) {
 
-            // 기본자료가 모두 준비된 경우
-            else {
+    button.addEventListener("click", function () {
 
-                resultTitle = "사전신고 검토를 위한 기본자료가 준비되어 있습니다.";
+        const product =
+            document.querySelector('input[name="consumerProduct"]:checked');
 
-                resultMessage =
-                    "현재 답변상 제품의 성분정보와 제조·수입 예정량을 " +
-                    "확인할 수 있는 것으로 보입니다. 실제 신고 전에는 " +
-                    "해당 물질의 정보와 필요한 신고사항을 구체적으로 검토해 주세요.";
+        const target =
+            document.querySelector('input[name="consumerTarget"]:checked');
 
-                resultClass = "result-success";
-            }
+        const safety =
+            document.querySelector('input[name="consumerSafety"]:checked');
 
+        const ingredients =
+            document.querySelector('input[name="consumerIngredients"]:checked');
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=existing-chemical-import"
-            );
+        const documents =
+            document.querySelector('input[name="consumerDocuments"]:checked');
 
-        });
 
-        return;
-    }
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !target ||
+            !safety ||
+            !ingredients ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-    // =====================================================
-    // 안전확인대상생활화학제품 신고 자가진단
-    // =====================================================
 
-    if (document.querySelector('input[name="consumerProduct"]')) {
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-        button.addEventListener("click", function () {
 
-            const product =
-                document.querySelector('input[name="consumerProduct"]:checked');
+        // ① 제조·수입하려는 제품 확인
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-            const target =
-                document.querySelector('input[name="consumerTarget"]:checked');
+            resultTitle = "제조·수입하려는 제품을 먼저 확인해 보세요.";
 
-            const safety =
-                document.querySelector('input[name="consumerSafety"]:checked');
+            resultMessage =
+                "안전확인대상생활화학제품 해당 여부를 검토하려면 " +
+                "제조하거나 수입하려는 제품의 종류와 용도를 먼저 확인해야 합니다. " +
+                "현재 상황을 기준으로 상담을 받아보실 수 있습니다.";
 
-            const ingredients =
-                document.querySelector('input[name="consumerIngredients"]:checked');
+            resultClass = "result-check";
+        }
 
-            const documents =
-                document.querySelector('input[name="consumerDocuments"]:checked');
 
+        // ② 안전확인대상생활화학제품 해당 여부
+        else if (
+            target.value === "no" ||
+            target.value === "unknown"
+        ) {
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !target ||
-                !safety ||
-                !ingredients ||
-                !documents
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultTitle = "안전확인대상생활화학제품 해당 여부를 확인해 보세요.";
 
+            resultMessage =
+                "생활화학제품이라고 해서 모두 동일한 절차가 적용되는 것은 아닙니다. " +
+                "제품의 종류와 주된 용도를 기준으로 안전확인대상생활화학제품의 " +
+                "어느 품목에 해당하는지 먼저 확인하는 것이 좋습니다.";
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+            resultClass = "result-check";
+        }
 
 
-            // ① 대상 제품이 아직 정해지지 않은 경우
-            if (product.value === "no") {
+        // ③ 안전기준 적합확인
+        else if (
+            safety.value === "no" ||
+            safety.value === "unknown"
+        ) {
 
-                resultTitle = "대상 제품부터 확인해 보세요.";
+            resultTitle = "안전기준 적합확인 절차를 확인해 보세요.";
 
-                resultMessage =
-                    "현재 제조하거나 수입하려는 제품이 명확하지 않은 것으로 보입니다. " +
-                    "향후 취급하려는 제품이 정해지면 신고 대상 여부부터 검토할 수 있습니다.";
+            resultMessage =
+                "안전기준이 고시된 안전확인대상생활화학제품은 " +
+                "지정 시험·검사기관의 안전기준 적합확인이 필요한지 확인해야 합니다. " +
+                "현재 제품과 보유자료를 기준으로 필요한 절차를 검토해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ② 신고 대상 여부를 확인하지 않은 경우
-            else if (target.value === "no") {
+        // ④ 성분·배합비율·용도 자료
+        else if (
+            ingredients.value === "no" ||
+            ingredients.value === "unknown"
+        ) {
 
-                resultTitle = "신고 대상 제품인지 먼저 확인해 보세요.";
+            resultTitle = "제품의 성분자료를 확인해 주세요.";
 
-                resultMessage =
-                    "제품의 종류와 용도를 기준으로 안전확인대상생활화학제품 신고가 " +
-                    "필요한 제품인지 검토하는 것이 좋습니다. " +
-                    "제품정보를 가지고 상담을 통해 확인할 수 있습니다.";
+            resultMessage =
+                "신고를 준비하려면 제품에 함유된 물질의 성분, 배합비율 및 용도 등을 " +
+                "확인할 수 있는 자료가 필요합니다. " +
+                "현재 자료에서 확인하기 어려운 경우 제조자나 공급자에게 " +
+                "관련 정보를 추가로 요청하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ③ 안전기준 확인자료가 없는 경우
-            else if (safety.value === "no") {
+        // ⑤ 제품사진·설명서·표시견본 등
+        else if (
+            documents.value === "no" ||
+            documents.value === "unknown"
+        ) {
 
-                resultTitle = "안전기준 확인을 위한 준비가 필요합니다.";
+            resultTitle = "신고에 필요한 자료를 추가로 준비해 주세요.";
 
-                resultMessage =
-                    "현재 제품의 안전기준을 확인할 수 있는 검사 또는 관련 자료가 " +
-                    "준비되지 않은 것으로 보입니다. 필요한 확인절차와 준비자료를 " +
-                    "먼저 검토하는 것이 좋습니다.";
+            resultMessage =
+                "제품사진·설명서와 표시견본 등 신고에 필요한 자료를 " +
+                "추가로 확인할 필요가 있습니다. " +
+                "현재 가지고 있는 자료를 기준으로 부족한 부분을 점검해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ④ 성분자료가 없는 경우
-            else if (ingredients.value === "no") {
+        // 기본적인 준비가 된 경우
+        else {
 
-                resultTitle = "제품의 성분자료를 준비해 주세요.";
+            resultTitle = "신고 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultMessage =
-                    "제품에 어떤 성분이 들어 있는지 확인할 수 있는 자료가 필요합니다. " +
-                    "제조사나 공급업체를 통해 관련 자료를 확보한 후 " +
-                    "신고에 필요한 내용을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변상 제품의 대상 여부, 안전기준 적합확인, " +
+                "성분자료 및 신고자료를 확인하신 것으로 보입니다. " +
+                "실제 신고 전에는 제품에 적용되는 기준과 제출자료의 내용을 " +
+                "구체적으로 다시 확인하는 것이 좋습니다.";
 
-                resultClass = "result-warning";
-            }
+            resultClass = "result-success";
+        }
 
 
-            // ⑤ 표시사항·제품사진 등 자료가 없는 경우
-            else if (documents.value === "no") {
+        // 모든 진단결과에서 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=consumer-chemical-product"
+        );
 
-                resultTitle = "신고에 필요한 자료를 추가로 준비해 주세요.";
+    });
 
-                resultMessage =
-                    "제품의 표시내용이나 제품사진 등 신고 과정에서 필요한 자료가 " +
-                    "아직 충분히 준비되지 않은 것으로 보입니다. " +
-                    "현재 가지고 있는 자료부터 검토하여 부족한 부분을 확인할 수 있습니다.";
+    return;
+}
+// =====================================================
+// 유해화학물질 운반업 허가 자가진단
+// =====================================================
 
-                resultClass = "result-check";
-            }
+if (document.querySelector('input[name="transportChemical"]')) {
 
+    button.addEventListener("click", function () {
 
-            // 잘 모르겠다는 답변이 하나라도 있는 경우
-            else if (
-                product.value === "unknown" ||
-                target.value === "unknown" ||
-                safety.value === "unknown" ||
-                ingredients.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
+        const chemical =
+            document.querySelector('input[name="transportChemical"]:checked');
 
-                resultTitle = "현재 가지고 있는 제품자료를 검토해 보는 것이 좋습니다.";
+        const amount =
+            document.querySelector('input[name="transportAmount"]:checked');
 
-                resultMessage =
-                    "확인하기 어려운 사항이 있습니다. 제품의 종류와 용도, 성분자료 등을 " +
-                    "함께 검토하면 신고 대상 여부와 추가로 준비할 사항을 확인할 수 있습니다.";
+        const vehicle =
+            document.querySelector('input[name="transportVehicle"]:checked');
 
-                resultClass = "result-check";
-            }
+        const business =
+            document.querySelector('input[name="transportBusiness"]:checked');
 
+        const requirements =
+            document.querySelector('input[name="transportRequirements"]:checked');
 
-            // 기본적인 준비가 된 경우
-            else {
 
-                resultTitle = "신고 검토를 위한 기본적인 준비가 되어 있습니다.";
+        // 모든 질문에 답했는지 확인
+        if (
+            !chemical ||
+            !amount ||
+            !vehicle ||
+            !business ||
+            !requirements
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "현재 답변상 제품정보와 안전기준 관련 자료, 성분자료 및 " +
-                    "신고자료를 준비하고 있는 것으로 보입니다. 실제 신고 전에는 " +
-                    "각 자료의 내용과 신고사항을 구체적으로 확인하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // 어떤 진단결과에서도 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=consumer-chemical-product"
-            );
+        // ① 운반하려는 물질을 아직 확인하지 못한 경우
+        if (
+            chemical.value === "no" ||
+            chemical.value === "unknown"
+        ) {
 
-        });
+            resultTitle = "운반하려는 유해화학물질을 먼저 확인해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "운반하려는 물질이 정해져야 해당 물질이 유해화학물질에 해당하는지와 " +
+                "운반업 허가대상 여부를 구체적으로 검토할 수 있습니다. " +
+                "현재 계획하고 있는 물질을 기준으로 상담을 받아보실 수 있습니다.";
 
-    // =====================================================
-    // 유해화학물질 운반업 허가 자가진단
-    // =====================================================
+            resultClass = "result-check";
+        }
 
-    if (document.querySelector('input[name="transportChemical"]')) {
 
-        button.addEventListener("click", function () {
+        // ② 1회 운반규모를 확인하지 못한 경우
+        else if (
+            amount.value === "no" ||
+            amount.value === "unknown"
+        ) {
 
-            const chemical =
-                document.querySelector('input[name="transportChemical"]:checked');
+            resultTitle = "1회 운반규모를 확인해 보세요.";
 
-            const vehicle =
-                document.querySelector('input[name="transportVehicle"]:checked');
+            resultMessage =
+                "유해화학물질 운반업 허가대상 여부를 판단하려면 " +
+                "한 번에 운반하려는 양이 1톤을 초과하는지 확인하는 것이 중요합니다. " +
+                "운반계획과 차량을 기준으로 먼저 확인해 보세요.";
 
-            const inspection =
-                document.querySelector('input[name="transportInspection"]:checked');
+            resultClass = "result-check";
+        }
 
-            const business =
-                document.querySelector('input[name="transportBusiness"]:checked');
 
-            const manager =
-                document.querySelector('input[name="transportManager"]:checked');
+        // ③ 운반차량을 아직 정하지 못한 경우
+        else if (
+            vehicle.value === "no" ||
+            vehicle.value === "unknown"
+        ) {
 
+            resultTitle = "운반에 사용할 차량을 확인해 보세요.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !chemical ||
-                !vehicle ||
-                !inspection ||
-                !business ||
-                !manager
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultMessage =
+                "유해화학물질 운반업 허가를 준비하려면 실제 사용할 차량과 " +
+                "차량에 적용되는 시설·장비 등의 요건을 함께 확인할 필요가 있습니다. " +
+                "현재 계획하고 있는 차량을 기준으로 준비사항을 검토해 보세요.";
 
+            resultClass = "result-check";
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        // ④ 운송사업 관련 요건을 확인하지 못한 경우
+        else if (
+            business.value === "no" ||
+            business.value === "unknown"
+        ) {
 
-            // ① 운반하려는 물질이 정해지지 않은 경우
-            if (chemical.value === "no") {
+            resultTitle = "운송사업 관련 요건을 확인해 주세요.";
 
-                resultTitle = "운반하려는 물질부터 확인해 보세요.";
+            resultMessage =
+                "화물자동차 운송사업 허가 등 실제 운송사업에 필요한 " +
+                "관련 요건이 갖추어져 있는지 확인할 필요가 있습니다. " +
+                "현재 사업형태를 기준으로 적용되는 요건을 검토해 보세요.";
 
-                resultMessage =
-                    "운반하려는 화학물질이 정해져야 해당 물질과 취급예정량 등을 기준으로 " +
-                    "운반업 허가에 필요한 사항을 구체적으로 검토할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // ⑤ 차량·시설·장비·인력 등의 준비사항을 확인하지 못한 경우
+        else if (
+            requirements.value === "no" ||
+            requirements.value === "unknown"
+        ) {
 
-            // ② 운반차량이 준비되지 않은 경우
-            else if (vehicle.value === "no") {
+            resultTitle = "운반업 허가 준비사항을 추가로 확인해 주세요.";
 
-                resultTitle = "운반차량 준비가 필요합니다.";
+            resultMessage =
+                "차량·시설·장비 및 필요한 인력 등은 실제 사업형태에 따라 " +
+                "확인해야 할 사항이 달라질 수 있습니다. " +
+                "현재 준비상태를 기준으로 필요한 허가요건을 점검해 보세요.";
 
-                resultMessage =
-                    "유해화학물질 운반업 허가를 위해서는 실제 운반에 사용할 차량과 " +
-                    "관련 시설 및 장비의 준비상태를 확인할 필요가 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // 모두 예
+        else {
 
-            // ③ 설치검사 적합판정을 받지 않은 경우
-            else if (inspection.value === "no") {
+            resultTitle = "운반업 허가 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultTitle = "운반차량 설치검사 절차를 확인해 주세요.";
+            resultMessage =
+                "현재 답변상 운반물질과 1회 운반규모, 차량 및 관련 사업요건과 " +
+                "허가 준비사항을 확인하신 것으로 보입니다. " +
+                "실제 허가신청 전에는 적용되는 세부 요건과 제출자료를 " +
+                "최종적으로 확인하는 것이 좋습니다.";
 
-                resultMessage =
-                    "운반차량에 대한 필요한 설치검사와 적합판정이 아직 완료되지 않은 것으로 보입니다. " +
-                    "차량의 검사 준비사항과 관련 절차를 먼저 확인하는 것이 좋습니다.";
+            resultClass = "result-success";
+        }
 
-                resultClass = "result-warning";
-            }
 
+        // 모든 진단결과에서 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=hazardous-chemical-transport"
+        );
 
-            // ④ 운송사업허가·차고지 등이 준비되지 않은 경우
-            else if (business.value === "no") {
+    });
 
-                resultTitle = "운송사업 관련 준비사항을 확인해 주세요.";
+    return;
+}
+// =====================================================
+// 유해화학물질 알선판매업 신고 자가진단
+// =====================================================
 
-                resultMessage =
-                    "화물자동차 운송사업허가와 차고지 등 운반업 허가와 관련된 " +
-                    "운송사업 기반이 준비되어 있는지 확인할 필요가 있습니다.";
+if (document.querySelector('input[name="brokerChemical"]')) {
 
-                resultClass = "result-check";
-            }
+    button.addEventListener("click", function () {
 
+        const chemical =
+            document.querySelector('input[name="brokerChemical"]:checked');
 
-            // ⑤ 관리자 등이 준비되지 않은 경우
-            else if (manager.value === "no") {
+        const hazardous =
+            document.querySelector('input[name="brokerHazardous"]:checked');
 
-                resultTitle = "관리자 등 인력요건을 확인해 주세요.";
+        const noStorage =
+            document.querySelector('input[name="brokerNoStorage"]:checked');
 
-                resultMessage =
-                    "유해화학물질 운반업 허가에 필요한 관리자 등 담당 인력이 " +
-                    "준비되어 있는지 확인하고 관련 요건을 검토할 필요가 있습니다.";
+        const noFacility =
+            document.querySelector('input[name="brokerNoFacility"]:checked');
 
-                resultClass = "result-check";
-            }
+        const salesMethod =
+            document.querySelector('input[name="brokerSalesMethod"]:checked');
 
 
-            // 하나라도 잘 모르겠다고 답한 경우
-            else if (
-                chemical.value === "unknown" ||
-                vehicle.value === "unknown" ||
-                inspection.value === "unknown" ||
-                business.value === "unknown" ||
-                manager.value === "unknown"
-            ) {
+        // 모든 질문에 답했는지 확인
+        if (
+            !chemical ||
+            !hazardous ||
+            !noStorage ||
+            !noFacility ||
+            !salesMethod
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultTitle = "허가요건을 조금 더 확인해 보는 것이 좋습니다.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 운반하려는 물질과 차량, " +
-                    "설치검사 여부 및 사업 준비상태를 함께 검토하면 " +
-                    "추가로 준비할 사항을 확인할 수 있습니다.";
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultClass = "result-check";
-            }
 
+        // ① 판매물질이 정해지지 않았거나 잘 모르는 경우
+        if (
+            chemical.value === "no" ||
+            chemical.value === "unknown"
+        ) {
 
-            // 모두 예
-            else {
+            resultTitle = "판매하려는 물질부터 확인해 보세요.";
 
-                resultTitle = "운반업 허가 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultMessage =
+                "판매하려는 물질이 정해져야 해당 물질이 유해화학물질에 해당하는지와 " +
+                "알선판매업 신고 대상 여부를 구체적으로 검토할 수 있습니다. " +
+                "현재 계획하고 있는 물질을 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 운반물질과 차량, 설치검사 및 관련 사업·인력 준비가 " +
-                    "이루어진 것으로 보입니다. 실제 허가신청 전에는 세부 요건과 " +
-                    "제출자료를 최종적으로 확인하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-success";
-            }
 
+        // ② 유해화학물질 해당 여부를 확인하지 못한 경우
+        else if (
+            hazardous.value === "no" ||
+            hazardous.value === "unknown"
+        ) {
 
-            // 어떤 진단결과에서도 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=hazardous-chemical-transport"
-            );
+            resultTitle = "유해화학물질 해당 여부를 먼저 확인해 보세요.";
 
-        });
+            resultMessage =
+                "알선판매업 신고 대상 여부를 판단하려면 판매하려는 물질이 " +
+                "유해화학물질에 해당하는지 확인하는 것이 중요합니다. " +
+                "제품정보나 물질자료를 기준으로 먼저 확인해 보세요.";
 
-        return;
-    }
+            resultClass = "result-check";
+        }
 
-    // =====================================================
-    // 유해화학물질 알선판매업 신고 자가진단
-    // =====================================================
 
-    if (document.querySelector('input[name="brokerChemical"]')) {
+        // ③ 직접 보관·저장하는 경우 또는 잘 모르는 경우
+        else if (
+            noStorage.value === "no" ||
+            noStorage.value === "unknown"
+        ) {
 
-        button.addEventListener("click", function () {
+            resultTitle = "유해화학물질의 보관·저장 방식을 확인해 주세요.";
 
-            const chemical =
-                document.querySelector('input[name="brokerChemical"]:checked');
+            resultMessage =
+                "유해화학물질을 사업장에서 직접 보관·저장하는 경우에는 " +
+                "알선판매업 신고와 다른 영업형태가 적용될 수 있습니다. " +
+                "실제 물질의 이동과 보관방식을 기준으로 확인해 보세요.";
 
-            const location =
-                document.querySelector('input[name="brokerLocation"]:checked');
+            resultClass = "result-check";
+        }
 
-            const msds =
-                document.querySelector('input[name="brokerMsds"]:checked');
 
-            const storage =
-                document.querySelector('input[name="brokerStorage"]:checked');
+        // ④ 취급시설이 있는 경우 또는 잘 모르는 경우
+        else if (
+            noFacility.value === "no" ||
+            noFacility.value === "unknown"
+        ) {
 
-            const manager =
-                document.querySelector('input[name="brokerManager"]:checked');
+            resultTitle = "사업장의 취급시설 유무를 확인해 주세요.";
 
+            resultMessage =
+                "사업장에 유해화학물질을 직접 취급하는 보관·저장시설 등 " +
+                "취급시설이 있는 경우에는 알선판매업 신고와 다른 요건이 " +
+                "적용될 수 있습니다. 현재 사업장 시설을 기준으로 검토해 보세요.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !chemical ||
-                !location ||
-                !msds ||
-                !storage ||
-                !manager
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultClass = "result-check";
+        }
 
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        // ⑤ 알선판매 형태가 아닌 경우 또는 잘 모르는 경우
+        else if (
+            salesMethod.value === "no" ||
+            salesMethod.value === "unknown"
+        ) {
 
+            resultTitle = "실제 판매방식을 확인해 보세요.";
 
-            // ① 판매하려는 물질이 정해지지 않은 경우
-            if (chemical.value === "no") {
+            resultMessage =
+                "직접 보관·취급하지 않고 공급자와 구매자 사이의 거래를 " +
+                "알선하는 형태인지 확인할 필요가 있습니다. " +
+                "실제 계약과 물질의 이동방식을 기준으로 신고유형을 검토해 보세요.";
 
-                resultTitle = "판매하려는 물질부터 확인해 보세요.";
+            resultClass = "result-check";
+        }
 
-                resultMessage =
-                    "판매하려는 유해화학물질이 정해져야 물질의 종류와 " +
-                    "취급예정량 등을 기준으로 신고에 필요한 사항을 검토할 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+        // 모두 예
+        else {
 
+            resultTitle = "알선판매업 신고 검토를 위한 기본사항을 확인하셨습니다.";
 
-            // ② 사업장 입지 확인이 되지 않은 경우
-            else if (location.value === "no") {
+            resultMessage =
+                "현재 답변상 판매물질과 유해화학물질 해당 여부, 직접 보관·저장 여부, " +
+                "취급시설 유무 및 판매방식을 확인하신 것으로 보입니다. " +
+                "실제 신고 전에는 적용되는 세부 신고요건과 제출자료를 " +
+                "최종적으로 확인하는 것이 좋습니다.";
 
-                resultTitle = "사업장 소재지부터 확인해 보세요.";
+            resultClass = "result-success";
+        }
 
-                resultMessage =
-                    "판매업을 하려는 사무실에서 해당 영업이 가능한지 " +
-                    "먼저 확인할 필요가 있습니다. 사업장 소재지에 따라 " +
-                    "판매업이 제한될 수 있으므로 사전 검토가 중요합니다.";
 
-                resultClass = "result-warning";
-            }
+        // 어떤 진단결과에서도 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=chemical-broker-sales"
+        );
 
+    });
 
-            // ③ MSDS 등 물질자료가 없는 경우
-            else if (msds.value === "no") {
+    return;
+}
 
-                resultTitle = "판매하려는 물질의 자료를 준비해 주세요.";
 
-                resultMessage =
-                    "판매하려는 물질을 확인할 수 있는 MSDS 등 관련 자료가 필요합니다. " +
-                    "현재 가지고 있는 제품자료부터 확인하는 것이 좋습니다.";
+// =====================================================
+// 전자담배 판매 관련 화학물질 신고 자가진단
+// =====================================================
 
-                resultClass = "result-check";
-            }
+if (document.querySelector('input[name="ecigProduct"]')) {
 
+    button.addEventListener("click", function () {
 
-            // ④ 보관방식이 준비되지 않은 경우
-            else if (storage.value === "no") {
+        const product =
+            document.querySelector('input[name="ecigProduct"]:checked');
 
-                resultTitle = "물질의 보관방식을 확인해 주세요.";
+        const nicotine =
+            document.querySelector('input[name="ecigNicotine"]:checked');
 
-                resultMessage =
-                    "취급시설 없는 판매업의 형태와 실제 물질의 보관방식이 " +
-                    "맞는지 확인할 필요가 있습니다. 위탁하여 보관하는 경우에는 " +
-                    "위탁 보관·저장 관계도 함께 검토하는 것이 좋습니다.";
+        const material =
+            document.querySelector('input[name="ecigMaterial"]:checked');
 
-                resultClass = "result-check";
-            }
+        const tobacco =
+            document.querySelector('input[name="ecigTobacco"]:checked');
 
+        const chemicalRule =
+            document.querySelector('input[name="ecigChemicalRule"]:checked');
 
-            // ⑤ 관리자 준비가 되지 않은 경우
-            else if (manager.value === "no") {
 
-                resultTitle = "관리자 선임 등 신고 준비사항을 확인해 주세요.";
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !nicotine ||
+            !material ||
+            !tobacco ||
+            !chemicalRule
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "유해화학물질 관리자 선임 등 신고와 함께 준비해야 할 사항이 있습니다. " +
-                    "현재 사업형태를 기준으로 필요한 준비사항을 확인하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // 하나라도 잘 모르겠다고 답한 경우
-            else if (
-                chemical.value === "unknown" ||
-                location.value === "unknown" ||
-                msds.value === "unknown" ||
-                storage.value === "unknown" ||
-                manager.value === "unknown"
-            ) {
+        // ① 판매제품이 정해지지 않은 경우
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-                resultTitle = "신고요건을 조금 더 확인해 보는 것이 좋습니다.";
+            resultTitle = "판매하려는 제품부터 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 판매하려는 물질과 " +
-                    "사업장, 보관방식 및 준비자료를 함께 검토하면 " +
-                    "추가로 준비할 사항을 확인할 수 있습니다.";
+            resultMessage =
+                "판매하려는 전자담배 또는 니코틴 함유 제품이 정해져야 " +
+                "제품의 성분과 적용되는 규제를 구체적으로 검토할 수 있습니다. " +
+                "현재 판매를 계획하고 있는 제품을 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예
-            else {
+        // ② 니코틴 성분·함량 확인이 안 된 경우
+        else if (
+            nicotine.value === "no" ||
+            nicotine.value === "unknown"
+        ) {
 
-                resultTitle = "판매업 신고 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultTitle = "니코틴 성분과 함량을 먼저 확인해 보세요.";
 
-                resultMessage =
-                    "현재 답변상 판매물질과 사업장, 물질자료, 보관방식 및 " +
-                    "관리자 관련 준비가 이루어진 것으로 보입니다. 실제 신고 전에는 " +
-                    "세부 신고요건과 제출자료를 최종적으로 확인하는 것이 좋습니다.";
+            resultMessage =
+                "제품에 포함된 니코틴 성분과 함량은 적용되는 규제를 검토하기 위한 " +
+                "중요한 기초정보입니다. 제품정보나 성분자료를 기준으로 먼저 확인해 보세요.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 어떤 진단결과에서도 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=chemical-broker-sales"
-            );
+        // ③ 성분자료가 없는 경우
+        else if (
+            material.value === "no" ||
+            material.value === "unknown"
+        ) {
 
-        });
+            resultTitle = "제품의 성분자료를 확인해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "판매하려는 제품의 성분을 확인할 수 있는 자료가 있어야 " +
+                "제품의 특성과 관련 규제 적용 여부를 보다 구체적으로 검토할 수 있습니다. " +
+                "현재 확보한 제품자료를 기준으로 확인해 보세요.";
 
-    // =====================================================
-    // 전자담배 판매업 신고 자가진단
-    // =====================================================
+            resultClass = "result-check";
+        }
 
-    if (document.querySelector('input[name="ecigProduct"]')) {
 
-        button.addEventListener("click", function () {
+        // ④ 담배사업법상 담배 해당 여부를 모르는 경우
+        else if (
+            tobacco.value === "no" ||
+            tobacco.value === "unknown"
+        ) {
 
-            const product =
-                document.querySelector('input[name="ecigProduct"]:checked');
+            resultTitle = "담배 해당 여부를 먼저 확인해 보세요.";
 
-            const nicotine =
-                document.querySelector('input[name="ecigNicotine"]:checked');
+            resultMessage =
+                "판매하려는 제품이 「담배사업법」상 담배에 해당하는지 여부에 따라 " +
+                "화학물질 관련 규제의 적용 여부를 검토하는 방향이 달라질 수 있습니다. " +
+                "제품의 종류와 성분자료를 기준으로 확인해 보세요.";
 
-            const msds =
-                document.querySelector('input[name="ecigMsds"]:checked');
+            resultClass = "result-check";
+        }
 
-            const storage =
-                document.querySelector('input[name="ecigStorage"]:checked');
 
-            const business =
-                document.querySelector('input[name="ecigBusiness"]:checked');
+        // ⑤ 화학물질관리법 적용 여부를 모르는 경우
+        else if (
+            chemicalRule.value === "no" ||
+            chemicalRule.value === "unknown"
+        ) {
 
+            resultTitle = "화학물질 관련 규제 적용 여부를 확인해 보세요.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !nicotine ||
-                !msds ||
-                !storage ||
-                !business
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultMessage =
+                "제품의 종류와 성분, 담배 해당 여부 등을 기준으로 " +
+                "화학물질관리법상 영업규제가 적용되는지 확인할 필요가 있습니다. " +
+                "적용 여부를 확인한 후 필요한 절차를 준비하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        // 모두 예
+        else {
 
-            // ① 판매제품이 정해지지 않은 경우
-            if (product.value === "no") {
+            resultTitle = "관련 규제 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultTitle = "판매하려는 제품부터 확인해 보세요.";
+            resultMessage =
+                "현재 답변상 판매제품과 니코틴 성분·함량, 제품자료, " +
+                "담배 해당 여부 및 화학물질 관련 규제 적용 여부를 확인하신 것으로 보입니다. " +
+                "실제 영업 전에는 적용되는 절차와 준비사항을 최종적으로 확인하는 것이 좋습니다.";
 
-                resultMessage =
-                    "판매하려는 전자담배 제품이 정해져야 니코틴 성분과 함량 등을 " +
-                    "확인하여 신고 대상 여부를 검토할 수 있습니다.";
+            resultClass = "result-success";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // 모든 결과에서 상담 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=e-cigarette-sales"
+        );
 
-            // ② 니코틴 성분·함량 확인이 안 된 경우
-            else if (nicotine.value === "no") {
+    });
 
-                resultTitle = "니코틴 성분과 함량을 먼저 확인해 주세요.";
+    return;
+}
 
-                resultMessage =
-                    "전자담배 판매업 신고 대상 여부를 판단하려면 제품에 포함된 " +
-                    "니코틴의 성분과 함량을 확인하는 것이 중요합니다.";
+// =====================================================
+// 유해화학물질 시약 판매업 신고 자가진단
+// =====================================================
 
-                resultClass = "result-warning";
-            }
+if (document.querySelector('input[name="reagentProduct"]')) {
 
+    button.addEventListener("click", function () {
 
-            // ③ MSDS 등 자료가 없는 경우
-            else if (msds.value === "no") {
+        const product =
+            document.querySelector('input[name="reagentProduct"]:checked');
 
-                resultTitle = "제품의 성분자료를 준비해 주세요.";
+        const purpose =
+            document.querySelector('input[name="reagentPurpose"]:checked');
 
-                resultMessage =
-                    "판매하려는 제품의 니코틴 등 성분을 확인할 수 있는 " +
-                    "MSDS 등의 자료를 준비하여 검토할 필요가 있습니다.";
+        const hazardous =
+            document.querySelector('input[name="reagentHazardous"]:checked');
 
-                resultClass = "result-check";
-            }
+        const salesMethod =
+            document.querySelector('input[name="reagentSalesMethod"]:checked');
 
+        const handling =
+            document.querySelector('input[name="reagentHandling"]:checked');
 
-            // ④ 보관방식이 정해지지 않은 경우
-            else if (storage.value === "no") {
 
-                resultTitle = "제품의 보관방법을 확인해 주세요.";
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !purpose ||
+            !hazardous ||
+            !salesMethod ||
+            !handling
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "제품을 어디에 얼마나 보관하고 어떻게 취급할 것인지에 따라 " +
-                    "확인해야 할 사항이 달라질 수 있으므로 보관방법을 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // ⑤ 사업장·관리자 준비가 안 된 경우
-            else if (business.value === "no") {
+        // ① 판매할 시약이 정해지지 않은 경우
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-                resultTitle = "사업장과 신고 준비사항을 확인해 주세요.";
+            resultTitle = "판매하려는 시약부터 확인해 보세요.";
 
-                resultMessage =
-                    "판매하려는 사업장과 관리자 등 신고에 필요한 사항을 " +
-                    "추가로 확인하고 준비할 필요가 있습니다.";
+            resultMessage =
+                "판매하려는 시약이 정해져야 해당 물질이 유해화학물질인지와 " +
+                "시약 판매업 신고 대상에 해당하는지를 구체적으로 검토할 수 있습니다. " +
+                "현재 판매를 계획하고 있는 제품을 기준으로 상담을 받아보실 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 하나라도 잘 모르겠습니다
-            else if (
-                product.value === "unknown" ||
-                nicotine.value === "unknown" ||
-                msds.value === "unknown" ||
-                storage.value === "unknown" ||
-                business.value === "unknown"
-            ) {
+        // ② 시험용·연구용·검사용이 아닌 경우
+        else if (purpose.value === "no") {
 
-                resultTitle = "신고 대상 여부를 조금 더 확인해 보는 것이 좋습니다.";
+            resultTitle = "시약의 판매용도에 따른 영업절차를 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 제품의 니코틴 성분과 함량, " +
-                    "제품자료 및 사업장 상황을 함께 검토하면 신고에 필요한 사항을 확인할 수 있습니다.";
+            resultMessage =
+                "시험용·연구용·검사용으로 판매하는 형태가 아니라면 " +
+                "시약 판매업 신고와 다른 영업형태 또는 절차가 적용될 수 있습니다. " +
+                "실제 판매용도를 기준으로 확인해 보는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예
-            else {
+        // ② 판매용도를 잘 모르는 경우
+        else if (purpose.value === "unknown") {
 
-                resultTitle = "전자담배 판매업 신고 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultTitle = "시약의 판매용도를 먼저 확인해 보세요.";
 
-                resultMessage =
-                    "현재 답변상 제품정보와 니코틴 성분, 제품자료, 보관방법 및 " +
-                    "사업장 관련 준비가 이루어진 것으로 보입니다. 실제 신고 전에는 " +
-                    "신고 대상 여부와 세부 요건을 최종 확인하는 것이 좋습니다.";
+            resultMessage =
+                "판매하려는 시약이 시험용·연구용·검사용으로 공급되는지 여부는 " +
+                "시약 판매업 신고 대상 여부를 검토하는 중요한 사항입니다. " +
+                "실제 구매자의 사용용도와 판매방식을 확인해 보세요.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모든 결과에서 상담 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=e-cigarette-sales"
-            );
+        // ③ 유해화학물질 해당 여부
+        else if (
+            hazardous.value === "no" ||
+            hazardous.value === "unknown"
+        ) {
 
-        });
+            resultTitle = "유해화학물질 해당 여부를 확인해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "시약 판매업 신고 대상 여부를 판단하려면 판매하려는 시약이 " +
+                "유해화학물질에 해당하는지 확인하는 것이 중요합니다. " +
+                "제품정보와 물질자료를 기준으로 먼저 확인해 보세요.";
 
-    // =====================================================
-    // 유해화학물질 시약 판매업 신고 자가진단
-    // =====================================================
+            resultClass = "result-check";
+        }
 
-    if (document.querySelector('input[name="reagentProduct"]')) {
 
-        button.addEventListener("click", function () {
+        // ④ 판매·공급방식
+        else if (
+            salesMethod.value === "no" ||
+            salesMethod.value === "unknown"
+        ) {
 
-            const product =
-                document.querySelector('input[name="reagentProduct"]:checked');
+            resultTitle = "시약의 판매·공급방식을 확인해 보세요.";
 
-            const purpose =
-                document.querySelector('input[name="reagentPurpose"]:checked');
+            resultMessage =
+                "시약을 어떤 방식으로 판매하고 공급할 것인지에 따라 " +
+                "확인해야 할 영업형태와 준비사항이 달라질 수 있습니다. " +
+                "실제 거래 및 공급방식을 기준으로 검토해 보세요.";
 
-            const hazardous =
-                document.querySelector('input[name="reagentHazardous"]:checked');
+            resultClass = "result-check";
+        }
 
-            const documents =
-                document.querySelector('input[name="reagentDocuments"]:checked');
 
-            const storage =
-                document.querySelector('input[name="reagentStorage"]:checked');
+        // ⑤ 보관·저장 및 취급방식
+        else if (
+            handling.value === "no" ||
+            handling.value === "unknown"
+        ) {
 
+            resultTitle = "시약의 보관·저장 및 취급방식을 확인해 보세요.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !purpose ||
-                !hazardous ||
-                !documents ||
-                !storage
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultMessage =
+                "시약을 직접 보관·저장하는지와 실제로 어떻게 취급하는지에 따라 " +
+                "추가로 확인해야 할 사항이 달라질 수 있습니다. " +
+                "사업장에서의 실제 취급형태를 기준으로 검토해 보세요.";
 
+            resultClass = "result-check";
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        // 모두 예
+        else {
 
-            // ① 판매할 시약이 정해지지 않은 경우
-            if (product.value === "no") {
+            resultTitle = "시약 판매업 신고 검토를 위한 기본사항을 확인하셨습니다.";
 
-                resultTitle = "판매하려는 시약부터 확인해 보세요.";
+            resultMessage =
+                "현재 답변상 판매하려는 시약과 사용용도, 유해화학물질 해당 여부, " +
+                "판매·공급방식 및 보관·취급형태를 확인하신 것으로 보입니다. " +
+                "실제 신고 전에는 적용되는 신고요건과 준비자료를 최종적으로 확인하는 것이 좋습니다.";
 
-                resultMessage =
-                    "판매하려는 시약이 정해져야 해당 물질이 유해화학물질인지와 " +
-                    "시약 판매업 신고 대상에 해당하는지를 검토할 수 있습니다.";
+            resultClass = "result-success";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // 모든 결과에서 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=reagent-sales"
+        );
 
-            // ② 시험용·연구용·검사용이 아닌 경우
-            else if (purpose.value === "no") {
+    });
 
-                resultTitle = "시약의 판매용도를 다시 확인해 주세요.";
+    return;
+}
 
-                resultMessage =
-                    "유해화학물질 시약 판매업 신고는 시험용·연구용·검사용으로 " +
-                    "판매하는 경우를 대상으로 합니다. 다른 용도로 판매하려는 경우에는 " +
-                    "적용되는 영업절차를 별도로 검토할 필요가 있습니다.";
+// =====================================================
+// 나라장터 경쟁입찰참가자격 등록 자가진단
+// =====================================================
 
-                resultClass = "result-warning";
-            }
+if (document.querySelector('input[name="procurementTarget"]')) {
 
+    button.addEventListener("click", function () {
 
-            // ③ 유해화학물질이 아니라고 확인한 경우
-            else if (hazardous.value === "no") {
+        const target =
+            document.querySelector('input[name="procurementTarget"]:checked');
 
-                resultTitle = "시약의 유해화학물질 해당 여부를 확인해 주세요.";
+        const type =
+            document.querySelector('input[name="procurementType"]:checked');
 
-                resultMessage =
-                    "현재 답변상 유해화학물질 시약 판매업 신고 대상과 다를 수 있습니다. " +
-                    "판매하려는 시약의 성분과 물질정보를 기준으로 적용되는 절차를 " +
-                    "확인하는 것이 좋습니다.";
+        const license =
+            document.querySelector('input[name="procurementLicense"]:checked');
 
-                resultClass = "result-check";
-            }
+        const business =
+            document.querySelector('input[name="procurementBusiness"]:checked');
 
+        const manufacture =
+            document.querySelector('input[name="procurementManufacture"]:checked');
 
-            // ④ MSDS·예상 판매량 자료가 없는 경우
-            else if (documents.value === "no") {
 
-                resultTitle = "시약의 관련 자료를 준비해 주세요.";
+        // 모든 질문에 답했는지 확인
+        if (
+            !target ||
+            !type ||
+            !license ||
+            !business ||
+            !manufacture
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "신고를 위해서는 물질별 MSDS와 취급예정량 등을 확인할 수 있는 " +
-                    "자료가 필요하므로 현재 보유한 제품자료부터 확인하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // ⑤ 직접 보관하면서 보관방법이 준비되지 않은 경우
-            else if (storage.value === "no") {
+        // ① 입찰하려는 분야가 정해지지 않은 경우
+        if (
+            target.value === "no" ||
+            target.value === "unknown"
+        ) {
 
-                resultTitle = "시약의 보관방식을 확인해 주세요.";
+            resultTitle = "입찰하려는 분야부터 확인해 보세요.";
 
-                resultMessage =
-                    "시약을 직접 보관하는 경우에는 보관·저장시설과 관련하여 " +
-                    "추가로 확인하거나 준비해야 할 사항이 있을 수 있습니다.";
+            resultMessage =
+                "나라장터 경쟁입찰참가자격 등록을 위해서는 먼저 어떤 물품·용역·공사 분야에 " +
+                "참여하려는지 확인하는 것이 좋습니다. 현재 사업내용을 기준으로 " +
+                "등록이 필요한 분야를 검토해 볼 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 하나라도 잘 모르겠습니다
-            else if (
-                product.value === "unknown" ||
-                purpose.value === "unknown" ||
-                hazardous.value === "unknown" ||
-                documents.value === "unknown" ||
-                storage.value === "unknown"
-            ) {
+        // ② 사업내용과 입찰분야의 관련성을 확인하지 못한 경우
+        else if (
+            type.value === "no" ||
+            type.value === "unknown"
+        ) {
 
-                resultTitle = "시약 판매업 신고 대상 여부를 조금 더 확인해 보세요.";
+            resultTitle = "사업내용과 입찰분야를 함께 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 판매하려는 시약의 성분과 " +
-                    "판매용도, MSDS 및 보관방식 등을 함께 검토하면 " +
-                    "신고 대상 여부와 필요한 준비사항을 확인할 수 있습니다.";
+            resultMessage =
+                "현재 사업자가 실제로 수행하는 사업내용과 입찰하려는 분야를 함께 확인하면 " +
+                "나라장터에 어떤 물품·업종 등을 등록해야 하는지 보다 구체적으로 " +
+                "검토할 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예
-            else {
+        // ③ 관련 인허가·등록 여부를 확인하지 못한 경우
+        else if (
+            license.value === "no" ||
+            license.value === "unknown"
+        ) {
 
-                resultTitle = "시약 판매업 신고 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultTitle = "관련 인허가·등록 여부를 확인해 보세요.";
 
-                resultMessage =
-                    "현재 답변상 판매하려는 시약과 판매용도, 물질정보 및 " +
-                    "관련 자료가 준비된 것으로 보입니다. 실제 신고 전에는 " +
-                    "신고 대상 여부와 세부 제출자료를 최종 확인하는 것이 좋습니다.";
+            resultMessage =
+                "입찰하려는 분야에 따라 별도의 인허가·등록 등이 필요한 경우가 있습니다. " +
+                "현재 사업내용과 참여하려는 입찰분야를 기준으로 필요한 자격이 있는지 " +
+                "확인해 보는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 어떤 진단결과에서도 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=reagent-sales"
-            );
+        // ④ 사업자 기본자료가 준비되지 않은 경우
+        else if (
+            business.value === "no" ||
+            business.value === "unknown"
+        ) {
 
-        });
+            resultTitle = "사업자 기본자료를 확인해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "경쟁입찰참가자격 등록을 진행하려면 사업자와 대표자 등의 " +
+                "기본정보를 확인할 수 있어야 합니다. 현재 보유하고 있는 " +
+                "사업자 관련 자료부터 확인해 보세요.";
 
-    // =====================================================
-    // 조달업체 입찰참가자격 등록 자가진단
-    // =====================================================
+            resultClass = "result-check";
+        }
 
-    if (document.querySelector('input[name="procurementTarget"]')) {
 
-        button.addEventListener("click", function () {
+        // ⑤ 나라장터 등록내용을 확인하지 못한 경우
+        else if (
+            manufacture.value === "no" ||
+            manufacture.value === "unknown"
+        ) {
 
-            const target =
-                document.querySelector('input[name="procurementTarget"]:checked');
+            resultTitle = "나라장터에 등록할 내용을 확인해 보세요.";
 
-            const type =
-                document.querySelector('input[name="procurementType"]:checked');
+            resultMessage =
+                "입찰하려는 분야에 따라 나라장터에 등록해야 하는 물품·업종 등 " +
+                "확인사항이 달라질 수 있습니다. 실제 참여하려는 입찰과 사업내용을 " +
+                "기준으로 필요한 등록사항을 검토해 보세요.";
 
-            const license =
-                document.querySelector('input[name="procurementLicense"]:checked');
+            resultClass = "result-check";
+        }
 
-            const business =
-                document.querySelector('input[name="procurementBusiness"]:checked');
 
-            const manufacture =
-                document.querySelector('input[name="procurementManufacture"]:checked');
+        // 모두 예
+        else {
 
+            resultTitle = "경쟁입찰참가자격 등록을 위한 기본사항을 확인하셨습니다.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !target ||
-                !type ||
-                !license ||
-                !business ||
-                !manufacture
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultMessage =
+                "현재 답변상 입찰하려는 분야와 사업내용, 관련 인허가 및 " +
+                "기본자료와 등록사항을 확인하신 것으로 보입니다. 실제 등록 전에는 " +
+                "참여하려는 입찰에 필요한 자격과 준비자료를 최종 확인하는 것이 좋습니다.";
 
+            resultClass = "result-success";
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
 
+        // 모든 진단결과에서 상담 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=procurement-bid-registration"
+        );
 
-            // ① 입찰하려는 분야가 정해지지 않은 경우
-            if (target.value === "no") {
+    });
 
-                resultTitle = "입찰하려는 분야부터 확인해 보세요.";
+    return;
+}
 
-                resultMessage =
-                    "입찰참가자격 등록을 위해서는 먼저 어떤 물품·공사·용역에 " +
-                    "참여하려는지 확인하는 것이 좋습니다. 사업내용을 기준으로 " +
-                    "등록해야 할 분야를 검토할 수 있습니다.";
 
-                resultClass = "result-check";
-            }
 
+// =====================================================
+// 물품식별번호 등록 자가진단
+// =====================================================
 
-            // ③ 인허가·등록 확인이 안 된 경우
-            else if (license.value === "no") {
+if (document.querySelector('input[name="productItem"]')) {
 
-                resultTitle = "관련 인허가·등록 여부를 확인해 주세요.";
+    button.addEventListener("click", function () {
 
-                resultMessage =
-                    "등록하려는 업종에 따라 별도의 인허가나 등록이 필요한 경우가 있습니다. " +
-                    "입찰하려는 사업내용을 기준으로 필요한 자격과 준비자료를 " +
-                    "먼저 확인하는 것이 좋습니다.";
+        const item =
+            document.querySelector('input[name="productItem"]:checked');
 
-                resultClass = "result-check";
-            }
+        const classification =
+            document.querySelector('input[name="productClassification"]:checked');
 
+        const specification =
+            document.querySelector('input[name="productSpecification"]:checked');
 
-            // ④ 사업자 기본자료가 준비되지 않은 경우
-            else if (business.value === "no") {
+        const documents =
+            document.querySelector('input[name="productDocuments"]:checked');
 
-                resultTitle = "사업자 기본자료를 먼저 준비해 주세요.";
+        const attributes =
+            document.querySelector('input[name="productAttributes"]:checked');
 
-                resultMessage =
-                    "입찰참가자격 등록을 위해서는 사업자와 대표자 등의 기본정보를 " +
-                    "확인할 수 있어야 합니다. 현재 사업자 정보를 먼저 정리해 주세요.";
 
-                resultClass = "result-check";
-            }
+        // 모든 질문에 답했는지 확인
+        if (
+            !item ||
+            !classification ||
+            !specification ||
+            !documents ||
+            !attributes
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
 
-            // 하나라도 잘 모르겠습니다가 있는 경우
-            else if (
-                target.value === "unknown" ||
-                type.value === "unknown" ||
-                license.value === "unknown" ||
-                business.value === "unknown" ||
-                manufacture.value === "unknown"
-            ) {
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultTitle = "등록분야와 준비사항을 조금 더 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 입찰하려는 사업내용과 " +
-                    "공급·제조 여부, 관련 인허가 등을 함께 검토하면 " +
-                    "필요한 입찰참가자격과 준비사항을 확인할 수 있습니다.";
+        // ① 등록하려는 제품 확인
+        if (
+            item.value === "no" ||
+            item.value === "unknown"
+        ) {
 
-                resultClass = "result-check";
-            }
+            resultTitle = "등록하려는 제품부터 확인해 보세요.";
 
+            resultMessage =
+                "물품식별번호 등록을 위해서는 먼저 어떤 제품을 등록하려는지 " +
+                "확인하는 것이 좋습니다. 제품이 구체화되면 해당 제품에 맞는 " +
+                "물품분류와 필요한 제품정보를 검토할 수 있습니다.";
 
-            // ② 또는 ⑤만 아니오인 경우
-            else if (
-                type.value === "no" ||
-                manufacture.value === "no"
-            ) {
+            resultClass = "result-check";
+        }
 
-                resultTitle = "등록하려는 사업분야를 구체적으로 확인해 보세요.";
 
-                resultMessage =
-                    "물품을 공급하거나 직접 제조하는 경우에는 공급물품·제조물품 등록을 " +
-                    "구분하여 검토할 필요가 있습니다. 공사·용역을 등록하려는 경우에는 " +
-                    "제조 관련 자료가 해당되지 않을 수 있으므로 사업내용에 맞춰 " +
-                    "등록분야를 확인하는 것이 좋습니다.";
+        // ② 물품분류·세부품명 확인
+        else if (
+            classification.value === "no" ||
+            classification.value === "unknown"
+        ) {
 
-                resultClass = "result-check";
-            }
+            resultTitle = "제품에 맞는 물품분류와 세부품명을 확인해 보세요.";
 
+            resultMessage =
+                "등록하려는 제품의 용도와 특성을 기준으로 어떤 물품분류와 " +
+                "세부품명에 해당하는지 확인할 필요가 있습니다. " +
+                "제품정보를 기준으로 적절한 분류를 검토해 보세요.";
 
-            // 모두 예
-            else {
+            resultClass = "result-check";
+        }
 
-                resultTitle = "입찰참가자격 등록을 위한 기본적인 준비가 되어 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 입찰하려는 분야와 사업자 정보 및 관련 준비사항이 " +
-                    "확인된 것으로 보입니다. 실제 신청 전에는 등록할 물품·업종과 " +
-                    "필요한 제출자료를 최종 확인하는 것이 좋습니다.";
+        // ③ 모델명·규격 확인
+        else if (
+            specification.value === "no" ||
+            specification.value === "unknown"
+        ) {
 
-                resultClass = "result-success";
-            }
+            resultTitle = "제품의 기본정보를 확인해 보세요.";
 
+            resultMessage =
+                "제품의 모델명과 규격 등 기본정보를 확인하면 " +
+                "물품식별번호 등록에 필요한 제품정보를 보다 구체적으로 " +
+                "검토할 수 있습니다.";
 
-            // 모든 진단결과에서 상담 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=procurement-bid-registration"
-            );
+            resultClass = "result-check";
+        }
 
-        });
 
-        return;
-    }
+        // ④ 제품 사진·자료 확인
+        else if (
+            documents.value === "no" ||
+            documents.value === "unknown"
+        ) {
 
-    // =====================================================
-    // 물품식별번호 등록 자가진단
-    // =====================================================
+            resultTitle = "제품 사진과 관련 자료를 확인해 보세요.";
 
-    if (document.querySelector('input[name="productItem"]')) {
+            resultMessage =
+                "등록하려는 제품의 사진과 제품정보를 확인할 수 있는 자료를 " +
+                "준비하면 등록에 필요한 내용을 검토하는 데 도움이 됩니다. " +
+                "현재 보유하고 있는 제품자료부터 확인해 보세요.";
 
-        button.addEventListener("click", function () {
+            resultClass = "result-check";
+        }
 
-            const item =
-                document.querySelector('input[name="productItem"]:checked');
 
-            const classification =
-                document.querySelector('input[name="productClassification"]:checked');
+        // ⑤ 제품 특성·사양 확인
+        else if (
+            attributes.value === "no" ||
+            attributes.value === "unknown"
+        ) {
 
-            const specification =
-                document.querySelector('input[name="productSpecification"]:checked');
+            resultTitle = "제품의 주요 특성과 사양을 확인해 보세요.";
 
-            const documents =
-                document.querySelector('input[name="productDocuments"]:checked');
+            resultMessage =
+                "제품에 따라 크기·재질·성능 등 확인해야 할 정보가 달라질 수 있습니다. " +
+                "제품자료를 기준으로 등록에 필요한 주요 특성과 사양을 " +
+                "확인해 보는 것이 좋습니다.";
 
-            const attributes =
-                document.querySelector('input[name="productAttributes"]:checked');
+            resultClass = "result-check";
+        }
 
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !item ||
-                !classification ||
-                !specification ||
-                !documents ||
-                !attributes
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        // 모두 예
+        else {
 
+            resultTitle = "물품식별번호 등록을 위한 기본사항을 확인하셨습니다.";
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+            resultMessage =
+                "현재 답변상 등록하려는 제품과 물품분류·세부품명, 모델·규격, " +
+                "제품자료 및 주요 특성을 확인하신 것으로 보입니다. 실제 등록 전에는 " +
+                "등록할 품목정보와 필요한 자료를 최종 확인하는 것이 좋습니다.";
 
+            resultClass = "result-success";
+        }
 
-            // ① 등록할 제품이 정해지지 않은 경우
-            if (item.value === "no") {
 
-                resultTitle = "등록하려는 제품부터 확인해 주세요.";
+        // 모든 진단결과에서 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=product-identification-number"
+        );
 
-                resultMessage =
-                    "물품식별번호 등록을 위해서는 먼저 등록하려는 제품이 " +
-                    "구체적으로 정해져 있어야 제품에 맞는 물품분류와 " +
-                    "필요한 제품정보를 검토할 수 있습니다.";
+    });
 
-                resultClass = "result-check";
-            }
+    return;
+}
 
+// =====================================================
+// MAS(다수공급자계약) 자가진단
+// =====================================================
 
-            // ② 물품분류를 확인하지 못한 경우
-            else if (classification.value === "no") {
+if (document.querySelector('input[name="masProduct"]')) {
 
-                resultTitle = "제품에 맞는 물품분류를 확인해 보세요.";
+    button.addEventListener("click", function () {
 
-                resultMessage =
-                    "등록하려는 제품에 맞는 물품분류와 세부품명을 확인할 필요가 있습니다. " +
-                    "제품의 용도와 특성을 기준으로 적절한 분류를 검토하는 것이 좋습니다.";
+        const product =
+            document.querySelector('input[name="masProduct"]:checked');
 
-                resultClass = "result-check";
-            }
+        const notice =
+            document.querySelector('input[name="masNotice"]:checked');
 
+        const registration =
+            document.querySelector('input[name="masRegistration"]:checked');
 
-            // ③ 모델명·규격이 정리되지 않은 경우
-            else if (specification.value === "no") {
+        const documents =
+            document.querySelector('input[name="masDocuments"]:checked');
 
-                resultTitle = "제품의 기본정보를 정리해 주세요.";
+        const price =
+            document.querySelector('input[name="masPrice"]:checked');
 
-                resultMessage =
-                    "제품의 모델명과 규격 등 기본정보가 정리되어야 " +
-                    "물품정보 등록에 필요한 내용을 구체적으로 작성할 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+        // 모든 질문에 답했는지 확인
+        if (
+            !product ||
+            !notice ||
+            !registration ||
+            !documents ||
+            !price
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
 
-            // ④ 사진·제품자료가 없는 경우
-            else if (documents.value === "no") {
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultTitle = "제품 사진과 관련 자료를 준비해 주세요.";
 
-                resultMessage =
-                    "물품정보 등록 과정에서는 제품 이미지와 관련 자료를 " +
-                    "확인할 필요가 있으므로 현재 보유하고 있는 제품자료부터 " +
-                    "정리하는 것이 좋습니다.";
+        // ① 계약하려는 제품 확인
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-                resultClass = "result-check";
-            }
+            resultTitle = "MAS로 계약하려는 제품부터 확인해 보세요.";
 
+            resultMessage =
+                "MAS 계약을 검토하려면 먼저 어떤 제품을 계약하려는지 " +
+                "확인하는 것이 좋습니다. 제품이 구체화되면 해당 제품의 " +
+                "물품정보와 MAS 구매입찰공고 등을 검토할 수 있습니다.";
 
-            // ⑤ 제품 특성·사양을 확인하기 어려운 경우
-            else if (attributes.value === "no") {
+            resultClass = "result-check";
+        }
 
-                resultTitle = "제품의 주요 특성과 사양을 확인해 주세요.";
 
-                resultMessage =
-                    "제품에 따라 크기·재질·성능 등 확인해야 할 정보가 달라질 수 있습니다. " +
-                    "제품자료를 기준으로 등록에 필요한 주요 특성을 정리하는 것이 좋습니다.";
+        // ② MAS 구매입찰공고 확인
+        else if (
+            notice.value === "no" ||
+            notice.value === "unknown"
+        ) {
 
-                resultClass = "result-check";
-            }
+            resultTitle = "해당 제품의 MAS 구매입찰공고를 확인해 보세요.";
 
+            resultMessage =
+                "MAS 계약은 해당 제품과 관련된 구매입찰공고를 기준으로 " +
+                "참가요건과 준비사항을 검토하게 됩니다. 먼저 해당 제품에 " +
+                "적용되는 공고가 있는지 확인하는 것이 좋습니다.";
 
-            // 하나라도 잘 모르겠습니다
-            else if (
-                item.value === "unknown" ||
-                classification.value === "unknown" ||
-                specification.value === "unknown" ||
-                documents.value === "unknown" ||
-                attributes.value === "unknown"
-            ) {
+            resultClass = "result-check";
+        }
 
-                resultTitle = "물품식별번호 등록을 위해 조금 더 확인이 필요합니다.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 등록하려는 제품의 " +
-                    "물품분류, 모델·규격, 제품자료 및 주요 특성을 함께 검토하면 " +
-                    "필요한 준비사항을 확인할 수 있습니다.";
+        // ③ 필요한 조달등록 확인
+        else if (
+            registration.value === "no" ||
+            registration.value === "unknown"
+        ) {
 
-                resultClass = "result-check";
-            }
+            resultTitle = "필요한 조달등록 상태를 확인해 보세요.";
 
+            resultMessage =
+                "MAS 계약을 준비할 때는 해당 제품의 물품식별번호 등 " +
+                "필요한 조달등록 상태를 확인할 필요가 있습니다. " +
+                "현재 등록되어 있는 내용을 먼저 검토해 보세요.";
 
-            // 모두 예
-            else {
+            resultClass = "result-check";
+        }
 
-                resultTitle = "물품식별번호 등록을 위한 기본적인 준비가 되어 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 등록하려는 제품과 물품분류, 모델·규격 및 " +
-                    "제품자료가 준비된 것으로 보입니다. 실제 신청 전에는 " +
-                    "등록할 물품정보와 필요한 자료를 최종 확인하는 것이 좋습니다.";
+        // ④ 공고에서 요구하는 제품자료 확인
+        else if (
+            documents.value === "no" ||
+            documents.value === "unknown"
+        ) {
 
-                resultClass = "result-success";
-            }
+            resultTitle = "구매입찰공고에서 요구하는 제품자료를 확인해 보세요.";
 
+            resultMessage =
+                "제품과 구매입찰공고에 따라 확인해야 하는 인증·시험자료 등 " +
+                "관련 자료가 달라질 수 있습니다. 해당 공고에서 요구하는 " +
+                "제품 관련 자료를 먼저 확인하는 것이 좋습니다.";
 
-            // 모든 진단결과에서 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=product-identification-number"
-            );
+            resultClass = "result-check";
+        }
 
-        });
 
-        return;
-    }
+        // ⑤ 거래실적·가격자료 확인
+        else if (
+            price.value === "no" ||
+            price.value === "unknown"
+        ) {
 
-    // =====================================================
-    // MAS(다수공급자계약) 자가진단
-    // =====================================================
+            resultTitle = "거래실적과 가격자료를 확인해 보세요.";
 
-    if (document.querySelector('input[name="masProduct"]')) {
+            resultMessage =
+                "MAS 계약을 준비할 때는 해당 제품의 거래실적과 판매가격을 " +
+                "확인할 수 있는 자료도 검토하게 됩니다. 현재 보유하고 있는 " +
+                "거래자료와 가격자료부터 확인해 보세요.";
 
-        button.addEventListener("click", function () {
+            resultClass = "result-check";
+        }
 
-            const product =
-                document.querySelector('input[name="masProduct"]:checked');
 
-            const notice =
-                document.querySelector('input[name="masNotice"]:checked');
+        // 모두 예
+        else {
 
-            const registration =
-                document.querySelector('input[name="masRegistration"]:checked');
+            resultTitle = "MAS 계약 검토를 위한 기본사항을 확인하셨습니다.";
 
-            const documents =
-                document.querySelector('input[name="masDocuments"]:checked');
+            resultMessage =
+                "현재 답변상 계약하려는 제품과 MAS 구매입찰공고, 조달등록 및 " +
+                "관련 제품·가격자료를 확인하신 것으로 보입니다. 실제 계약 추진 전에는 " +
+                "해당 구매입찰공고의 참가요건과 적격성평가, 가격자료 등을 " +
+                "최종 검토하는 것이 좋습니다.";
 
-            const price =
-                document.querySelector('input[name="masPrice"]:checked');
+            resultClass = "result-success";
+        }
 
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !notice ||
-                !registration ||
-                !documents ||
-                !price
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        // 모든 진단결과에서 상담 신청 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=mas-contract"
+        );
 
+    });
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+    return;
+}
 
+// =====================================================
+// 벤처확인 자가진단
+// =====================================================
 
-            // ① 제품이 정해지지 않은 경우
-            if (product.value === "no") {
+if (document.querySelector('input[name="ventureProduct"]')) {
 
-                resultTitle = "MAS로 계약하려는 제품부터 확인해 주세요.";
+    button.addEventListener("click", function () {
 
-                resultMessage =
-                    "MAS 계약을 검토하려면 먼저 계약하려는 제품이 구체적으로 " +
-                    "정해져 있어야 합니다. 제품이 정해지면 해당 제품의 물품분류와 " +
-                    "MAS 구매입찰공고 등을 확인할 수 있습니다.";
+        const investment =
+            document.querySelector('input[name="ventureInvestment"]:checked');
 
-                resultClass = "result-check";
-            }
+        const research =
+            document.querySelector('input[name="ventureResearch"]:checked');
 
+        const product =
+            document.querySelector('input[name="ventureProduct"]:checked');
 
-            // ② MAS 구매입찰공고가 없는 경우
-            else if (notice.value === "no") {
+        const difference =
+            document.querySelector('input[name="ventureDifference"]:checked');
 
-                resultTitle = "해당 제품의 MAS 구매입찰공고를 확인해 보세요.";
+        const development =
+            document.querySelector('input[name="ventureDevelopment"]:checked');
 
-                resultMessage =
-                    "MAS 계약은 해당 제품과 관련된 구매입찰공고를 기준으로 " +
-                    "참가요건과 제출자료를 검토하게 됩니다. 먼저 해당 제품에 " +
-                    "적용되는 공고가 있는지 확인하는 것이 좋습니다.";
+        const team =
+            document.querySelector('input[name="ventureTeam"]:checked');
 
-                resultClass = "result-check";
-            }
+        const market =
+            document.querySelector('input[name="ventureMarket"]:checked');
 
+        const growth =
+            document.querySelector('input[name="ventureGrowth"]:checked');
 
-            // ③ 조달등록이 준비되지 않은 경우
-            else if (registration.value === "no") {
 
-                resultTitle = "필요한 조달등록부터 확인해 주세요.";
+        // 모든 질문에 답했는지 확인
+        if (
+            !investment ||
+            !research ||
+            !product ||
+            !difference ||
+            !development ||
+            !team ||
+            !market ||
+            !growth
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "MAS 계약을 진행하려면 제품에 필요한 물품식별번호 등 " +
-                    "선행 조달등록을 확인할 필요가 있습니다. 현재 등록상태를 " +
-                    "먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            // ④ 인증·시험자료가 준비되지 않은 경우
-            else if (documents.value === "no") {
+        // ① 기술·제품·서비스
+        if (
+            product.value === "no" ||
+            product.value === "unknown"
+        ) {
 
-                resultTitle = "제품별 인증·시험자료를 확인해 주세요.";
+            resultTitle =
+                "현재 기업의 사업내용부터 확인해 보세요.";
 
-                resultMessage =
-                    "제품과 구매입찰공고에 따라 인증서, 시험성적서, 규격서 등 " +
-                    "확인해야 할 자료가 달라질 수 있습니다. 해당 제품에 필요한 " +
-                    "자료부터 확인하는 것이 좋습니다.";
+            resultMessage =
+                "벤처확인을 검토하려면 현재 기업이 어떤 기술·제품·서비스를 " +
+                "개발하거나 사업화하고 있는지 먼저 확인하는 것이 좋습니다. " +
+                "현재 사업내용을 기준으로 검토 가능한 벤처확인 방향을 " +
+                "살펴볼 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // ⑤ 거래·가격자료가 준비되지 않은 경우
-            else if (price.value === "no") {
+        // ② 차별성
+        else if (
+            difference.value === "no" ||
+            difference.value === "unknown"
+        ) {
 
-                resultTitle = "거래실적과 가격자료를 확인해 주세요.";
+            resultTitle =
+                "우리 기업의 기술·제품·서비스 차이점을 확인해 보세요.";
 
-                resultMessage =
-                    "MAS 계약과정에서는 제품의 거래내역과 가격을 확인할 수 있는 " +
-                    "자료가 중요합니다. 현재 보유하고 있는 거래자료와 가격자료를 " +
-                    "먼저 정리하는 것이 좋습니다.";
+            resultMessage =
+                "기존 제품이나 서비스와 비교하여 우리 기업의 기술·제품·서비스가 " +
+                "어떤 특징과 차이점을 가지고 있는지 정리해 두면 " +
+                "기술의 혁신성과 사업내용을 검토하는 데 도움이 됩니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 하나라도 잘 모르겠습니다
-            else if (
-                product.value === "unknown" ||
-                notice.value === "unknown" ||
-                registration.value === "unknown" ||
-                documents.value === "unknown" ||
-                price.value === "unknown"
-            ) {
+        // ③ 개발·사업화 과정
+        else if (
+            development.value === "no" ||
+            development.value === "unknown"
+        ) {
 
-                resultTitle = "MAS 계약 추진을 위해 조금 더 확인이 필요합니다.";
+            resultTitle =
+                "개발 및 사업화 과정을 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 제품의 MAS 공고 여부, " +
-                    "조달등록 상태, 인증·시험자료 및 거래·가격자료를 함께 검토하면 " +
-                    "현재 어느 단계부터 준비해야 하는지 확인할 수 있습니다.";
+            resultMessage =
+                "기술·제품·서비스를 어떤 과정으로 개발해 왔는지, " +
+                "현재 어느 단계까지 진행되었는지 확인해 두는 것이 좋습니다. " +
+                "관련 자료가 있다면 함께 정리해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예
-            else {
+        // ④ 인력·조직
+        else if (
+            team.value === "no" ||
+            team.value === "unknown"
+        ) {
 
-                resultTitle = "MAS 계약 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultTitle =
+                "사업을 수행하는 인력과 역할을 확인해 보세요.";
 
-                resultMessage =
-                    "현재 답변상 제품, MAS 구매입찰공고, 조달등록 및 관련 자료가 " +
-                    "준비된 것으로 보입니다. 실제 계약 추진 전에는 해당 공고의 " +
-                    "참가요건과 적격성평가 및 가격자료를 최종 검토하는 것이 좋습니다.";
+            resultMessage =
+                "대표자와 주요 인력이 기술개발과 사업화 과정에서 " +
+                "어떤 역할을 담당하고 있는지 확인할 필요가 있습니다. " +
+                "현재 인력구성과 역할부터 정리해 보세요.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            // 모든 진단결과에서 상담 신청 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=mas-contract"
-            );
+        // ⑤ 고객·시장
+        else if (
+            market.value === "no" ||
+            market.value === "unknown"
+        ) {
 
-        });
+            resultTitle =
+                "주요 고객과 목표시장을 확인해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "우리 제품이나 서비스를 필요로 하는 고객이 누구인지, " +
+                "어떤 시장을 대상으로 사업을 추진하고 있는지 확인하면 " +
+                "사업의 성장성을 검토하는 데 도움이 됩니다.";
 
-    // =====================================================
-    // 벤처확인 자가진단
-    // =====================================================
+            resultClass = "result-check";
+        }
 
-    if (document.querySelector('input[name="ventureProduct"]')) {
 
-        button.addEventListener("click", function () {
+        // ⑥ 성장계획
+        else if (
+            growth.value === "no" ||
+            growth.value === "unknown"
+        ) {
 
-            const product =
-                document.querySelector('input[name="ventureProduct"]:checked');
+            resultTitle =
+                "향후 사업계획을 구체화해 보세요.";
 
-            const difference =
-                document.querySelector('input[name="ventureDifference"]:checked');
+            resultMessage =
+                "제품·서비스의 판매 확대, 시장진입 또는 향후 사업확장 등 " +
+                "앞으로 기업이 어떻게 사업을 성장시킬 것인지 " +
+                "구체적인 계획을 정리해 보는 것이 좋습니다.";
 
-            const development =
-                document.querySelector('input[name="ventureDevelopment"]:checked');
+            resultClass = "result-check";
+        }
 
-            const team =
-                document.querySelector('input[name="ventureTeam"]:checked');
 
-            const market =
-                document.querySelector('input[name="ventureMarket"]:checked');
+        // ⑦ 투자·연구개발 현황 추가 확인
+        else if (
+            investment.value === "unknown" ||
+            research.value === "unknown"
+        ) {
 
-            const growth =
-                document.querySelector('input[name="ventureGrowth"]:checked');
+            resultTitle =
+                "투자 및 연구개발 현황을 추가로 확인해 보세요.";
 
+            resultMessage =
+                "벤처확인은 기업의 상황에 따라 검토하는 유형과 요건이 " +
+                "달라질 수 있습니다. 투자유치 여부와 연구개발 활동 등 " +
+                "현재 기업의 현황을 추가로 확인하면 신청 방향을 " +
+                "검토하는 데 도움이 됩니다.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !product ||
-                !difference ||
-                !development ||
-                !team ||
-                !market ||
-                !growth
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultClass = "result-check";
+        }
 
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        // 기본사항이 확인된 경우
+        else {
 
+            resultTitle =
+                "벤처확인 검토를 위한 기본사항을 확인하셨습니다.";
 
-            // ① 기술·제품·서비스
-            if (product.value === "no") {
+            resultMessage =
+                "현재 답변상 기업의 기술·제품·서비스, 차별성, 개발과정, " +
+                "사업수행 인력, 목표시장 및 성장계획 등을 확인하신 것으로 보입니다. " +
+                "실제 신청 전에는 투자 및 연구개발 현황 등을 포함한 기업의 현재 상황을 " +
+                "기준으로 적합한 벤처확인 유형과 세부요건을 검토하는 것이 좋습니다.";
 
-                resultTitle =
-                    "평가받을 기술·제품·서비스부터 구체화할 필요가 있습니다.";
+            resultClass = "result-success";
+        }
 
-                resultMessage =
-                    "벤처확인을 검토하려면 기업이 어떤 기술·제품·서비스를 " +
-                    "개발하거나 사업화하고 있는지 먼저 정리하는 것이 중요합니다. " +
-                    "현재 사업내용을 바탕으로 평가대상을 구체화해 볼 수 있습니다.";
 
-                resultClass = "result-check";
-            }
+        // 어떤 결과에서도 상담 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=venture-confirmation"
+        );
 
+    });
 
-            // ② 차별성
-            else if (difference.value === "no") {
+    return;
+}
 
-                resultTitle =
-                    "기존 제품·서비스와의 차별성을 정리해 보세요.";
+// =====================================================
+// 여성기업 확인 자가진단
+// =====================================================
 
-                resultMessage =
-                    "기존 제품이나 서비스의 문제점과 한계를 살펴보고, " +
-                    "우리 기업의 기술·제품·서비스가 이를 어떻게 개선하거나 " +
-                    "해결하는지를 구체적으로 정리할 필요가 있습니다.";
+if (document.querySelector('input[name="womenRepresentative"]')) {
 
-                resultClass = "result-check";
-            }
+    button.addEventListener("click", function () {
 
+        const representative =
+            document.querySelector('input[name="womenRepresentative"]:checked');
 
-            // ③ 개발·사업화 과정
-            else if (development.value === "no") {
+        const businessType =
+            document.querySelector('input[name="womenBusinessType"]:checked');
 
-                resultTitle =
-                    "기술개발 및 사업화 과정을 정리할 필요가 있습니다.";
+        const ownership =
+            document.querySelector('input[name="womenOwnership"]:checked');
 
-                resultMessage =
-                    "아이디어부터 기술개발, 제품·서비스 구현 및 사업화까지 " +
-                    "어떤 과정을 거쳤는지와 현재 어느 단계에 있는지를 " +
-                    "구체적으로 정리하는 것이 좋습니다.";
+        const management =
+            document.querySelector('input[name="womenManagement"]:checked');
 
-                resultClass = "result-check";
-            }
+        const documents =
+            document.querySelector('input[name="womenDocuments"]:checked');
 
 
-            // ④ 인력·조직
-            else if (team.value === "no") {
+        // 모든 질문에 답했는지 확인
+        if (
+            !representative ||
+            !businessType ||
+            !ownership ||
+            !management ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultTitle =
-                    "사업을 실행할 인력과 역할을 확인해 보세요.";
 
-                resultMessage =
-                    "대표자와 핵심인력의 경력·역할 및 기술개발과 사업화를 " +
-                    "실제로 수행할 수 있는 조직구성을 확인할 필요가 있습니다.";
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultClass = "result-check";
-            }
 
+        // ① 여성 대표자 여부
+        if (representative.value === "no") {
 
-            // ⑤ 고객·시장
-            else if (market.value === "no") {
+            resultTitle =
+                "현재 대표자 현황을 먼저 확인해 보세요.";
 
-                resultTitle =
-                    "목표고객과 시장을 구체화할 필요가 있습니다.";
+            resultMessage =
+                "여성기업 확인을 검토하려면 기업형태에 따라 " +
+                "여성이 대표자로서 기업을 소유하고 실질적으로 경영하는지 등을 " +
+                "확인할 필요가 있습니다. 현재 대표자 구성과 기업의 " +
+                "소유·경영관계부터 확인해 보세요.";
 
-                resultMessage =
-                    "누가 제품이나 서비스를 필요로 하는지, 목표시장의 규모와 " +
-                    "특성은 어떠한지, 경쟁기업이나 경쟁제품은 무엇인지 등을 " +
-                    "구체적으로 검토하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // ② 여성 대표자인지 불확실
+        else if (representative.value === "unknown") {
 
-            // ⑥ 성장계획
-            else if (growth.value === "no") {
+            resultTitle =
+                "대표자 현황을 먼저 확인해 보세요.";
 
-                resultTitle =
-                    "향후 사업성장 계획을 구체화해 보세요.";
+            resultMessage =
+                "사업자등록이나 법인등기 등 기업의 기본자료를 통해 " +
+                "현재 대표자 현황을 확인한 후 여성기업 확인을 위한 " +
+                "세부사항을 검토하는 것이 좋습니다.";
 
-                resultMessage =
-                    "시장진입 방법과 판매확대 계획, 향후 사업목표와 실행방안 등 " +
-                    "기업이 앞으로 어떻게 성장할 것인지를 구체적으로 " +
-                    "정리할 필요가 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // ③ 기업형태 불확실
+        else if (businessType.value === "unknown") {
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
-            else if (
-                product.value === "unknown" ||
-                difference.value === "unknown" ||
-                development.value === "unknown" ||
-                team.value === "unknown" ||
-                market.value === "unknown" ||
-                growth.value === "unknown"
-            ) {
+            resultTitle =
+                "기업형태를 먼저 확인해 보세요.";
 
-                resultTitle =
-                    "벤처확인을 위해 추가적인 검토가 필요합니다.";
+            resultMessage =
+                "개인사업자, 법인사업자, 협동조합 등에 따라 " +
+                "확인해야 하는 소유·지분관계와 세부요건 및 준비자료가 " +
+                "달라질 수 있습니다. 현재 기업형태부터 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 기업의 기술·제품·서비스, " +
-                    "개발과정, 인력, 시장 및 성장계획을 함께 검토하면 " +
-                    "현재 준비상태와 보완해야 할 부분을 확인할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-check";
-            }
 
+        // ④ 소유·지분관계를 확인하기 어려운 경우
+        else if (ownership.value === "no") {
 
-            // 모두 예
-            else {
+            resultTitle =
+                "소유·지분관계를 확인할 필요가 있습니다.";
 
-                resultTitle =
-                    "벤처확인 검토를 위한 기본적인 준비가 되어 있습니다.";
+            resultMessage =
+                "공동사업자나 다른 주주·출자자가 있는 경우에는 " +
+                "기업형태에 따라 여성의 지분·출자관계를 확인할 필요가 있습니다. " +
+                "현재 지분이나 출자관계를 확인할 수 있는 자료부터 살펴보세요.";
 
-                resultMessage =
-                    "현재 답변상 기술·제품·서비스의 차별성, 개발과정, " +
-                    "사업수행 인력, 목표시장 및 성장계획이 어느 정도 정리되어 있습니다. " +
-                    "실제 신청 전에는 기업에 적합한 벤처확인 유형과 " +
-                    "평가자료 및 증빙자료를 구체적으로 검토하는 것이 좋습니다.";
+            resultClass = "result-check";
+        }
 
-                resultClass = "result-success";
-            }
 
+        // ⑤ 실제 경영 여부
+        else if (management.value === "no") {
 
-            // 어떤 결과에서도 상담 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=venture-confirmation"
-            );
+            resultTitle =
+                "여성 대표자의 실제 경영상황을 확인해 보세요.";
 
-        });
+            resultMessage =
+                "여성기업 확인에서는 대표자 명의뿐 아니라 " +
+                "여성이 실제로 기업을 경영하고 있는지도 중요한 확인사항입니다. " +
+                "주요 의사결정과 업무수행 등 현재 기업의 실제 운영상황을 " +
+                "살펴볼 필요가 있습니다.";
 
-        return;
-    }
+            resultClass = "result-check";
+        }
 
-    // =====================================================
-    // 여성기업 확인 자가진단
-    // =====================================================
 
-    if (document.querySelector('input[name="womenRepresentative"]')) {
+        // ⑥ 자료 준비
+        else if (documents.value === "no") {
 
-        button.addEventListener("click", function () {
+            resultTitle =
+                "기업형태에 맞는 확인자료를 준비해 보세요.";
 
-            const representative =
-                document.querySelector('input[name="womenRepresentative"]:checked');
+            resultMessage =
+                "개인사업자, 법인사업자, 협동조합 및 공동사업 여부 등에 따라 " +
+                "확인해야 하는 자료가 달라질 수 있습니다. " +
+                "현재 기업형태와 소유·경영상황을 확인할 수 있는 " +
+                "자료부터 준비해 보세요.";
 
-            const businessType =
-                document.querySelector('input[name="womenBusinessType"]:checked');
+            resultClass = "result-check";
+        }
 
-            const ownership =
-                document.querySelector('input[name="womenOwnership"]:checked');
 
-            const management =
-                document.querySelector('input[name="womenManagement"]:checked');
+        // ⑦ 잘 모르겠습니다
+        else if (
+            ownership.value === "unknown" ||
+            management.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
 
-            const documents =
-                document.querySelector('input[name="womenDocuments"]:checked');
+            resultTitle =
+                "추가로 확인할 사항이 있습니다.";
 
+            resultMessage =
+                "현재 확인하기 어려운 사항이 있습니다. " +
+                "기업형태와 소유·지분관계, 여성 대표자의 실제 경영상황 및 " +
+                "관련 자료를 확인하면 여성기업 확인 신청을 위해 " +
+                "검토해야 할 사항을 보다 구체적으로 살펴볼 수 있습니다.";
 
-            // 모든 질문에 답했는지 확인
-            if (
-                !representative ||
-                !businessType ||
-                !ownership ||
-                !management ||
-                !documents
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultClass = "result-check";
+        }
 
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        // ⑧ 기본사항을 확인한 경우
+        else {
 
+            resultTitle =
+                "여성기업 확인을 위한 기본사항을 확인하셨습니다.";
 
-            // ① 여성 대표자 여부
-            if (representative.value === "no") {
+            resultMessage =
+                "현재 답변상 대표자, 기업형태 및 실제 경영상황 등 " +
+                "기본적인 사항을 확인하신 것으로 보입니다. " +
+                "실제 신청 전에는 기업형태에 따른 세부요건과 " +
+                "소유·지분관계 및 필요한 제출자료를 추가로 확인하는 것이 좋습니다.";
 
-                resultTitle =
-                    "여성 대표자 요건을 먼저 확인할 필요가 있습니다.";
+            resultClass = "result-success";
+        }
 
-                resultMessage =
-                    "여성기업 확인은 여성 대표자가 기업을 소유하고 " +
-                    "경영하는 것을 기본으로 합니다. 현재 대표자 구성과 " +
-                    "기업의 실제 운영관계를 먼저 확인해 보시기 바랍니다.";
 
-                resultClass = "result-check";
-            }
+        // 모든 결과에서 상담 가능
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=women-business-confirmation"
+        );
 
+    });
 
-            // ② 여성 대표자인지 불확실
-            else if (representative.value === "unknown") {
-
-                resultTitle =
-                    "대표자 현황을 먼저 확인해 보세요.";
-
-                resultMessage =
-                    "사업자등록 및 법인등기 등 기업의 기본자료를 통해 " +
-                    "현재 대표자 현황을 확인한 후 여성기업 해당 여부를 " +
-                    "구체적으로 검토할 필요가 있습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ③ 기업형태 불확실
-            else if (businessType.value === "unknown") {
-
-                resultTitle =
-                    "기업형태를 먼저 확인할 필요가 있습니다.";
-
-                resultMessage =
-                    "개인사업자, 법인사업자, 협동조합 등에 따라 " +
-                    "소유관계를 확인하는 방법과 준비해야 할 자료가 달라질 수 있습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ④ 소유·지분관계
-            else if (ownership.value === "no") {
-
-                resultTitle =
-                    "여성 대표자의 소유·지분관계를 검토할 필요가 있습니다.";
-
-                resultMessage =
-                    "여성기업 확인에서는 대표자 명의뿐 아니라 기업형태에 따른 " +
-                    "실질적인 소유관계가 중요한 확인사항입니다. " +
-                    "현재 지분 및 소유구조를 구체적으로 검토해 보시기 바랍니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ⑤ 실제 경영
-            else if (management.value === "no") {
-
-                resultTitle =
-                    "여성 대표자의 실제 경영상황을 검토할 필요가 있습니다.";
-
-                resultMessage =
-                    "여성기업 확인은 여성 대표자가 실제로 기업을 경영하고 있는지도 " +
-                    "중요하게 확인합니다. 의사결정과 업무수행 등 실제 운영상황을 " +
-                    "구체적으로 살펴볼 필요가 있습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // ⑥ 자료 준비
-            else if (documents.value === "no") {
-
-                resultTitle =
-                    "기업형태에 맞는 확인자료를 준비할 필요가 있습니다.";
-
-                resultMessage =
-                    "개인사업자와 법인사업자, 협동조합 등에 따라 " +
-                    "대표자와 소유·지분관계 및 기업 운영을 확인하는 자료가 달라집니다. " +
-                    "현재 기업형태에 맞는 준비자료를 확인해 보시기 바랍니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // 잘 모르겠습니다
-            else if (
-                ownership.value === "unknown" ||
-                management.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
-
-                resultTitle =
-                    "여성기업 확인을 위해 추가적인 검토가 필요합니다.";
-
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. " +
-                    "기업형태와 대표자, 소유·지분관계 및 실제 경영상황을 " +
-                    "확인하면 여성기업 신청 준비상태를 보다 구체적으로 검토할 수 있습니다.";
-
-                resultClass = "result-check";
-            }
-
-
-            // 기본요건이 정리된 경우
-            else {
-
-                resultTitle =
-                    "여성기업 확인 신청을 검토해 볼 수 있습니다.";
-
-                resultMessage =
-                    "현재 답변상 여성 대표자의 소유 및 경영관계가 " +
-                    "기본적으로 정리되어 있습니다. 실제 신청 전에는 기업형태별 " +
-                    "세부요건과 제출자료를 확인하는 것이 좋습니다.";
-
-                resultClass = "result-success";
-            }
-
-
-            // 모든 결과에서 상담 가능
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=women-business-confirmation"
-            );
-
-        });
-
-        return;
-    }
+    return;
+}
 
     // =====================================================
     // 직접생산확인증명서 자가진단
@@ -3848,96 +3879,98 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             let resultClass;
 
 
-            // ① 신청제품
+            // ① 신청제품이 정해지지 않은 경우
             if (product.value === "no") {
 
                 resultTitle =
                     "신청하려는 제품부터 구체적으로 정할 필요가 있습니다.";
 
                 resultMessage =
-                    "직접생산확인은 신청제품에 따라 적용되는 확인기준이 달라집니다. " +
+                    "직접생산확인은 신청제품에 따라 적용되는 기준이 달라집니다. " +
                     "먼저 어떤 제품에 대해 직접생산확인을 받을 것인지 정한 후 " +
-                    "해당 제품의 기준을 검토하는 것이 좋습니다.";
+                    "해당 제품의 세부품명과 직접생산확인기준을 검토하는 것이 좋습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ② 세부품명
+            // ② 세부품명을 확인하지 않은 경우
             else if (item.value === "no") {
 
                 resultTitle =
                     "신청제품의 세부품명을 먼저 확인해 보세요.";
 
                 resultMessage =
-                    "직접생산확인기준은 신청하려는 제품의 세부품명에 따라 " +
-                    "달라질 수 있습니다. 제품에 맞는 세부품명을 확인한 후 " +
-                    "적용되는 직접생산확인기준을 검토할 필요가 있습니다.";
+                    "직접생산확인기준은 신청제품의 세부품명에 따라 달라집니다. " +
+                    "제품에 맞는 세부품명을 확인한 후 생산공정·시설·장비·인력 등 " +
+                    "해당 세부품명에 적용되는 기준을 검토할 필요가 있습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ③ 생산공장
+            // ③ 생산공장 또는 생산사업장이 없는 경우
             else if (factory.value === "no") {
 
                 resultTitle =
-                    "제품을 생산하는 공장·사업장부터 검토할 필요가 있습니다.";
+                    "신청제품을 생산할 사업장에 대한 검토가 필요합니다.";
 
                 resultMessage =
-                    "신청제품을 실제로 어디에서 생산하는지와 해당 생산장소가 " +
-                    "직접생산확인기준에 적합한지를 확인할 필요가 있습니다.";
+                    "직접생산확인을 위해서는 신청제품을 실제로 생산하는 장소와 " +
+                    "생산여건을 확인해야 합니다. 현재 생산장소와 해당 제품에 적용되는 " +
+                    "직접생산확인기준을 먼저 검토해 보시기 바랍니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ④ 직접생산 여부
+            // ④ 주요 생산공정을 직접 수행하지 않는 경우
             else if (production.value === "no") {
 
                 resultTitle =
                     "현재 생산방식에 대한 검토가 필요합니다.";
 
                 resultMessage =
-                    "직접생산확인은 신청기업이 해당 제품을 직접 생산하는지를 " +
-                    "확인하는 제도입니다. 외부업체에 생산을 맡기거나 완제품을 " +
-                    "구매하는 형태라면 현재 생산방식과 적용기준을 먼저 검토해야 합니다.";
+                    "직접생산확인은 신청기업이 해당 제품의 직접생산에 필요한 " +
+                    "생산공정을 실제로 수행하는지를 확인합니다. " +
+                    "외부업체 위탁이나 완제품 구매 등이 있는 경우에는 " +
+                    "해당 제품의 직접생산확인기준과 현재 생산방식을 먼저 비교해 볼 필요가 있습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑤ 제품별 기준
+            // ⑤ 제품별 직접생산확인기준을 확인하지 않은 경우
             else if (criteria.value === "no") {
 
                 resultTitle =
                     "신청제품의 직접생산확인기준을 먼저 확인해 보세요.";
 
                 resultMessage =
-                    "제품별로 생산공장, 생산시설·장비, 인력 및 생산공정 등 " +
-                    "확인해야 할 기준이 다를 수 있습니다. 신청 전에 해당 제품에 " +
-                    "적용되는 기준을 구체적으로 검토하는 것이 중요합니다.";
+                    "직접생산확인기준은 세부품명별로 다를 수 있습니다. " +
+                    "신청 전에 생산공정·시설·장비·인력 등 해당 제품에 적용되는 " +
+                    "구체적인 기준을 확인하고 현재 생산여건과 비교해 보는 것이 중요합니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // ⑥ 증빙자료
+            // ⑥ 확인자료가 준비되지 않은 경우
             else if (documents.value === "no") {
 
                 resultTitle =
                     "직접생산 사실을 확인할 자료를 준비할 필요가 있습니다.";
 
                 resultMessage =
-                    "제품별 직접생산확인기준에 따라 생산공장·시설·장비·인력 등 " +
-                    "기준 충족 여부를 확인할 수 있는 자료를 준비해야 합니다. " +
-                    "신청제품에 필요한 자료를 먼저 확인해 보시기 바랍니다.";
+                    "신청제품의 직접생산확인기준에 따라 생산시설·장비·인력 및 " +
+                    "생산과정 등을 확인할 수 있는 자료가 필요할 수 있습니다. " +
+                    "해당 세부품명의 기준을 확인한 후 필요한 자료를 준비해 보시기 바랍니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
+            // 하나 이상 '잘 모르겠습니다'인 경우
             else if (
                 product.value === "unknown" ||
                 item.value === "unknown" ||
@@ -3948,28 +3981,28 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
             ) {
 
                 resultTitle =
-                    "직접생산확인 신청을 위해 추가적인 검토가 필요합니다.";
+                    "확인이 필요한 사항이 있어 추가 검토가 필요합니다.";
 
                 resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 신청제품과 세부품명, " +
-                    "생산공장 및 실제 생산방식 등을 확인한 후 해당 제품의 " +
-                    "직접생산확인기준 충족 여부를 검토하는 것이 좋습니다.";
+                    "현재 답변만으로는 직접생산확인 신청 가능 여부를 판단하기 어려운 사항이 있습니다. " +
+                    "신청제품과 세부품명, 생산사업장, 실제 생산공정 등을 확인한 후 " +
+                    "해당 제품의 직접생산확인기준과 비교해 보는 것이 좋습니다.";
 
                 resultClass = "result-check";
             }
 
 
-            // 모두 예
+            // 모든 항목이 '예'인 경우
             else {
 
                 resultTitle =
                     "직접생산확인 신청을 검토해 볼 수 있습니다.";
 
                 resultMessage =
-                    "현재 답변상 신청제품과 생산공장, 직접생산 여부 및 " +
-                    "제품별 기준에 대한 기본적인 준비가 되어 있습니다. " +
-                    "실제 신청 전에는 해당 세부품명의 직접생산확인기준과 " +
-                    "제출자료를 구체적으로 확인하는 것이 좋습니다.";
+                    "현재 답변상 신청제품과 세부품명, 생산사업장, 직접생산 여부 등 " +
+                    "기본적인 신청여건이 갖추어진 것으로 보입니다. " +
+                    "실제 신청 전에는 해당 세부품명의 직접생산확인기준 충족 여부와 " +
+                    "필요한 증빙자료를 최종적으로 확인하는 것이 좋습니다.";
 
                 resultClass = "result-success";
             }
@@ -3988,1110 +4021,1286 @@ if (document.querySelector('input[name="spouseVisitMarriage"]')) {
         return;
     }
 
-    // =====================================================
-    // 기업부설연구소 자가진단
-    // =====================================================
+// =====================================================
+// 기업부설연구소 자가진단
+// =====================================================
 
-    if (document.querySelector('input[name="researchActivity"]')) {
+if (document.querySelector('input[name="researchActivity"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const activity =
-                document.querySelector('input[name="researchActivity"]:checked');
+        const activity =
+            document.querySelector('input[name="researchActivity"]:checked');
 
-            const personnel =
-                document.querySelector('input[name="researchPersonnel"]:checked');
+        const personnel =
+            document.querySelector('input[name="researchPersonnel"]:checked');
 
-            const dedicated =
-                document.querySelector('input[name="researchDedicated"]:checked');
+        const dedicated =
+            document.querySelector('input[name="researchDedicated"]:checked');
 
-            const space =
-                document.querySelector('input[name="researchSpace"]:checked');
+        const space =
+            document.querySelector('input[name="researchSpace"]:checked');
 
-            const equipment =
-                document.querySelector('input[name="researchEquipment"]:checked');
+        const equipment =
+            document.querySelector('input[name="researchEquipment"]:checked');
 
-            const documents =
-                document.querySelector('input[name="researchDocuments"]:checked');
+        const documents =
+            document.querySelector('input[name="researchDocuments"]:checked');
 
-            if (
-                !activity ||
-                !personnel ||
-                !dedicated ||
-                !space ||
-                !equipment ||
-                !documents
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        if (
+            !activity ||
+            !personnel ||
+            !dedicated ||
+            !space ||
+            !equipment ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            if (activity.value === "no") {
+        if (activity.value === "no") {
 
-                resultTitle =
-                    "연구개발활동의 내용을 먼저 구체화할 필요가 있습니다.";
+            resultTitle =
+                "연구개발활동의 내용을 먼저 구체화할 필요가 있습니다.";
 
-                resultMessage =
-                    "기업부설연구소는 기업이 실제로 수행하는 연구개발활동을 " +
-                    "기반으로 운영되어야 합니다. 현재 회사에서 어떤 기술이나 " +
-                    "제품을 연구·개발할 것인지 먼저 검토하는 것이 좋습니다.";
+            resultMessage =
+                "기업부설연구소는 기업이 실제로 수행하는 연구개발활동을 " +
+                "기반으로 운영되어야 합니다. 현재 기업에서 어떤 기술이나 " +
+                "제품·서비스를 연구·개발할 것인지 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (personnel.value === "no") {
+        else if (personnel.value === "no") {
 
-                resultTitle =
-                    "연구개발을 담당할 인력을 먼저 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구개발을 담당할 인력을 먼저 확보할 필요가 있습니다.";
 
-                resultMessage =
-                    "기업부설연구소는 연구개발활동을 담당하는 연구인력이 " +
-                    "필요합니다. 기업의 유형과 현재 인력현황을 확인하여 " +
-                    "연구전담요원 인정요건을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "기업부설연구소는 연구개발활동을 담당하는 연구전담요원이 " +
+                "필요합니다. 기업의 유형과 현재 인력현황을 확인하여 " +
+                "필요한 연구인력 요건을 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (dedicated.value === "no") {
+        else if (dedicated.value === "no") {
 
-                resultTitle =
-                    "연구인력의 업무형태를 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구전담요원의 인정요건을 검토할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구개발을 담당하는 인력이 있더라도 실제로 연구업무를 " +
-                    "전담할 수 있는지 확인해야 합니다. 현재 담당자의 업무내용과 " +
-                    "연구조직 운영방식을 함께 검토하는 것이 좋습니다.";
+            resultMessage =
+                "연구인력을 확보하고 있더라도 기업의 유형에 따라 필요한 인원과 " +
+                "연구전담요원의 학력·경력 등 인정요건을 확인해야 합니다. " +
+                "현재 연구인력이 해당 요건에 맞는지 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (space.value === "no") {
+        else if (space.value === "no") {
 
-                resultTitle =
-                    "연구소로 사용할 연구공간을 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구소로 사용할 연구공간을 검토할 필요가 있습니다.";
 
-                resultMessage =
-                    "기업부설연구소는 연구개발활동을 수행할 수 있는 연구공간을 " +
-                    "갖추어야 합니다. 현재 사업장의 구조와 사용할 공간을 확인하여 " +
-                    "연구공간 인정요건을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "기업부설연구소는 연구개발활동을 수행할 수 있는 연구공간이 " +
+                "필요합니다. 현재 사업장의 구조와 연구소로 사용할 공간을 확인하여 " +
+                "연구공간 인정요건에 적합한지 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (equipment.value === "no") {
+        else if (equipment.value === "no") {
 
-                resultTitle =
-                    "연구개발에 필요한 연구환경을 검토해 보세요.";
+            resultTitle =
+                "연구개발에 필요한 연구환경을 검토해 보세요.";
 
-                resultMessage =
-                    "수행하려는 연구개발활동에 필요한 시설·장비 등 연구환경이 " +
-                    "적절하게 갖추어져 있는지 확인할 필요가 있습니다. " +
-                    "연구분야와 실제 연구활동을 기준으로 검토하는 것이 좋습니다.";
+            resultMessage =
+                "수행하려는 연구개발활동에 필요한 시설·장비 등 연구환경이 " +
+                "적절하게 갖추어져 있는지 확인할 필요가 있습니다. " +
+                "연구분야와 실제 연구개발활동을 기준으로 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (documents.value === "no") {
+        else if (documents.value === "no") {
 
-                resultTitle =
-                    "신고에 필요한 확인자료를 준비할 필요가 있습니다.";
+            resultTitle =
+                "신고에 필요한 확인자료를 준비할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구인력과 연구공간 등 기업의 연구환경을 확인할 수 있는 " +
-                    "자료를 준비해야 합니다. 기업의 현재 상황에 따라 필요한 " +
-                    "자료를 확인한 후 신고를 준비하는 것이 좋습니다.";
+            resultMessage =
+                "연구인력과 연구공간, 연구개발활동 등 기업의 연구환경을 " +
+                "확인할 수 있는 자료가 필요합니다. 현재 기업의 상황에 따라 " +
+                "필요한 자료를 확인한 후 신고를 준비하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (
-                activity.value === "unknown" ||
-                personnel.value === "unknown" ||
-                dedicated.value === "unknown" ||
-                space.value === "unknown" ||
-                equipment.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
+        else if (
+            activity.value === "unknown" ||
+            personnel.value === "unknown" ||
+            dedicated.value === "unknown" ||
+            space.value === "unknown" ||
+            equipment.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
 
-                resultTitle =
-                    "기업부설연구소 신고를 위해 추가적인 검토가 필요합니다.";
+            resultTitle =
+                "확인이 필요한 사항이 있어 추가 검토가 필요합니다.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 연구개발활동, " +
-                    "연구인력, 연구공간 및 연구환경 등을 확인하여 " +
-                    "기업부설연구소 인정요건 충족 여부를 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변만으로는 기업부설연구소 인정요건 충족 여부를 " +
+                "판단하기 어려운 사항이 있습니다. 연구개발활동과 연구전담요원, " +
+                "연구공간 및 연구환경 등을 확인하여 세부 인정요건과 " +
+                "비교해 보는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else {
+        else {
 
-                resultTitle =
-                    "기업부설연구소 신고를 검토해 볼 수 있습니다.";
+            resultTitle =
+                "기업부설연구소 신고를 검토해 볼 수 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 연구개발활동, 연구인력, 연구공간 및 연구환경에 " +
-                    "대한 기본적인 준비가 되어 있습니다. 실제 신고 전에는 " +
-                    "기업 유형과 연구전담요원 자격 등 세부 인정요건을 " +
-                    "구체적으로 확인하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변상 연구개발활동과 연구인력, 연구공간 및 연구환경 등 " +
+                "기본적인 준비여건이 갖추어진 것으로 보입니다. 실제 신고 전에는 " +
+                "기업 유형에 따른 연구전담요원의 인원·자격과 연구공간 등 " +
+                "세부 인정요건을 최종적으로 확인하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-success";
+        }
 
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=corporate-research-institute"
-            );
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=corporate-research-institute"
+        );
 
-        });
+    });
 
-        return;
-    }
+    return;
+}
 
-    // =====================================================
-    // 연구개발전담부서 자가진단
-    // =====================================================
+// =====================================================
+// 연구개발전담부서 자가진단
+// =====================================================
 
-    if (document.querySelector('input[name="departmentActivity"]')) {
+if (document.querySelector('input[name="departmentActivity"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const activity =
-                document.querySelector('input[name="departmentActivity"]:checked');
+        const activity =
+            document.querySelector('input[name="departmentActivity"]:checked');
 
-            const personnel =
-                document.querySelector('input[name="departmentPersonnel"]:checked');
+        const personnel =
+            document.querySelector('input[name="departmentPersonnel"]:checked');
 
-            const dedicated =
-                document.querySelector('input[name="departmentDedicated"]:checked');
+        const dedicated =
+            document.querySelector('input[name="departmentDedicated"]:checked');
 
-            const space =
-                document.querySelector('input[name="departmentSpace"]:checked');
+        const space =
+            document.querySelector('input[name="departmentSpace"]:checked');
 
-            const equipment =
-                document.querySelector('input[name="departmentEquipment"]:checked');
+        const equipment =
+            document.querySelector('input[name="departmentEquipment"]:checked');
 
-            const documents =
-                document.querySelector('input[name="departmentDocuments"]:checked');
+        const documents =
+            document.querySelector('input[name="departmentDocuments"]:checked');
 
-            if (
-                !activity ||
-                !personnel ||
-                !dedicated ||
-                !space ||
-                !equipment ||
-                !documents
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        if (
+            !activity ||
+            !personnel ||
+            !dedicated ||
+            !space ||
+            !equipment ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            if (activity.value === "no") {
+        if (activity.value === "no") {
 
-                resultTitle =
-                    "연구개발활동의 내용을 먼저 구체화할 필요가 있습니다.";
+            resultTitle =
+                "연구개발활동의 내용을 먼저 구체화할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구개발전담부서는 기업이 실제로 수행하는 연구개발활동을 " +
-                    "기반으로 운영되어야 합니다. 회사에서 어떤 기술이나 제품을 " +
-                    "연구·개발할 것인지 먼저 검토하는 것이 좋습니다.";
+            resultMessage =
+                "연구개발전담부서는 기업이 실제로 수행하는 연구개발활동을 " +
+                "기반으로 운영되어야 합니다. 현재 기업에서 어떤 기술이나 " +
+                "제품·서비스를 연구·개발할 것인지 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (personnel.value === "no") {
+        else if (personnel.value === "no") {
 
-                resultTitle =
-                    "연구개발을 담당할 인력을 먼저 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구개발을 담당할 인력을 먼저 확보할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구개발전담부서는 연구개발활동을 담당하는 연구인력이 " +
-                    "필요합니다. 현재 인력현황과 담당자의 자격 등을 확인하여 " +
-                    "연구전담요원 인정요건을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "연구개발전담부서는 연구개발활동을 담당하는 연구전담요원이 " +
+                "필요합니다. 현재 인력현황을 확인하고 연구개발업무를 담당할 " +
+                "연구인력을 확보할 수 있는지 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (dedicated.value === "no") {
+        else if (dedicated.value === "no") {
 
-                resultTitle =
-                    "연구인력의 업무형태를 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구전담요원의 인정요건을 검토할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구개발 담당자가 있더라도 실제로 연구개발업무를 " +
-                    "전담할 수 있는지 확인해야 합니다. 현재 담당자의 업무내용과 " +
-                    "연구조직 운영방식을 함께 검토하는 것이 좋습니다.";
+            resultMessage =
+                "연구인력을 확보하고 있더라도 연구전담요원으로 인정받기 위한 " +
+                "인원과 학력·경력 등 관련 요건을 확인해야 합니다. " +
+                "현재 연구인력이 해당 요건에 맞는지 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (space.value === "no") {
+        else if (space.value === "no") {
 
-                resultTitle =
-                    "연구개발전담부서로 사용할 공간을 검토할 필요가 있습니다.";
+            resultTitle =
+                "연구개발전담부서로 사용할 연구공간을 검토할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구개발활동을 수행할 수 있는 연구공간이 필요합니다. " +
-                    "현재 사업장의 구조와 사용할 공간을 확인하여 " +
-                    "연구공간 인정요건을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "연구개발전담부서는 연구개발활동을 수행할 수 있는 연구공간이 " +
+                "필요합니다. 현재 사업장의 구조와 연구부서로 사용할 공간을 확인하여 " +
+                "연구공간 인정요건에 적합한지 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (equipment.value === "no") {
+        else if (equipment.value === "no") {
 
-                resultTitle =
-                    "연구개발에 필요한 연구환경을 검토해 보세요.";
+            resultTitle =
+                "연구개발에 필요한 연구환경을 검토해 보세요.";
 
-                resultMessage =
-                    "수행하려는 연구개발활동에 필요한 시설·장비 등 연구환경이 " +
-                    "적절하게 갖추어져 있는지 확인할 필요가 있습니다. " +
-                    "실제 연구분야와 연구활동을 기준으로 검토하는 것이 좋습니다.";
+            resultMessage =
+                "수행하려는 연구개발활동에 필요한 시설·장비 등 연구환경이 " +
+                "적절하게 갖추어져 있는지 확인할 필요가 있습니다. " +
+                "연구분야와 실제 연구개발활동을 기준으로 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (documents.value === "no") {
+        else if (documents.value === "no") {
 
-                resultTitle =
-                    "신고에 필요한 확인자료를 준비할 필요가 있습니다.";
+            resultTitle =
+                "신고에 필요한 확인자료를 준비할 필요가 있습니다.";
 
-                resultMessage =
-                    "연구인력과 연구공간 등 현재 연구환경을 확인할 수 있는 " +
-                    "자료를 준비해야 합니다. 기업의 현재 상황에 따라 필요한 " +
-                    "자료를 확인한 후 신고를 준비하는 것이 좋습니다.";
+            resultMessage =
+                "연구인력과 연구공간, 연구개발활동 등 현재 연구환경을 " +
+                "확인할 수 있는 자료가 필요합니다. 기업의 현재 상황에 따라 " +
+                "필요한 자료를 확인한 후 신고를 준비하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (
-                activity.value === "unknown" ||
-                personnel.value === "unknown" ||
-                dedicated.value === "unknown" ||
-                space.value === "unknown" ||
-                equipment.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
+        else if (
+            activity.value === "unknown" ||
+            personnel.value === "unknown" ||
+            dedicated.value === "unknown" ||
+            space.value === "unknown" ||
+            equipment.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
 
-                resultTitle =
-                    "연구개발전담부서 신고를 위해 추가적인 검토가 필요합니다.";
+            resultTitle =
+                "확인이 필요한 사항이 있어 추가 검토가 필요합니다.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 연구개발활동, " +
-                    "연구인력, 연구공간 및 연구환경 등을 확인하여 " +
-                    "연구개발전담부서 인정요건 충족 여부를 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변만으로는 연구개발전담부서 인정요건 충족 여부를 " +
+                "판단하기 어려운 사항이 있습니다. 연구개발활동과 연구전담요원, " +
+                "연구공간 및 연구환경 등을 확인하여 세부 인정요건과 " +
+                "비교해 보는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else {
+        else {
 
-                resultTitle =
-                    "연구개발전담부서 신고를 검토해 볼 수 있습니다.";
+            resultTitle =
+                "연구개발전담부서 신고를 검토해 볼 수 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 연구개발활동, 연구인력, 연구공간 및 연구환경에 " +
-                    "대한 기본적인 준비가 되어 있습니다. 실제 신고 전에는 " +
-                    "연구전담요원의 자격과 연구공간 등 세부 인정요건을 " +
-                    "구체적으로 확인하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변상 연구개발활동과 연구인력, 연구공간 및 연구환경 등 " +
+                "기본적인 준비여건이 갖추어진 것으로 보입니다. 실제 신고 전에는 " +
+                "연구전담요원의 인원·자격과 연구공간 등 세부 인정요건을 " +
+                "최종적으로 확인하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-success";
+        }
 
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=research-development-department"
-            );
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=research-development-department"
+        );
 
-        });
+    });
 
-        return;
-    }
+    return;
+}
 
-    // =====================================================
-    // 벤처나라 자가진단
-    // =====================================================
+// =====================================================
+// 벤처나라 자가진단
+// =====================================================
 
-    if (document.querySelector('input[name="ventureNaraCompany"]')) {
+if (document.querySelector('input[name="ventureNaraCompany"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const company =
-                document.querySelector('input[name="ventureNaraCompany"]:checked');
+        const company =
+            document.querySelector('input[name="ventureNaraCompany"]:checked');
 
-            const product =
-                document.querySelector('input[name="ventureNaraProduct"]:checked');
+        const product =
+            document.querySelector('input[name="ventureNaraProduct"]:checked');
 
-            const registration =
-                document.querySelector('input[name="ventureNaraRegistration"]:checked');
+        const registration =
+            document.querySelector('input[name="ventureNaraRegistration"]:checked');
 
-            const technology =
-                document.querySelector('input[name="ventureNaraTechnology"]:checked');
+        const technology =
+            document.querySelector('input[name="ventureNaraTechnology"]:checked');
 
-            const quality =
-                document.querySelector('input[name="ventureNaraQuality"]:checked');
+        const quality =
+            document.querySelector('input[name="ventureNaraQuality"]:checked');
 
-            const certification =
-                document.querySelector('input[name="ventureNaraCertification"]:checked');
+        const certification =
+            document.querySelector('input[name="ventureNaraCertification"]:checked');
 
-            if (
-                !company ||
-                !product ||
-                !registration ||
-                !technology ||
-                !quality ||
-                !certification
-            ) {
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        if (
+            !company ||
+            !product ||
+            !registration ||
+            !technology ||
+            !quality ||
+            !certification
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            let resultTitle;
-            let resultMessage;
-            let resultClass;
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
 
-            if (company.value === "no") {
+        if (company.value === "no") {
 
-                resultTitle =
-                    "먼저 신청기업의 자격을 확인할 필요가 있습니다.";
+            resultTitle =
+                "먼저 신청기업의 자격을 확인할 필요가 있습니다.";
 
-                resultMessage =
-                    "벤처나라는 벤처기업 또는 일정한 요건을 갖춘 창업기업의 " +
-                    "물품·서비스를 대상으로 합니다. 현재 기업이 신청대상에 " +
-                    "해당하는지 먼저 확인하는 것이 좋습니다.";
+            resultMessage =
+                "벤처나라 지정 신청은 신청대상 기업에 해당하는지부터 " +
+                "확인해야 합니다. 현재 기업이 벤처기업 또는 창업기업 등 " +
+                "신청대상 요건에 해당하는지 먼저 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (product.value === "no") {
+        else if (product.value === "no") {
 
-                resultTitle =
-                    "벤처나라에 신청할 상품부터 구체적으로 정할 필요가 있습니다.";
+            resultTitle =
+                "벤처나라에 신청할 상품부터 구체화할 필요가 있습니다.";
 
-                resultMessage =
-                    "벤처나라는 기업 자체가 아니라 기업이 생산하는 물품·서비스를 " +
-                    "대상으로 지정심사가 이루어집니다. 어떤 상품을 신청할 것인지 " +
-                    "먼저 구체화하는 것이 좋습니다.";
+            resultMessage =
+                "벤처나라 지정심사는 신청하려는 상품을 기준으로 진행됩니다. " +
+                "어떤 상품을 신청할 것인지 정한 뒤 해당 상품의 기술적 특징과 " +
+                "품질·성능 등을 구체적으로 검토하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (registration.value === "no") {
+        else if (registration.value === "no") {
 
-                resultTitle =
-                    "신청에 필요한 조달등록 준비사항을 확인해 보세요.";
+            resultTitle =
+                "조달등록에 필요한 준비사항을 확인해 보세요.";
 
-                resultMessage =
-                    "벤처나라 지정 신청 전에 신청상품에 필요한 물품식별번호 등 " +
-                    "조달등록 준비사항을 확인할 필요가 있습니다. 현재 상품의 " +
-                    "등록상태를 먼저 점검하는 것이 좋습니다.";
+            resultMessage =
+                "신청상품의 물품식별번호 등 조달등록과 관련하여 " +
+                "확인해야 할 사항이 있습니다. 현재 상품의 등록상태와 " +
+                "필요한 준비절차를 먼저 점검하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (technology.value === "no") {
+        else if (technology.value === "no") {
 
-                resultTitle =
-                    "신청상품의 기술과 차별성을 구체화할 필요가 있습니다.";
+            resultTitle =
+                "신청상품의 기술적 특징과 차별성을 구체화할 필요가 있습니다.";
 
-                resultMessage =
-                    "지정심사에서는 신청상품에 적용된 기술과 기존 제품과의 " +
-                    "차별성 등이 중요한 검토사항이 됩니다. 상품에 적용된 기술과 " +
-                    "그로 인해 달라지는 특징·효과를 정리하는 것이 좋습니다.";
+            resultMessage =
+                "신청상품에 어떤 기술이 적용되었는지와 기존 제품에 비해 " +
+                "무엇이 달라졌는지를 구체적으로 설명할 수 있어야 합니다. " +
+                "기술적 특징과 그로 인한 기능·성능상의 차이를 정리해 보세요.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (quality.value === "no") {
+        else if (quality.value === "no") {
 
-                resultTitle =
-                    "상품의 품질·성능을 확인할 자료를 검토할 필요가 있습니다.";
+            resultTitle =
+                "상품의 품질·성능을 확인할 자료를 준비할 필요가 있습니다.";
 
-                resultMessage =
-                    "신청상품의 품질과 성능을 객관적으로 설명할 수 있는 자료가 " +
-                    "필요할 수 있습니다. 현재 보유한 인증서, 시험성적서 등 " +
-                    "품질 관련 자료를 확인하는 것이 좋습니다.";
+            resultMessage =
+                "신청상품의 품질과 성능을 객관적으로 확인할 수 있는 " +
+                "시험성적서·인증서 등의 자료가 있는지 검토해 보세요. " +
+                "현재 보유한 자료와 추가로 확보할 자료를 구분하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (certification.value === "no") {
+        else if (certification.value === "no") {
 
-                resultTitle =
-                    "신청상품의 법정의무인증 여부를 먼저 확인해 보세요.";
+            resultTitle =
+                "신청상품에 필요한 인증부터 확인할 필요가 있습니다.";
 
-                resultMessage =
-                    "제품에 따라 제조·판매 전에 법령상 필요한 인증이나 등록 등이 " +
-                    "있을 수 있습니다. 신청상품에 적용되는 의무사항이 있는지 " +
-                    "먼저 확인하는 것이 중요합니다.";
+            resultMessage =
+                "상품에 따라 제조·판매 등에 필요한 법정의무인증이나 " +
+                "등록 등의 요건이 적용될 수 있습니다. 신청상품에 반드시 " +
+                "필요한 인증이나 의무사항이 있는지 먼저 확인하는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else if (
-                company.value === "unknown" ||
-                product.value === "unknown" ||
-                registration.value === "unknown" ||
-                technology.value === "unknown" ||
-                quality.value === "unknown" ||
-                certification.value === "unknown"
-            ) {
+        else if (
+            company.value === "unknown" ||
+            product.value === "unknown" ||
+            registration.value === "unknown" ||
+            technology.value === "unknown" ||
+            quality.value === "unknown" ||
+            certification.value === "unknown"
+        ) {
 
-                resultTitle =
-                    "벤처나라 신청을 위해 추가적인 검토가 필요합니다.";
+            resultTitle =
+                "확인이 필요한 사항이 있어 추가 검토가 필요합니다.";
 
-                resultMessage =
-                    "현재 확인하기 어려운 사항이 있습니다. 신청기업의 자격과 " +
-                    "신청상품, 조달등록 상태, 기술·품질 및 관련 인증 등을 확인하여 " +
-                    "벤처나라 지정 신청 가능성을 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변만으로는 벤처나라 지정 신청 준비상태를 " +
+                "판단하기 어려운 사항이 있습니다. 신청기업의 자격과 신청상품, " +
+                "조달등록 준비상태, 기술·품질 및 필요한 인증 등을 " +
+                "하나씩 확인해 보는 것이 좋습니다.";
 
-                resultClass = "result-check";
-            }
+            resultClass = "result-check";
+        }
 
-            else {
+        else {
 
-                resultTitle =
-                    "벤처나라 지정 신청을 검토해 볼 수 있습니다.";
+            resultTitle =
+                "벤처나라 지정 신청을 검토해 볼 수 있습니다.";
 
-                resultMessage =
-                    "현재 답변상 신청기업과 상품, 조달등록, 기술·품질 및 인증에 " +
-                    "대한 기본적인 준비가 되어 있습니다. 실제 신청 전에는 " +
-                    "신청대상 여부와 상품설명서 및 기술·품질 증빙자료 등을 " +
-                    "구체적으로 검토하는 것이 좋습니다.";
+            resultMessage =
+                "현재 답변상 신청기업과 상품, 조달등록, 기술·품질 및 인증 등 " +
+                "기본적인 준비여건이 갖추어진 것으로 보입니다. 실제 신청 전에는 " +
+                "신청대상 여부를 최종 확인하고 상품설명서와 기술·품질 관련 " +
+                "증빙자료 등을 구체적으로 검토하는 것이 좋습니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-success";
+        }
 
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=venture-nara"
-            );
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=venture-nara"
+        );
 
-        });
+    });
 
-        return;
-    }
+    return;
+}
 
-    // ------------------------------------------------------------
-    // 탄원서 자가진단
-    // ------------------------------------------------------------
-    if (document.querySelector('input[name="petitionTarget"]')) {
+// =====================================================
+// 탄원서 자가진단
+// =====================================================
 
-        const button = document.getElementById("diagnosisButton");
+if (document.querySelector('input[name="petitionTarget"]')) {
 
-        button.addEventListener("click", function () {
+    button.addEventListener("click", function () {
 
-            const target =
-                document.querySelector('input[name="petitionTarget"]:checked');
+        const target =
+            document.querySelector('input[name="petitionTarget"]:checked');
 
-            const petitionCase =
-                document.querySelector('input[name="petitionCase"]:checked');
+        const petitionCase =
+            document.querySelector('input[name="petitionCase"]:checked');
 
-            const request =
-                document.querySelector('input[name="petitionRequest"]:checked');
+        const request =
+            document.querySelector('input[name="petitionRequest"]:checked');
 
-            const relation =
-                document.querySelector('input[name="petitionRelation"]:checked');
+        const relation =
+            document.querySelector('input[name="petitionRelation"]:checked');
 
-            const facts =
-                document.querySelector('input[name="petitionFacts"]:checked');
+        const facts =
+            document.querySelector('input[name="petitionFacts"]:checked');
 
-            const documents =
-                document.querySelector('input[name="petitionDocuments"]:checked');
+        const documents =
+            document.querySelector('input[name="petitionDocuments"]:checked');
 
 
-            // 답하지 않은 문항 확인
-            if (!target || !petitionCase || !request ||
-                !relation || !facts || !documents) {
+        if (
+            !target ||
+            !petitionCase ||
+            !request ||
+            !relation ||
+            !facts ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-            let resultTitle = "";
-            let resultMessage = "";
-            let resultClass = "result-check";
 
+        // 1. 제출기관·목적
+        if (target.value === "no") {
 
-            // 1. 제출대상
-            if (target.value === "no") {
+            resultTitle =
+                "탄원서의 제출기관과 제출 목적을 먼저 확인해 보세요.";
 
-                resultTitle =
-                    "탄원서를 제출할 대상을 먼저 확인해 보세요.";
+            resultMessage =
+                "탄원서를 어디에 제출하고 무엇을 요청하기 위해 제출하는지에 따라 " +
+                "문서의 내용과 작성 방향이 달라질 수 있습니다. " +
+                "제출기관과 탄원 목적부터 구체적으로 확인하는 것이 좋습니다.";
 
-                resultMessage =
-                    "어느 기관이나 담당자에게 탄원서를 제출할 것인지에 따라 문서의 내용과 작성 방향이 달라질 수 있습니다.";
+            resultClass = "result-check";
+        }
 
 
-            // 2. 사건·사안
-            } else if (petitionCase.value === "no") {
+        // 2. 사건·사안
+        else if (petitionCase.value === "no") {
 
-                resultTitle =
-                    "탄원의 대상이 되는 사건이나 사안을 먼저 정리해 보세요.";
+            resultTitle =
+                "탄원의 대상이 되는 사건이나 사안을 먼저 정리해 보세요.";
 
-                resultMessage =
-                    "탄원서 작성 전 어떤 사건이나 사안에 관한 탄원인지 구체적으로 정리할 필요가 있습니다.";
+            resultMessage =
+                "어떤 사건이나 사안에 관한 탄원인지 명확해야 " +
+                "사건의 경위와 탄원 이유를 체계적으로 구성할 수 있습니다. " +
+                "관련 사건이나 사안의 내용을 먼저 정리하는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // 3. 요청사항
-            } else if (request.value === "no") {
 
-                resultTitle =
-                    "탄원을 통해 요청하려는 내용을 구체화할 필요가 있습니다.";
+        // 3. 요청사항
+        else if (request.value === "no") {
 
-                resultMessage =
-                    "탄원서를 통해 무엇을 요청하려는지가 분명해야 전체 문서의 방향을 정하기 쉽습니다.";
+            resultTitle =
+                "탄원을 통해 요청하려는 내용을 구체화할 필요가 있습니다.";
 
+            resultMessage =
+                "탄원서를 통해 무엇을 요청하려는지가 분명해야 " +
+                "전체 문서의 방향을 정할 수 있습니다. " +
+                "선처·고려 등 실제 전달하려는 요청사항을 먼저 정리해 보세요.";
 
-            // 4. 관계
-            } else if (relation.value === "no") {
+            resultClass = "result-check";
+        }
 
-                resultTitle =
-                    "탄원인과 사건 당사자의 관계를 정리해 보세요.";
 
-                resultMessage =
-                    "탄원인이 어떤 관계에서 사건을 알고 있으며 왜 탄원하게 되었는지를 설명하는 것이 문서 구성에 도움이 됩니다.";
+        // 4. 관계·탄원 배경
+        else if (relation.value === "no") {
 
+            resultTitle =
+                "탄원인과 사건 당사자의 관계와 탄원 배경을 정리해 보세요.";
 
-            // 5. 구체적인 사실
-            } else if (facts.value === "no") {
+            resultMessage =
+                "탄원인이 사건 당사자와 어떤 관계에 있으며 " +
+                "어떤 이유로 탄원하게 되었는지를 설명하면 " +
+                "탄원내용의 배경을 보다 명확하게 전달할 수 있습니다.";
 
-                resultTitle =
-                    "탄원의 이유와 구체적인 사실관계를 정리할 필요가 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultMessage =
-                    "사건의 경위와 탄원 이유를 구체적인 사실을 중심으로 정리하면 탄원 취지를 보다 명확하게 전달할 수 있습니다.";
 
+        // 5. 사건 경위·탄원 이유
+        else if (facts.value === "no") {
 
-            // 6. 관련자료
-            } else if (documents.value === "no") {
+            resultTitle =
+                "사건의 경위와 탄원을 요청하는 이유를 정리할 필요가 있습니다.";
 
-                resultTitle =
-                    "관련 자료가 없더라도 탄원서 작성은 검토할 수 있습니다.";
+            resultMessage =
+                "단순히 사정을 호소하기보다 사건이 어떻게 진행되었는지와 " +
+                "왜 해당 요청을 하는지를 구체적인 사실을 중심으로 정리하면 " +
+                "탄원 취지를 보다 명확하게 전달할 수 있습니다.";
 
-                resultMessage =
-                    "별도의 자료가 없다면 현재 확인할 수 있는 사실관계와 탄원인이 알고 있는 내용을 중심으로 작성 방향을 검토할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
-            } else if (
-                target.value === "unknown" ||
-                petitionCase.value === "unknown" ||
-                request.value === "unknown" ||
-                relation.value === "unknown" ||
-                facts.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
+        // 6. 참고자료
+        else if (documents.value === "no") {
 
-                resultTitle =
-                    "탄원서 작성 전 몇 가지 사항을 추가로 확인해 보세요.";
+            resultTitle =
+                "관련 자료가 없더라도 탄원서 작성은 검토할 수 있습니다.";
 
-                resultMessage =
-                    "잘 모르거나 아직 정리되지 않은 부분이 있어도 상담을 통해 사실관계와 탄원 목적을 하나씩 정리할 수 있습니다.";
+            resultMessage =
+                "별도의 증빙자료가 반드시 있어야만 탄원서를 작성할 수 있는 것은 아닙니다. " +
+                "현재 확인할 수 있는 사실관계와 탄원인이 알고 있는 내용부터 정리하고, " +
+                "추가로 참고할 수 있는 자료가 있는지 확인해 보는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // 모두 예
-            } else {
 
-                resultTitle =
-                    "탄원서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
+        // 잘 모르겠습니다가 하나라도 있는 경우
+        else if (
+            target.value === "unknown" ||
+            petitionCase.value === "unknown" ||
+            request.value === "unknown" ||
+            relation.value === "unknown" ||
+            facts.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
 
-                resultMessage =
-                    "현재 준비된 내용을 바탕으로 사건의 경위와 탄원 취지, 요청사항을 체계적으로 구성하는 단계로 진행할 수 있습니다.";
+            resultTitle =
+                "확인이 필요한 사항이 있어 추가 정리가 필요합니다.";
 
-                resultClass = "result-success";
-            }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 탄원서를 준비할 수 있습니다. " +
+                "제출 목적과 사건의 경위, 요청사항 및 관련 사실을 하나씩 확인하면서 " +
+                "탄원서 작성에 필요한 내용을 정리해 보는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=petition"
-            );
 
-        });
+        // 모두 예
+        else {
 
-        return;
-    }
+            resultTitle =
+                "탄원서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
 
-    // ------------------------------------------------------------
-    // 반성문 자가진단
-    // ------------------------------------------------------------
-    if (document.querySelector('input[name="reflectionCase"]')) {
+            resultMessage =
+                "현재 답변상 제출 목적과 사건의 경위, 요청사항, " +
+                "탄원인과 당사자의 관계 및 관련 자료 등 기본내용이 준비되어 있습니다. " +
+                "이제 핵심 사실과 탄원 이유를 일관되게 구성하여 " +
+                "탄원서 작성으로 진행해 볼 수 있습니다.";
 
-        const button = document.getElementById("diagnosisButton");
+            resultClass = "result-success";
+        }
 
-        button.addEventListener("click", function () {
 
-            const reflectionCase =
-                document.querySelector('input[name="reflectionCase"]:checked');
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=petition"
+        );
 
-            const facts =
-                document.querySelector('input[name="reflectionFacts"]:checked');
+    });
 
-            const wrong =
-                document.querySelector('input[name="reflectionWrong"]:checked');
+    return;
+}
 
-            const impact =
-                document.querySelector('input[name="reflectionImpact"]:checked');
+// =====================================================
+// 반성문 자가진단
+// =====================================================
 
-            const action =
-                document.querySelector('input[name="reflectionAction"]:checked');
+if (document.querySelector('input[name="reflectionCase"]')) {
 
-            const prevention =
-                document.querySelector('input[name="reflectionPrevention"]:checked');
+    button.addEventListener("click", function () {
 
+        const reflectionCase =
+            document.querySelector('input[name="reflectionCase"]:checked');
 
-            // 답하지 않은 문항 확인
-            if (!reflectionCase || !facts || !wrong ||
-                !impact || !action || !prevention) {
+        const facts =
+            document.querySelector('input[name="reflectionFacts"]:checked');
 
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+        const wrong =
+            document.querySelector('input[name="reflectionWrong"]:checked');
 
+        const impact =
+            document.querySelector('input[name="reflectionImpact"]:checked');
 
-            let resultTitle = "";
-            let resultMessage = "";
-            let resultClass = "result-check";
+        const action =
+            document.querySelector('input[name="reflectionAction"]:checked');
 
+        const prevention =
+            document.querySelector('input[name="reflectionPrevention"]:checked');
 
-            // 1. 사건·사안
-            if (reflectionCase.value === "no") {
 
-                resultTitle =
-                    "반성문을 작성하려는 사건이나 사안을 먼저 확인해 보세요.";
+        if (
+            !reflectionCase ||
+            !facts ||
+            !wrong ||
+            !impact ||
+            !action ||
+            !prevention
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-                resultMessage =
-                    "어떤 사건이나 사안에 관한 반성문인지 확인하면 작성해야 할 내용과 방향을 보다 구체적으로 정할 수 있습니다.";
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-            // 2. 사건 경위
-            } else if (facts.value === "no") {
 
-                resultTitle =
-                    "자신의 행동과 사건의 경위를 먼저 정리해 보세요.";
+        // 1. 사건·사안
+        if (reflectionCase.value === "no") {
 
-                resultMessage =
-                    "무슨 일이 있었는지 시간의 흐름과 구체적인 사실을 중심으로 정리하는 것이 반성문 작성의 출발점입니다.";
+            resultTitle =
+                "반성문을 작성하려는 사건이나 사안을 먼저 확인해 보세요.";
 
+            resultMessage =
+                "어떤 사건이나 사안에 관한 반성문인지 확인해야 " +
+                "사건의 경위와 자신의 행동, 반성해야 할 내용을 " +
+                "구체적으로 정리할 수 있습니다.";
 
-            // 3. 잘못에 대한 인식
-            } else if (wrong.value === "no") {
+            resultClass = "result-check";
+        }
 
-                resultTitle =
-                    "자신의 행동에서 무엇이 잘못되었는지 구체적으로 돌아볼 필요가 있습니다.";
 
-                resultMessage =
-                    "단순히 잘못했다는 표현보다 자신의 어떤 행동이 왜 잘못되었는지를 구체적으로 정리하는 것이 중요합니다.";
+        // 2. 사건 경위
+        else if (facts.value === "no") {
 
+            resultTitle =
+                "자신의 행동과 사건의 경위를 먼저 정리해 보세요.";
 
-            // 4. 결과·영향
-            } else if (impact.value === "no") {
+            resultMessage =
+                "자신이 어떤 행동을 했고 사건이 어떻게 발생했는지를 " +
+                "구체적인 사실과 시간의 흐름에 따라 정리하는 것이 " +
+                "반성문 작성의 출발점입니다.";
 
-                resultTitle =
-                    "자신의 행동으로 발생한 결과를 확인해 보세요.";
+            resultClass = "result-check";
+        }
 
-                resultMessage =
-                    "자신의 행동이 어떠한 결과를 가져왔는지 또는 다른 사람에게 어떤 영향을 주었는지를 살펴보는 것이 필요합니다.";
 
+        // 3. 잘못에 대한 인식
+        else if (wrong.value === "no") {
 
-            // 5. 이후 행동
-            } else if (action.value === "no") {
+            resultTitle =
+                "자신의 행동에서 무엇이 잘못되었는지 구체적으로 돌아볼 필요가 있습니다.";
 
-                resultTitle =
-                    "사건 이후 실제로 할 수 있는 행동을 검토해 보세요.";
+            resultMessage =
+                "단순히 잘못했다는 표현을 반복하기보다 " +
+                "자신의 어떤 행동이 잘못되었다고 생각하는지와 " +
+                "그 이유를 구체적으로 정리하는 것이 중요합니다.";
 
-                resultMessage =
-                    "아직 문제해결이나 피해회복을 위한 행동을 하지 않았더라도 현재 상황에서 할 수 있는 구체적인 조치가 무엇인지 검토할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
 
-            // 6. 재발방지
-            } else if (prevention.value === "no") {
+        // 4. 발생한 결과
+        else if (impact.value === "no") {
 
-                resultTitle =
-                    "앞으로 같은 일이 반복되지 않도록 구체적인 계획을 세워보세요.";
+            resultTitle =
+                "자신의 행동으로 발생한 결과를 구체적으로 살펴보세요.";
 
-                resultMessage =
-                    "막연히 다시는 그러지 않겠다는 표현보다 생활이나 행동을 어떻게 바꿀 것인지 구체적으로 정리하는 것이 좋습니다.";
+            resultMessage =
+                "자신의 행동으로 어떤 결과가 발생했는지를 돌아보는 것이 필요합니다. " +
+                "상대방이 있는 사건이라면 상대방에게 미친 영향도 함께 " +
+                "생각해 보는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // 잘 모르겠습니다
-            } else if (
-                reflectionCase.value === "unknown" ||
-                facts.value === "unknown" ||
-                wrong.value === "unknown" ||
-                impact.value === "unknown" ||
-                action.value === "unknown" ||
-                prevention.value === "unknown"
-            ) {
 
-                resultTitle =
-                    "반성문 작성 전 몇 가지 내용을 추가로 정리해 보세요.";
+        // 5. 사건 이후 노력·변화
+        else if (action.value === "no") {
 
-                resultMessage =
-                    "아직 명확하지 않은 부분이 있어도 상담을 통해 사건의 경위와 잘못에 대한 인식, 이후의 노력과 재발방지 계획을 하나씩 정리할 수 있습니다.";
+            resultTitle =
+                "사건 이후 실제로 할 수 있는 노력과 변화를 생각해 보세요.";
 
+            resultMessage =
+                "아직 특별한 행동을 하지 않았다면 현재 상황에서 " +
+                "문제를 바로잡기 위해 무엇을 할 수 있는지 생각해 보세요. " +
+                "해당하는 경우 피해회복을 위한 노력이나 생활·행동의 변화도 " +
+                "구체적으로 정리할 수 있습니다.";
 
-            // 모두 예
-            } else {
+            resultClass = "result-check";
+        }
 
-                resultTitle =
-                    "반성문 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
 
-                resultMessage =
-                    "현재 정리된 사실을 바탕으로 사건의 경위, 잘못에 대한 인식, 사건 이후의 노력과 재발방지 계획을 체계적으로 구성하는 단계로 진행할 수 있습니다.";
+        // 6. 재발방지
+        else if (prevention.value === "no") {
 
-                resultClass = "result-success";
-            }
+            resultTitle =
+                "같은 일이 반복되지 않도록 구체적인 계획을 세워보세요.";
 
+            resultMessage =
+                "막연히 다시는 그러지 않겠다는 표현보다 " +
+                "앞으로 어떤 행동을 바꾸고 무엇을 실천할 것인지 " +
+                "자신의 상황에 맞게 구체적으로 정리하는 것이 좋습니다.";
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=reflection-letter"
-            );
+            resultClass = "result-check";
+        }
 
-        });
 
-        return;
-    }
+        // 잘 모르겠습니다
+        else if (
+            reflectionCase.value === "unknown" ||
+            facts.value === "unknown" ||
+            wrong.value === "unknown" ||
+            impact.value === "unknown" ||
+            action.value === "unknown" ||
+            prevention.value === "unknown"
+        ) {
 
-    // ------------------------------------------------------------
-    // 부양기피사유서 자가진단
-    // ------------------------------------------------------------
-    if (document.querySelector('input[name="supportProcedure"]')) {
+            resultTitle =
+                "확인이 필요한 내용이 있어 추가 정리가 필요합니다.";
 
-        const button = document.getElementById("diagnosisButton");
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 반성문을 준비할 수 있습니다. " +
+                "사건의 경위와 자신의 행동, 잘못에 대한 인식, " +
+                "사건 이후의 노력과 변화 및 재발방지 계획을 " +
+                "하나씩 구체적으로 정리해 보는 것이 좋습니다.";
 
-        button.addEventListener("click", function () {
+            resultClass = "result-check";
+        }
 
-            const procedure =
-                document.querySelector('input[name="supportProcedure"]:checked');
 
-            const relation =
-                document.querySelector('input[name="supportRelation"]:checked');
+        // 모두 예
+        else {
 
-            const contact =
-                document.querySelector('input[name="supportContact"]:checked');
+            resultTitle =
+                "반성문 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
 
-            const financial =
-                document.querySelector('input[name="supportFinancial"]:checked');
+            resultMessage =
+                "현재 답변상 사건의 경위와 자신의 행동, 잘못에 대한 인식, " +
+                "발생한 결과, 사건 이후의 노력과 변화 및 재발방지 계획이 " +
+                "기본적으로 정리되어 있습니다. 이를 실제 사실에 맞게 연결하여 " +
+                "반성문으로 구성해 볼 수 있습니다.";
 
-            const reason =
-                document.querySelector('input[name="supportReason"]:checked');
+            resultClass = "result-success";
+        }
 
-            const documents =
-                document.querySelector('input[name="supportDocuments"]:checked');
 
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=reflection-letter"
+        );
 
-            // 답하지 않은 문항 확인
-            if (!procedure || !relation || !contact ||
-                !financial || !reason || !documents) {
+    });
 
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+    return;
+}
 
+// =====================================================
+// 부양기피사유서 자가진단
+// =====================================================
 
-            let resultTitle = "";
-            let resultMessage = "";
-            let resultClass = "result-check";
+if (document.querySelector('input[name="supportProcedure"]')) {
 
+    button.addEventListener("click", function () {
 
-            // 1. 행정절차·제출기관
-            if (procedure.value === "no") {
+        const procedure =
+            document.querySelector('input[name="supportProcedure"]:checked');
 
-                resultTitle =
-                    "먼저 어떤 절차에서 소명을 요구받았는지 확인해 보세요.";
+        const relation =
+            document.querySelector('input[name="supportRelation"]:checked');
 
-                resultMessage =
-                    "사유서가 필요한 행정절차와 제출기관을 확인하면 어떤 사실을 중심으로 설명해야 하는지 보다 구체적으로 검토할 수 있습니다.";
+        const contact =
+            document.querySelector('input[name="supportContact"]:checked');
 
+        const financial =
+            document.querySelector('input[name="supportFinancial"]:checked');
 
-            // 2. 가족관계
-            } else if (relation.value === "no") {
+        const reason =
+            document.querySelector('input[name="supportReason"]:checked');
 
-                resultTitle =
-                    "부양 문제가 발생한 가족관계부터 확인할 필요가 있습니다.";
+        const documents =
+            document.querySelector('input[name="supportDocuments"]:checked');
 
-                resultMessage =
-                    "누구와의 부양관계가 문제되는지를 확인한 뒤 실제 부양관계와 그동안의 경위를 살펴볼 필요가 있습니다.";
 
+        if (
+            !procedure ||
+            !relation ||
+            !contact ||
+            !financial ||
+            !reason ||
+            !documents
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
-            // 3. 연락·교류상태
-            } else if (contact.value === "no") {
 
-                resultTitle =
-                    "현재의 연락·교류상태를 구체적으로 정리해 보세요.";
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultMessage =
-                    "연락이나 왕래가 있는지, 있다면 어느 정도인지 등 실제 가족관계가 어떻게 유지되어 왔는지를 정리할 필요가 있습니다.";
 
+        // 1. 행정절차·소명 요구사항
+        if (procedure.value === "no") {
 
-            // 4. 경제적 지원
-            } else if (financial.value === "no") {
+            resultTitle =
+                "먼저 어떤 절차에서 무엇을 소명해야 하는지 확인해 보세요.";
 
-                resultTitle =
-                    "경제적인 지원관계를 확인해 볼 필요가 있습니다.";
+            resultMessage =
+                "사유서나 소명자료를 요구한 기관과 행정절차를 확인해야 " +
+                "어떤 가족관계와 사실을 중심으로 설명해야 하는지 " +
+                "보다 구체적으로 정리할 수 있습니다.";
 
-                resultMessage =
-                    "생활비 지급이나 금전 지원 등이 있었는지 여부와 그 경위를 확인하면 실제 부양관계를 보다 구체적으로 설명할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
 
-            // 5. 단절·부양곤란 경위
-            } else if (reason.value === "no") {
+        // 2. 가족관계
+        else if (relation.value === "no") {
 
-                resultTitle =
-                    "부양이 어렵게 된 구체적인 경위를 정리할 필요가 있습니다.";
+            resultTitle =
+                "행정기관에서 확인하려는 가족과의 관계부터 정리해 보세요.";
 
-                resultMessage =
-                    "단순히 연락이 없다는 내용보다 언제부터 어떤 사정으로 현재의 관계가 형성되었는지를 구체적인 사실을 중심으로 정리하는 것이 중요합니다.";
+            resultMessage =
+                "누구와의 부양관계를 확인하려는 것인지와 " +
+                "본인과 그 가족이 어떤 관계인지 먼저 확인한 뒤 " +
+                "실제 교류와 부양관계를 살펴보는 것이 좋습니다.";
 
+            resultClass = "result-check";
+        }
 
-            // 6. 관련자료
-            } else if (documents.value === "no") {
 
-                resultTitle =
-                    "관련 자료가 부족하더라도 소명 방향을 검토할 수 있습니다.";
+        // 3. 연락·교류관계
+        else if (contact.value === "no") {
 
-                resultMessage =
-                    "현재 자료가 없더라도 사실관계를 먼저 정리한 뒤 확인 가능한 자료나 추가로 확보할 수 있는 자료가 있는지 검토할 수 있습니다.";
+            resultTitle =
+                "현재의 연락·만남·왕래 등 실제 교류관계를 정리해 보세요.";
 
+            resultMessage =
+                "연락이나 만남이 있었는지, 있었다면 어느 정도였는지, " +
+                "과거부터 현재까지 실제 가족관계가 어떻게 유지되어 왔는지를 " +
+                "구체적으로 정리할 필요가 있습니다.";
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
-            } else if (
-                procedure.value === "unknown" ||
-                relation.value === "unknown" ||
-                contact.value === "unknown" ||
-                financial.value === "unknown" ||
-                reason.value === "unknown" ||
-                documents.value === "unknown"
-            ) {
+            resultClass = "result-check";
+        }
 
-                resultTitle =
-                    "부양관계와 소명내용을 조금 더 확인해 볼 필요가 있습니다.";
 
-                resultMessage =
-                    "아직 명확하지 않은 부분이 있어도 상담을 통해 행정기관의 요구사항과 가족관계, 실제 부양상황 및 관련 자료를 하나씩 확인할 수 있습니다.";
+        // 4. 경제적 지원관계
+        else if (financial.value === "no") {
 
+            resultTitle =
+                "경제적인 지원관계를 조금 더 확인해 볼 필요가 있습니다.";
 
-            // 모두 예
-            } else {
+            resultMessage =
+                "생활비·의료비·금전 지원 등이 있었는지 확인하고, " +
+                "지원이 있었다면 언제부터 어떤 형태와 정도로 이루어졌는지를 " +
+                "정리하면 실제 부양관계를 보다 구체적으로 설명할 수 있습니다.";
 
-                resultTitle =
-                    "부양기피사유서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultMessage =
-                    "현재 확인된 내용을 바탕으로 가족관계와 실제 부양상황, 관계가 단절되거나 부양이 어려워진 경위 및 관련 자료를 체계적으로 검토할 수 있습니다.";
 
-                resultClass = "result-success";
-            }
+        // 5. 관계 단절·부양곤란 경위
+        else if (reason.value === "no") {
 
+            resultTitle =
+                "관계가 단절되거나 부양이 곤란하게 된 경위를 정리해 보세요.";
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=support-refusal-statement"
-            );
+            resultMessage =
+                "현재 연락이 없다는 사실만 설명하기보다 " +
+                "언제부터 어떤 사정과 과정을 거쳐 현재의 관계가 형성되었는지를 " +
+                "시간의 흐름에 따라 구체적으로 정리하는 것이 중요합니다.";
 
-        });
+            resultClass = "result-check";
+        }
 
-        return;
-    }
 
-    // ------------------------------------------------------------
-    // 상가건물 권리금계약서 자가진단
-    // ------------------------------------------------------------
-    if (document.querySelector('input[name="premiumParties"]')) {
+        // 6. 관련자료
+        else if (documents.value === "no") {
 
-        const button = document.getElementById("diagnosisButton");
+            resultTitle =
+                "관련 자료가 없더라도 사실관계부터 정리할 수 있습니다.";
 
-        button.addEventListener("click", function () {
+            resultMessage =
+                "현재 가지고 있는 자료가 없다고 해서 사유서 작성을 바로 판단하기는 어렵습니다. " +
+                "먼저 가족관계와 실제 교류·지원관계 및 그동안의 경위를 정리한 뒤 " +
+                "확인하거나 추가로 확보할 수 있는 자료가 있는지 검토해 보는 것이 좋습니다.";
 
-            const parties =
-                document.querySelector('input[name="premiumParties"]:checked');
+            resultClass = "result-check";
+        }
 
-            const payment =
-                document.querySelector('input[name="premiumPayment"]:checked');
 
-            const lease =
-                document.querySelector('input[name="premiumLease"]:checked');
+        // 잘 모르겠습니다
+        else if (
+            procedure.value === "unknown" ||
+            relation.value === "unknown" ||
+            contact.value === "unknown" ||
+            financial.value === "unknown" ||
+            reason.value === "unknown" ||
+            documents.value === "unknown"
+        ) {
 
-            const assets =
-                document.querySelector('input[name="premiumAssets"]:checked');
+            resultTitle =
+                "확인이 필요한 사항이 있어 추가 정리가 필요합니다.";
 
-            const business =
-                document.querySelector('input[name="premiumBusiness"]:checked');
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 소명 준비는 가능합니다. " +
+                "행정기관의 요구사항과 가족관계, 실제 연락·왕래, " +
+                "경제적 지원관계, 관계 단절 또는 부양곤란 경위 및 관련 자료를 " +
+                "하나씩 확인해 보는 것이 좋습니다.";
 
-            const special =
-                document.querySelector('input[name="premiumSpecial"]:checked');
+            resultClass = "result-check";
+        }
 
 
-            // 답하지 않은 문항 확인
-            if (!parties || !payment || !lease ||
-                !assets || !business || !special) {
+        // 모두 예
+        else {
 
-                alert("모든 질문에 답변해 주세요.");
-                return;
-            }
+            resultTitle =
+                "부양기피사유서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
 
+            resultMessage =
+                "현재 답변상 행정기관의 요구사항과 가족관계, 실제 교류관계, " +
+                "경제적 지원관계, 관계 단절 또는 부양이 곤란하게 된 경위 및 " +
+                "관련 자료가 기본적으로 정리되어 있습니다. " +
+                "이제 사실관계를 시간의 흐름에 따라 구성하여 소명내용을 검토할 수 있습니다.";
 
-            let resultTitle = "";
-            let resultMessage = "";
-            let resultClass = "result-check";
+            resultClass = "result-success";
+        }
 
 
-            // 1. 당사자·대상상가
-            if (parties.value === "no") {
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=support-refusal-statement"
+        );
 
-                resultTitle =
-                    "권리금계약의 당사자와 대상 상가부터 확인해 보세요.";
+    });
 
-                resultMessage =
-                    "누가 권리금을 지급하고 받는지, 어느 상가의 영업에 관한 계약인지 먼저 명확하게 정리할 필요가 있습니다.";
+    return;
+}
 
 
-            // 2. 권리금 지급조건
-            } else if (payment.value === "no") {
+// =====================================================
+// 상가건물 권리금계약서 자가진단
+// =====================================================
 
-                resultTitle =
-                    "권리금과 지급조건을 구체적으로 정할 필요가 있습니다.";
+if (document.querySelector('input[name="premiumParties"]')) {
 
-                resultMessage =
-                    "총 권리금뿐 아니라 계약금·중도금·잔금의 금액과 지급시기를 구체적으로 정리하는 것이 좋습니다.";
+    button.addEventListener("click", function () {
 
+        const parties =
+            document.querySelector('input[name="premiumParties"]:checked');
 
-            // 3. 신규 임대차계약
-            } else if (lease.value === "no") {
+        const payment =
+            document.querySelector('input[name="premiumPayment"]:checked');
 
-                resultTitle =
-                    "신규 임대차계약의 조건을 먼저 확인해 보세요.";
+        const lease =
+            document.querySelector('input[name="premiumLease"]:checked');
 
-                resultMessage =
-                    "권리금계약과 신규 임대차계약은 서로 관련될 수 있으므로 임대인과 신규임차인 사이의 임대차계약 조건을 함께 검토할 필요가 있습니다.";
+        const assets =
+            document.querySelector('input[name="premiumAssets"]:checked');
 
+        const business =
+            document.querySelector('input[name="premiumBusiness"]:checked');
 
-            // 4. 시설·비품 등 이전대상
-            } else if (assets.value === "no") {
+        const special =
+            document.querySelector('input[name="premiumSpecial"]:checked');
 
-                resultTitle =
-                    "권리금에 포함되는 이전대상을 구체적으로 정리해 보세요.";
 
-                resultMessage =
-                    "시설·비품 등 무엇을 넘겨주고 넘겨받는지를 목록으로 정리하면 계약 이후 발생할 수 있는 분쟁을 줄이는 데 도움이 됩니다.";
+        if (
+            !parties ||
+            !payment ||
+            !lease ||
+            !assets ||
+            !business ||
+            !special
+        ) {
+            alert("모든 질문에 답변해 주세요.");
+            return;
+        }
 
 
-            // 5. 기존 영업 관련 사항
-            } else if (business.value === "no") {
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
 
-                resultTitle =
-                    "기존 영업과 관련하여 확인할 사항이 있는지 살펴보세요.";
 
-                resultMessage =
-                    "영업상 채무·고객정보·근로자 등은 사업장에 따라 해당 여부가 다를 수 있으므로, 먼저 이전하거나 정리해야 할 사항이 있는지 확인할 필요가 있습니다.";
+        // 1. 당사자·대상 상가
+        if (parties.value === "no") {
 
+            resultTitle =
+                "권리금계약의 당사자와 대상 상가부터 확인해 보세요.";
 
-            // 6. 해제·손해배상 등
-            } else if (special.value === "no") {
+            resultMessage =
+                "누가 권리금을 지급하고 받는지와 " +
+                "어느 상가의 영업에 관한 거래인지 먼저 명확하게 정리해야 " +
+                "구체적인 계약조건을 검토할 수 있습니다.";
 
-                resultTitle =
-                    "계약이 정상적으로 이행되지 않을 경우도 대비할 필요가 있습니다.";
+            resultClass = "result-check";
+        }
 
-                resultMessage =
-                    "임대차계약이 체결되지 않거나 당사자가 약속을 이행하지 않는 경우 등에 대비하여 계약해제·손해배상 등 필요한 사항을 검토하는 것이 좋습니다.";
 
+        // 2. 권리금 지급조건
+        else if (payment.value === "no") {
 
-            // 잘 모르겠습니다가 하나라도 있는 경우
-            } else if (
-                parties.value === "unknown" ||
-                payment.value === "unknown" ||
-                lease.value === "unknown" ||
-                assets.value === "unknown" ||
-                business.value === "unknown" ||
-                special.value === "unknown"
-            ) {
+            resultTitle =
+                "권리금과 지급조건을 구체적으로 정할 필요가 있습니다.";
 
-                resultTitle =
-                    "권리금계약 전에 몇 가지 사항을 추가로 확인해 보세요.";
+            resultMessage =
+                "총 권리금뿐 아니라 계약금·중도금·잔금의 금액과 " +
+                "각각의 지급시기를 구체적으로 정리하는 것이 좋습니다.";
 
-                resultMessage =
-                    "아직 명확하지 않은 부분이 있어도 상담을 통해 권리금 지급조건, 임대차관계, 이전대상 및 필요한 계약조건을 하나씩 확인할 수 있습니다.";
+            resultClass = "result-check";
+        }
 
 
-            // 모두 예
-            } else {
+        // 3. 신규 임대차계약
+        else if (lease.value === "no") {
 
-                resultTitle =
-                    "권리금계약서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
+            resultTitle =
+                "신규 임대차계약의 진행상황과 조건을 확인해 보세요.";
 
-                resultMessage =
-                    "현재 확인된 내용을 바탕으로 권리금 지급조건과 임대차관계, 이전대상 및 필요한 특약사항을 검토하여 계약서를 구성할 수 있습니다.";
+            resultMessage =
+                "권리금계약과 신규 임대차계약은 서로 구별되는 계약이므로 " +
+                "임대인과 신규임차인이 되려는 자 사이의 임대차계약이 " +
+                "어떻게 진행되고 있는지와 보증금·차임 등 주요 조건을 " +
+                "함께 확인하는 것이 중요합니다.";
 
-                resultClass = "result-success";
-            }
+            resultClass = "result-check";
+        }
 
 
-            showResult(
-                resultTitle,
-                resultMessage,
-                resultClass,
-                "consult.html?type=commercial-premium-contract"
-            );
+        // 4. 시설·비품 등 이전대상
+        else if (assets.value === "no") {
 
-        });
+            resultTitle =
+                "권리금 거래에 포함되는 시설·비품을 구체적으로 정리해 보세요.";
 
-        return;
-    }
+            resultMessage =
+                "어떤 시설과 비품을 넘겨주고 넘겨받는지뿐 아니라 " +
+                "수량과 상태, 인도시기 등을 가능한 범위에서 목록으로 정리하면 " +
+                "계약내용을 보다 명확하게 할 수 있습니다.";
 
+            resultClass = "result-check";
+        }
+
+
+        // 5. 영업 관련 인계사항
+        else if (business.value === "no") {
+
+            resultTitle =
+                "시설·비품 외에 인계할 영업 관련 사항도 확인해 보세요.";
+
+            resultMessage =
+                "거래처·영업 노하우 등 권리금 거래에 포함하기로 한 " +
+                "영업 관련 사항이 있는지 확인하고, " +
+                "있다면 무엇을 어느 범위까지 인계할 것인지 " +
+                "구체적으로 정리하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 6. 해제·반환·손해배상 등
+        else if (special.value === "no") {
+
+            resultTitle =
+                "계약이 예정대로 진행되지 않는 경우도 대비해 보세요.";
+
+            resultMessage =
+                "신규 임대차계약이 체결되지 않거나 " +
+                "당사자가 약속한 조건을 이행하지 않는 경우 등에 대비하여 " +
+                "계약의 해제, 이미 지급한 금액의 반환, " +
+                "손해배상 등 처리방법을 미리 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 잘 모르겠습니다
+        else if (
+            parties.value === "unknown" ||
+            payment.value === "unknown" ||
+            lease.value === "unknown" ||
+            assets.value === "unknown" ||
+            business.value === "unknown" ||
+            special.value === "unknown"
+        ) {
+
+            resultTitle =
+                "권리금계약 전에 추가로 확인해야 할 사항이 있습니다.";
+
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 계약 준비는 가능합니다. " +
+                "당사자와 대상 상가, 권리금 지급조건, 신규 임대차계약, " +
+                "시설·비품과 영업 관련 인계사항 및 특약조건을 " +
+                "하나씩 확인해 보는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 모두 예
+        else {
+
+            resultTitle =
+                "권리금계약서 작성을 위한 기본내용이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 당사자와 대상 상가, 권리금 지급조건, " +
+                "신규 임대차계약, 시설·비품과 영업 관련 인계사항 및 " +
+                "계약이 예정대로 진행되지 않는 경우의 처리방법이 " +
+                "기본적으로 정리되어 있습니다. " +
+                "이를 실제 거래조건에 맞게 계약서로 구성해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
+        showResult(
+            resultTitle,
+            resultMessage,
+            resultClass,
+            "consult.html?type=commercial-premium-contract"
+        );
+
+    });
+
+    return;
+}
+
+// =====================================================
 // 생활폐기물 수집·운반업 자가진단
-if (document.querySelector('input[name="wasteType"]')) {
+// =====================================================
 
-    const button = document.getElementById("diagnosisButton");
+if (document.querySelector('input[name="wasteType"]')) {
 
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="wasteType"]:checked')?.value;
+            document.querySelector('input[name="wasteType"]:checked');
 
         const wasteArea =
-            document.querySelector('input[name="wasteArea"]:checked')?.value;
+            document.querySelector('input[name="wasteArea"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="wasteMethod"]:checked')?.value;
+            document.querySelector('input[name="wasteMethod"]:checked');
 
         const wasteVehicle =
-            document.querySelector('input[name="wasteVehicle"]:checked')?.value;
+            document.querySelector('input[name="wasteVehicle"]:checked');
 
         const wasteOffice =
-            document.querySelector('input[name="wasteOffice"]:checked')?.value;
+            document.querySelector('input[name="wasteOffice"]:checked');
 
         const wastePlan =
-            document.querySelector('input[name="wastePlan"]:checked')?.value;
+            document.querySelector('input[name="wastePlan"]:checked');
 
 
         // 미응답 확인
@@ -5108,116 +5317,144 @@ if (document.querySelector('input[name="wasteType"]')) {
         }
 
 
-        // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wasteArea === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteVehicle === "unknown" ||
-            wasteOffice === "unknown" ||
-            wastePlan === "unknown"
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 1. 대상 생활폐기물
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "수집·운반할 생활폐기물의 종류와 범위부터 확인해 보세요.";
+
+            resultMessage =
+                "어떤 생활폐기물을 수집·운반할 것인지가 정해져야 " +
+                "수집방법과 운반계획, 필요한 차량·장비 등 " +
+                "구체적인 사업계획과 허가요건을 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 2. 영업지역
+        else if (wasteArea.value === "no") {
+
+            resultTitle =
+                "영업하려는 지역을 먼저 구체화할 필요가 있습니다.";
+
+            resultMessage =
+                "생활폐기물 수집·운반업은 영업구역과 관련된 사항을 " +
+                "확인해야 하므로 어느 지역에서 영업할 것인지 정한 후 " +
+                "해당 지역의 허가와 관련된 사항을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 3. 수집·운반계획
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "생활폐기물의 수집·운반계획을 구체화해 보세요.";
+
+            resultMessage =
+                "생활폐기물을 어디에서 수집하여 어디로 운반할 것인지, " +
+                "어떤 방법으로 수집·운반할 것인지 등을 정리해야 " +
+                "실제 영업계획과 필요한 차량·장비를 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 4. 차량·장비
+        else if (wasteVehicle.value === "no") {
+
+            resultTitle =
+                "필요한 차량·장비의 종류와 확보방법을 확인해 보세요.";
+
+            resultMessage =
+                "차량을 먼저 구입하기보다 대상 생활폐기물과 " +
+                "수집·운반방법에 맞는 차량·장비 기준을 확인하고 " +
+                "어떻게 확보할 것인지 계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 5. 연락장소 또는 사무실
+        else if (wasteOffice.value === "no") {
+
+            resultTitle =
+                "연락장소 또는 사무실을 어디에 둘 것인지 검토해 보세요.";
+
+            resultMessage =
+                "생활폐기물 수집·운반업을 준비할 때에는 " +
+                "연락장소 또는 사무실에 관한 사항도 확인해야 합니다. " +
+                "영업지역과 사업계획을 고려하여 적절한 장소를 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 6. 사업계획
+        else if (wastePlan.value === "no") {
+
+            resultTitle =
+                "구체적인 수집·운반 사업계획을 정리할 단계입니다.";
+
+            resultMessage =
+                "수집지역과 운반경로, 처리장소, 차량·장비 확보계획 등 " +
+                "지금까지 확인한 내용을 바탕으로 사업계획을 구체화하고 " +
+                "사업계획서와 필요한 첨부자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 잘 모르겠습니다
+        else if (
+            wasteType.value === "unknown" ||
+            wasteArea.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteVehicle.value === "unknown" ||
+            wasteOffice.value === "unknown" ||
+            wastePlan.value === "unknown"
         ) {
 
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "생활폐기물 수집·운반업은 취급하려는 폐기물의 종류와 영업지역, 운반방법 등에 따라 검토해야 할 사항이 달라질 수 있습니다. 현재 명확하지 않은 부분부터 확인한 후 사업계획과 허가요건을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
+            resultTitle =
+                "생활폐기물 수집·운반업 준비과정에서 추가 확인이 필요합니다.";
 
-            return;
-        }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "대상 생활폐기물과 영업지역, 수집·운반계획, 차량·장비, " +
+                "연락장소 또는 사무실 및 사업계획을 하나씩 확인해 보는 것이 좋습니다.";
 
-
-        // 대상 폐기물이 정해지지 않은 경우
-        if (wasteType === "no") {
-
-            showResult(
-                "수집·운반 대상 폐기물부터 확인하는 것이 좋습니다.",
-                "취급하려는 폐기물의 종류에 따라 적용되는 시설·장비와 영업방법 등의 검토사항이 달라질 수 있습니다. 먼저 어떤 폐기물을 수집·운반할 것인지 구체적으로 정리할 필요가 있습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
-        }
-
-
-        // 영업지역이 정해지지 않은 경우
-        if (wasteArea === "no") {
-
-            showResult(
-                "영업하려는 지역을 먼저 구체화하는 것이 좋습니다.",
-                "생활폐기물 수집·운반업은 영업지역과 관련하여 확인해야 할 사항이 있으므로 사업을 진행하려는 지역을 먼저 정리한 후 관련 기준을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
-        }
-
-
-        // 운반방법이 정해지지 않은 경우
-        if (wasteMethod === "no") {
-
-            showResult(
-                "수집·운반 방법에 대한 계획이 필요합니다.",
-                "어떤 폐기물을 어떤 방식으로 수집하고 운반할 것인지에 따라 필요한 차량과 장비 등의 검토가 달라질 수 있습니다. 실제 영업방식을 먼저 구체화하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
-        }
-
-
-        // 차량·장비 미준비
-        if (wasteVehicle === "no") {
-
-            showResult(
-                "필요한 차량과 장비 기준을 확인해 보세요.",
-                "생활폐기물 수집·운반업에는 시설·장비에 관한 기준이 있습니다. 대상 폐기물과 운반방법을 기준으로 필요한 차량과 장비를 확인한 후 준비하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
-        }
-
-
-        // 사무실 미확보
-        if (wasteOffice === "no") {
-
-            showResult(
-                "연락장소 또는 사무실에 대한 검토가 필요합니다.",
-                "생활폐기물 수집·운반업을 준비할 때에는 영업에 사용할 연락장소 또는 사무실에 관한 사항도 함께 확인해야 합니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
-        }
-
-
-        // 사업계획 미정리
-        if (wastePlan === "no") {
-
-            showResult(
-                "사업계획을 구체적으로 정리하는 단계입니다.",
-                "대상 폐기물과 수집·운반 방법, 차량·장비 등의 내용을 바탕으로 사업계획을 정리하고 필요한 신청자료를 준비하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-household-collection"
-            );
-
-            return;
+            resultClass = "result-check";
         }
 
 
         // 모두 예
+        else {
+
+            resultTitle =
+                "생활폐기물 수집·운반업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 대상 생활폐기물과 영업지역, 수집·운반계획, " +
+                "차량·장비 확보방법 및 연락장소 또는 사무실 등이 " +
+                "기본적으로 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 허가기준을 확인하고 " +
+                "폐기물처리 사업계획서와 제출자료를 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "대상 폐기물, 영업지역, 수집·운반 방법, 차량·장비 및 연락장소 또는 사무실 등이 정리되어 있다면 다음 단계로 실제 적용되는 세부 허가요건과 사업계획서 및 제출자료를 확인해 보는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-household-collection"
         );
 
@@ -5226,30 +5463,31 @@ if (document.querySelector('input[name="wasteType"]')) {
     return;
 }
 
+// =====================================================
 // 사업장폐기물 수집·운반업 자가진단
-if (document.querySelector('input[name="businessWasteType"]')) {
+// =====================================================
 
-    const button = document.getElementById("diagnosisButton");
+if (document.querySelector('input[name="businessWasteType"]')) {
 
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="businessWasteType"]:checked')?.value;
+            document.querySelector('input[name="businessWasteType"]:checked');
 
         const wasteSource =
-            document.querySelector('input[name="businessWasteSource"]:checked')?.value;
+            document.querySelector('input[name="businessWasteSource"]:checked');
 
         const wasteArea =
-            document.querySelector('input[name="businessWasteArea"]:checked')?.value;
+            document.querySelector('input[name="businessWasteArea"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="businessWasteMethod"]:checked')?.value;
+            document.querySelector('input[name="businessWasteMethod"]:checked');
 
         const wasteVehicle =
-            document.querySelector('input[name="businessWasteVehicle"]:checked')?.value;
+            document.querySelector('input[name="businessWasteVehicle"]:checked');
 
         const wastePlan =
-            document.querySelector('input[name="businessWastePlan"]:checked')?.value;
+            document.querySelector('input[name="businessWastePlan"]:checked');
 
 
         // 미응답 확인
@@ -5266,103 +5504,143 @@ if (document.querySelector('input[name="businessWasteType"]')) {
         }
 
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 폐기물 종류·성상 미정
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "수집·운반할 사업장폐기물의 종류와 성상부터 확인해 보세요.";
+
+            resultMessage =
+                "어떤 사업장폐기물을 취급할 것인지가 정해져야 " +
+                "폐기물의 구분과 수집·운반방법, 필요한 차량·장비 등 " +
+                "구체적인 사업계획과 허가요건을 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 폐기물 구분 미확인
+        else if (wasteSource.value === "no") {
+
+            resultTitle =
+                "취급하려는 사업장폐기물의 구분을 먼저 확인해 보세요.";
+
+            resultMessage =
+                "사업장폐기물은 발생 사업장과 발생과정 등에 따라 " +
+                "사업장배출시설계 또는 사업장비배출시설계 등으로 구분될 수 있습니다. " +
+                "폐기물의 구분을 확인한 후 적용되는 수집·운반 기준을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 발생 사업장·발생과정 미확인
+        else if (wasteArea.value === "no") {
+
+            resultTitle =
+                "폐기물이 어디에서 어떻게 발생하는지 확인해 보세요.";
+
+            resultMessage =
+                "폐기물이 발생하는 사업장과 발생과정은 " +
+                "사업장폐기물의 구분과 적용되는 기준을 검토하는 데 중요한 정보입니다. " +
+                "발생 사업장과 발생과정을 먼저 구체적으로 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 수집·운반계획 미정
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "구체적인 수집·운반계획을 정리할 필요가 있습니다.";
+
+            resultMessage =
+                "폐기물을 어디에서 수집하여 어디로 운반할 것인지와 " +
+                "어떤 방법으로 수집·운반할 것인지가 정해져야 " +
+                "필요한 차량·장비와 실제 사업계획을 구체적으로 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 차량·장비 기준 미확인
+        else if (wasteVehicle.value === "no") {
+
+            resultTitle =
+                "필요한 차량·장비의 종류와 확보방법을 확인해 보세요.";
+
+            resultMessage =
+                "차량을 먼저 구입하기보다 취급하려는 사업장폐기물의 종류와 " +
+                "수집·운반방법에 적용되는 시설·장비 기준을 확인하고 " +
+                "어떻게 확보할 것인지 계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 연락장소·사업계획 미정
+        else if (wastePlan.value === "no") {
+
+            resultTitle =
+                "사업계획을 구체적으로 정리할 단계입니다.";
+
+            resultMessage =
+                "연락장소 또는 사무실과 함께 대상 폐기물, 수집·운반계획, " +
+                "차량·장비 확보계획 등을 정리하여 " +
+                "폐기물처리 사업계획서와 필요한 제출자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
         // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wasteSource === "unknown" ||
-            wasteArea === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteVehicle === "unknown" ||
-            wastePlan === "unknown"
+        else if (
+            wasteType.value === "unknown" ||
+            wasteSource.value === "unknown" ||
+            wasteArea.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteVehicle.value === "unknown" ||
+            wastePlan.value === "unknown"
         ) {
 
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "사업장폐기물은 폐기물의 종류와 발생과정 등에 따라 적용되는 수집·운반 기준이 달라질 수 있습니다. 명확하지 않은 부분을 먼저 확인한 후 시설·장비와 사업계획을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
+            resultTitle =
+                "사업장폐기물 수집·운반업 준비과정에서 추가 확인이 필요합니다.";
 
-            return;
-        }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "대상 폐기물의 종류와 구분, 발생 사업장과 발생과정, " +
+                "수집·운반계획, 차량·장비 및 사업계획을 하나씩 확인해 보는 것이 좋습니다.";
 
-
-        // 폐기물 종류 미정
-        if (wasteType === "no") {
-
-            showResult(
-                "수집·운반할 폐기물의 종류부터 확인하는 것이 좋습니다.",
-                "사업장폐기물은 종류에 따라 적용되는 허가기준이 달라질 수 있으므로 어떤 폐기물을 취급할 것인지 먼저 구체적으로 정리할 필요가 있습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
-
-            return;
-        }
-
-
-
-        // 영업지역 미정
-        if (wasteArea === "no") {
-
-            showResult(
-                "영업하려는 지역을 구체화하는 것이 좋습니다.",
-                "수집·운반하려는 지역을 정리한 후 관할 행정기관과 실제 영업범위 등을 함께 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
-
-            return;
-        }
-
-
-        // 수집·운반 방법 미정
-        if (wasteMethod === "no") {
-
-            showResult(
-                "수집·운반 방법에 대한 계획이 필요합니다.",
-                "취급할 폐기물을 어떤 방법으로 수집하고 운반할 것인지에 따라 필요한 차량과 장비 등의 검토가 달라질 수 있습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
-
-            return;
-        }
-
-
-        // 차량·장비 미준비
-        if (wasteVehicle === "no") {
-
-            showResult(
-                "필요한 차량과 장비 기준을 확인해 보세요.",
-                "취급하려는 사업장폐기물의 종류와 운반방법을 기준으로 적용되는 시설·장비 요건을 먼저 확인한 후 준비하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
-
-            return;
-        }
-
-
-        // 사무실·사업계획 미준비
-        if (wastePlan === "no") {
-
-            showResult(
-                "사업계획과 영업 준비사항을 정리하는 단계입니다.",
-                "연락장소 또는 사무실과 함께 대상 폐기물, 수집·운반 방법, 차량·장비 등의 내용을 정리하여 사업계획과 허가신청 준비사항을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-business-collection"
-            );
-
-            return;
+            resultClass = "result-check";
         }
 
 
         // 모두 예
+        else {
+
+            resultTitle =
+                "사업장폐기물 수집·운반업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 대상 폐기물의 종류와 구분, 발생 사업장과 발생과정, " +
+                "수집·운반계획 및 차량·장비 확보방법 등이 기본적으로 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 허가기준을 확인하고 " +
+                "폐기물처리 사업계획서와 제출자료를 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "대상 폐기물과 발생과정, 영업지역, 운반방법 및 차량·장비 등이 정리되어 있다면 다음 단계로 폐기물의 정확한 구분과 적용되는 세부 허가기준, 사업계획서 및 제출자료를 확인해 보는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-business-collection"
         );
 
@@ -5371,30 +5649,31 @@ if (document.querySelector('input[name="businessWasteType"]')) {
     return;
 }
 
+// =====================================================
 // 지정폐기물 수집·운반업 자가진단
-if (document.querySelector('input[name="designatedWasteType"]')) {
+// =====================================================
 
-    const button = document.getElementById("diagnosisButton");
+if (document.querySelector('input[name="designatedWasteType"]')) {
 
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="designatedWasteType"]:checked')?.value;
+            document.querySelector('input[name="designatedWasteType"]:checked');
 
         const wasteState =
-            document.querySelector('input[name="designatedWasteState"]:checked')?.value;
+            document.querySelector('input[name="designatedWasteState"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="designatedWasteMethod"]:checked')?.value;
+            document.querySelector('input[name="designatedWasteMethod"]:checked');
 
         const wasteVehicle =
-            document.querySelector('input[name="designatedWasteVehicle"]:checked')?.value;
+            document.querySelector('input[name="designatedWasteVehicle"]:checked');
 
         const wasteFacility =
-            document.querySelector('input[name="designatedWasteFacility"]:checked')?.value;
+            document.querySelector('input[name="designatedWasteFacility"]:checked');
 
         const wastePersonnel =
-            document.querySelector('input[name="designatedWastePersonnel"]:checked')?.value;
+            document.querySelector('input[name="designatedWastePersonnel"]:checked');
 
 
         // 미응답 확인
@@ -5411,116 +5690,145 @@ if (document.querySelector('input[name="designatedWasteType"]')) {
         }
 
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 대상 지정폐기물 미확정
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "수집·운반할 지정폐기물의 종류부터 확인해 보세요.";
+
+            resultMessage =
+                "어떤 지정폐기물을 취급할 것인지가 정해져야 " +
+                "폐기물의 성상과 수집·운반방법, 필요한 차량·장비 등 " +
+                "구체적인 사업계획과 허가요건을 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 성상·발생과정 미확인
+        else if (wasteState.value === "no") {
+
+            resultTitle =
+                "폐기물의 성상과 발생과정을 확인해 보세요.";
+
+            resultMessage =
+                "취급하려는 지정폐기물의 성상과 " +
+                "어느 사업장의 어떤 과정에서 발생하는 폐기물인지 확인해야 " +
+                "적절한 수집·운반방법과 필요한 시설·장비를 구체적으로 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 수집·운반계획 미정
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "구체적인 수집·운반계획을 정리할 필요가 있습니다.";
+
+            resultMessage =
+                "폐기물을 어디에서 수집하여 어디로 운반할 것인지와 " +
+                "어떤 방법으로 수집·운반할 것인지가 정해져야 " +
+                "필요한 차량·장비와 실제 사업계획을 구체적으로 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 차량·장비 확보방법 미확인
+        else if (wasteVehicle.value === "no") {
+
+            resultTitle =
+                "필요한 차량·장비의 종류와 확보방법을 확인해 보세요.";
+
+            resultMessage =
+                "차량을 먼저 구입하기보다 취급하려는 지정폐기물의 종류와 성상, " +
+                "수집·운반방법에 적용되는 시설·장비 기준을 확인한 후 " +
+                "필요한 차량·장비의 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 주차장 확보계획 미확인
+        else if (wasteFacility.value === "no") {
+
+            resultTitle =
+                "운반차량의 주차장 확보계획을 확인해 보세요.";
+
+            resultMessage =
+                "지정폐기물 수집·운반업은 운반차량과 함께 " +
+                "차량을 주차할 수 있는 주차장도 중요한 검토사항입니다. " +
+                "주차장의 위치와 확보방법을 사업계획 단계에서 함께 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 전체 사업계획 미정
+        else if (wastePersonnel.value === "no") {
+
+            resultTitle =
+                "시설·장비 및 기술능력 확보계획을 구체화할 단계입니다.";
+
+            resultMessage =
+                "대상 지정폐기물과 수집·운반계획을 바탕으로 " +
+                "필요한 시설·장비 및 기술능력의 확보계획을 정리하고 " +
+                "폐기물처리 사업계획서와 필요한 제출자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
         // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wasteState === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteVehicle === "unknown" ||
-            wasteFacility === "unknown" ||
-            wastePersonnel === "unknown"
+        else if (
+            wasteType.value === "unknown" ||
+            wasteState.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteVehicle.value === "unknown" ||
+            wasteFacility.value === "unknown" ||
+            wastePersonnel.value === "unknown"
         ) {
 
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "지정폐기물 수집·운반업은 취급 폐기물의 종류와 상태, 운반방법 등에 따라 필요한 차량과 시설 등의 검토가 달라질 수 있습니다. 명확하지 않은 부분부터 확인한 후 적용되는 허가요건을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
+            resultTitle =
+                "지정폐기물 수집·운반업 준비과정에서 추가 확인이 필요합니다.";
 
-            return;
-        }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "대상 지정폐기물의 종류와 성상, 발생 사업장과 발생과정, " +
+                "수집·운반계획, 차량·장비와 주차장 및 " +
+                "시설·장비·기술능력 확보계획을 하나씩 확인해 보는 것이 좋습니다.";
 
-
-        // 지정폐기물 해당 여부 미확인
-        if (wasteType === "no") {
-
-            showResult(
-                "취급하려는 폐기물의 종류부터 확인하는 것이 좋습니다.",
-                "먼저 수집·운반하려는 폐기물이 지정폐기물에 해당하는지 확인해야 합니다. 폐기물의 종류와 발생과정 등을 확인한 후 적용되는 수집·운반업 기준을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
-        }
-
-
-        // 폐기물 상태 미확인
-        if (wasteState === "no") {
-
-            showResult(
-                "폐기물의 상태를 확인할 필요가 있습니다.",
-                "취급하려는 지정폐기물이 액체인지 고체인지 등 폐기물의 상태에 따라 필요한 운반차량 등의 검토가 달라질 수 있습니다. 폐기물의 성상과 상태를 먼저 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
-        }
-
-
-        // 운반방법 미정
-        if (wasteMethod === "no") {
-
-            showResult(
-                "수집·운반 방법에 대한 계획이 필요합니다.",
-                "취급하려는 지정폐기물의 종류와 상태에 맞추어 어떤 방법으로 수집하고 운반할 것인지 구체화한 후 필요한 시설·장비를 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
-        }
-
-
-        // 차량 미준비
-        if (wasteVehicle === "no") {
-
-            showResult(
-                "운반차량 기준을 먼저 확인해 보세요.",
-                "지정폐기물 수집·운반업에는 운반차량에 관한 기준이 있으므로 취급하려는 폐기물의 종류와 상태, 운반방법을 기준으로 필요한 차량을 확인한 후 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
-        }
-
-
-        // 주차공간·세차시설 미준비
-        if (wasteFacility === "no") {
-
-            showResult(
-                "주차공간과 세차시설에 대한 검토가 필요합니다.",
-                "지정폐기물 수집·운반업은 차량뿐 아니라 관련 시설도 함께 검토해야 합니다. 사업장 계획을 확정하기 전에 적용되는 시설기준을 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
-        }
-
-
-        // 기술인력·사무실 미준비
-        if (wastePersonnel === "no") {
-
-            showResult(
-                "기술인력과 영업 준비사항을 확인해 보세요.",
-                "지정폐기물 수집·운반업은 필요한 기술인력과 연락장소 또는 사무실 등도 함께 검토해야 합니다. 현재 확보상태와 향후 확보계획을 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-designated-collection"
-            );
-
-            return;
+            resultClass = "result-check";
         }
 
 
         // 모두 예
+        else {
+
+            resultTitle =
+                "지정폐기물 수집·운반업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 대상 지정폐기물의 종류와 성상, " +
+                "수집·운반계획, 차량·장비와 주차장 및 " +
+                "시설·장비·기술능력 확보계획이 기본적으로 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 세부 허가기준을 확인하고 " +
+                "폐기물처리 사업계획서와 제출자료를 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "취급할 지정폐기물의 종류와 상태, 운반방법, 차량·시설 및 기술인력 등이 정리되어 있다면 다음 단계로 실제 적용되는 세부 허가기준과 사업계획서 및 제출자료를 확인해 보는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-designated-collection"
         );
 
@@ -5529,7 +5837,10 @@ if (document.querySelector('input[name="designatedWasteType"]')) {
     return;
 }
 
+// =====================================================
 // 의료폐기물 수집·운반업 자가진단
+// =====================================================
+
 if (document.querySelector('input[name="medicalWasteType"]')) {
 
     const button = document.getElementById("diagnosisButton");
@@ -5537,22 +5848,22 @@ if (document.querySelector('input[name="medicalWasteType"]')) {
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="medicalWasteType"]:checked')?.value;
+            document.querySelector('input[name="medicalWasteType"]:checked');
 
         const wasteDetail =
-            document.querySelector('input[name="medicalWasteDetail"]:checked')?.value;
+            document.querySelector('input[name="medicalWasteDetail"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="medicalWasteMethod"]:checked')?.value;
+            document.querySelector('input[name="medicalWasteMethod"]:checked');
 
         const wasteVehicle =
-            document.querySelector('input[name="medicalWasteVehicle"]:checked')?.value;
+            document.querySelector('input[name="medicalWasteVehicle"]:checked');
 
         const wasteFacility =
-            document.querySelector('input[name="medicalWasteFacility"]:checked')?.value;
+            document.querySelector('input[name="medicalWasteFacility"]:checked');
 
         const wastePersonnel =
-            document.querySelector('input[name="medicalWastePersonnel"]:checked')?.value;
+            document.querySelector('input[name="medicalWastePersonnel"]:checked');
 
 
         // 미응답 확인
@@ -5569,116 +5880,145 @@ if (document.querySelector('input[name="medicalWasteType"]')) {
         }
 
 
-        // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wasteDetail === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteVehicle === "unknown" ||
-            wasteFacility === "unknown" ||
-            wastePersonnel === "unknown"
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 의료폐기물 해당 여부
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "수집·운반하려는 폐기물의 종류부터 확인해 보세요.";
+
+            resultMessage =
+                "먼저 수집·운반하려는 폐기물이 의료폐기물에 해당하는지 확인해야 합니다. " +
+                "폐기물의 발생 사업장과 종류·특성을 확인한 후 " +
+                "적용되는 수집·운반 기준과 허가요건을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 의료폐기물 종류·발생형태
+        else if (wasteDetail.value === "no") {
+
+            resultTitle =
+                "의료폐기물의 종류와 발생형태를 구체적으로 확인해 보세요.";
+
+            resultMessage =
+                "취급하려는 의료폐기물의 구체적인 종류와 " +
+                "어느 사업장에서 어떤 형태로 발생하는 폐기물인지 확인해야 " +
+                "수집·운반방법과 필요한 차량·장비 등을 구체적으로 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 수집·운반계획
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "구체적인 수집·운반계획을 정리할 필요가 있습니다.";
+
+            resultMessage =
+                "의료폐기물을 어디에서 수집하여 어디로 운반할 것인지와 " +
+                "어떤 방법으로 수집·운반할 것인지가 정해져야 " +
+                "필요한 차량·장비와 실제 사업계획을 구체적으로 검토할 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 차량·장비
+        else if (wasteVehicle.value === "no") {
+
+            resultTitle =
+                "필요한 차량·장비의 종류와 확보방법을 확인해 보세요.";
+
+            resultMessage =
+                "차량을 먼저 확보하기보다 취급하려는 의료폐기물의 종류와 특성, " +
+                "수집·운반방법에 적용되는 기준을 확인한 후 " +
+                "필요한 차량·장비의 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 필요한 시설
+        else if (wasteFacility.value === "no") {
+
+            resultTitle =
+                "필요한 시설의 확보방법을 확인해 보세요.";
+
+            resultMessage =
+                "의료폐기물 수집·운반업은 운반차량뿐 아니라 " +
+                "주차장 등 사업에 필요한 시설도 함께 검토해야 합니다. " +
+                "실제 적용되는 시설기준을 확인하고 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 시설·장비·기술능력 및 사업계획
+        else if (wastePersonnel.value === "no") {
+
+            resultTitle =
+                "시설·장비 및 기술능력 확보계획을 구체화할 단계입니다.";
+
+            resultMessage =
+                "대상 의료폐기물과 수집·운반계획을 바탕으로 " +
+                "필요한 시설·장비 및 기술능력의 확보계획을 정리하고 " +
+                "폐기물처리 사업계획서와 필요한 제출자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 잘 모르겠습니다
+        else if (
+            wasteType.value === "unknown" ||
+            wasteDetail.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteVehicle.value === "unknown" ||
+            wasteFacility.value === "unknown" ||
+            wastePersonnel.value === "unknown"
         ) {
 
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "의료폐기물 수집·운반업은 취급하려는 의료폐기물의 종류와 운반방법 등에 따라 필요한 차량·시설 등의 기준을 확인해야 합니다. 명확하지 않은 부분부터 확인한 후 적용되는 허가요건을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
+            resultTitle =
+                "의료폐기물 수집·운반업 준비과정에서 추가 확인이 필요합니다.";
 
-            return;
-        }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "의료폐기물 해당 여부와 구체적인 종류·발생형태, " +
+                "수집·운반계획, 차량·장비와 필요한 시설, " +
+                "시설·장비 및 기술능력 확보계획을 하나씩 확인해 보는 것이 좋습니다.";
 
-
-        // 의료폐기물 해당 여부
-        if (wasteType === "no") {
-
-            showResult(
-                "취급하려는 폐기물의 종류부터 확인하는 것이 좋습니다.",
-                "먼저 수집·운반하려는 폐기물이 의료폐기물에 해당하는지 확인해야 합니다. 발생 장소와 폐기물의 종류 등을 확인한 후 적용되는 수집·운반 기준을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
-        }
-
-
-        // 세부 의료폐기물 종류 미정
-        if (wasteDetail === "no") {
-
-            showResult(
-                "취급하려는 의료폐기물의 범위를 정리할 필요가 있습니다.",
-                "의료폐기물의 종류와 발생 형태 등을 확인하여 실제 수집·운반하려는 폐기물의 범위를 먼저 구체화하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
-        }
-
-
-        // 운반방법 미정
-        if (wasteMethod === "no") {
-
-            showResult(
-                "수집·운반 방법에 대한 계획이 필요합니다.",
-                "취급하려는 의료폐기물을 어떤 방식으로 수집하고 운반할 것인지 정리한 후 이에 맞는 차량·시설 및 장비 기준을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
-        }
-
-
-        // 전용차량 미준비
-        if (wasteVehicle === "no") {
-
-            showResult(
-                "의료폐기물 운반차량 기준을 확인해 보세요.",
-                "의료폐기물 수집·운반업에는 운반차량에 관한 별도의 기준이 있으므로 차량을 확보하기 전에 적용되는 세부 기준을 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
-        }
-
-
-        // 시설·장비 기준 미확인
-        if (wasteFacility === "no") {
-
-            showResult(
-                "관련 시설·장비 기준에 대한 검토가 필요합니다.",
-                "의료폐기물의 특성을 고려하여 운반차량과 관련 시설·장비에 적용되는 기준을 확인한 후 사업 준비계획에 반영하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
-        }
-
-
-        // 기술인력·사무실 미확인
-        if (wastePersonnel === "no") {
-
-            showResult(
-                "기술인력과 영업 준비사항을 확인해 보세요.",
-                "의료폐기물 수집·운반업에 필요한 기술인력과 연락장소 또는 사무실 등 영업 준비사항을 확인하여 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-medical-collection"
-            );
-
-            return;
+            resultClass = "result-check";
         }
 
 
         // 모두 예
+        else {
+
+            resultTitle =
+                "의료폐기물 수집·운반업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 의료폐기물의 종류와 발생형태, " +
+                "수집·운반계획, 차량·장비와 필요한 시설 및 " +
+                "시설·장비·기술능력 확보계획이 기본적으로 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 세부 허가기준을 확인하고 " +
+                "폐기물처리 사업계획서와 제출자료를 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "취급할 의료폐기물의 종류와 운반방법, 차량·시설 및 기술인력 등이 정리되어 있다면 다음 단계로 실제 적용되는 세부 허가기준과 사업계획서 및 제출자료를 확인해 보는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-medical-collection"
         );
 
@@ -5687,7 +6027,10 @@ if (document.querySelector('input[name="medicalWasteType"]')) {
     return;
 }
 
+// =====================================================
 // 건설폐기물 수집·운반업 자가진단
+// =====================================================
+
 if (document.querySelector('input[name="constructionWasteType"]')) {
 
     const button = document.getElementById("diagnosisButton");
@@ -5695,22 +6038,22 @@ if (document.querySelector('input[name="constructionWasteType"]')) {
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="constructionWasteType"]:checked')?.value;
+            document.querySelector('input[name="constructionWasteType"]:checked');
 
         const wastePlan =
-            document.querySelector('input[name="constructionWastePlan"]:checked')?.value;
+            document.querySelector('input[name="constructionWastePlan"]:checked');
 
         const wasteVehicle =
-            document.querySelector('input[name="constructionWasteVehicle"]:checked')?.value;
+            document.querySelector('input[name="constructionWasteVehicle"]:checked');
 
         const wasteOffice =
-            document.querySelector('input[name="constructionWasteOffice"]:checked')?.value;
+            document.querySelector('input[name="constructionWasteOffice"]:checked');
 
         const wasteCapital =
-            document.querySelector('input[name="constructionWasteCapital"]:checked')?.value;
+            document.querySelector('input[name="constructionWasteCapital"]:checked');
 
         const wasteProcedure =
-            document.querySelector('input[name="constructionWasteProcedure"]:checked')?.value;
+            document.querySelector('input[name="constructionWasteProcedure"]:checked');
 
 
         // 미응답 확인
@@ -5727,102 +6070,143 @@ if (document.querySelector('input[name="constructionWasteType"]')) {
         }
 
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 건설폐기물 해당 여부
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "수집·운반하려는 폐기물의 종류부터 확인해 보세요.";
+
+            resultMessage =
+                "먼저 수집·운반하려는 폐기물이 건설폐기물에 해당하는지 확인해야 합니다. " +
+                "폐기물의 발생현장과 종류·성상을 확인한 후 " +
+                "적용되는 수집·운반업 허가기준을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 수집·운반계획
+        else if (wastePlan.value === "no") {
+
+            resultTitle =
+                "수집·운반계획을 구체적으로 정리해 보세요.";
+
+            resultMessage =
+                "어떤 건설폐기물을 어디에서 수집하여 어디로 운반할 것인지가 정해져야 합니다. " +
+                "수집지역과 운반할 처리장소, 수집·운반방법 등을 구체화한 후 " +
+                "필요한 차량과 허가요건을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 차량
+        else if (wasteVehicle.value === "no") {
+
+            resultTitle =
+                "허가기준에 맞는 수집·운반차량을 확인해 보세요.";
+
+            resultMessage =
+                "건설폐기물 수집·운반업에는 수집·운반차량에 관한 허가기준이 있습니다. " +
+                "차량을 먼저 확보하기보다 실제 영업지역과 수집·운반계획을 정리한 후 " +
+                "적용되는 차량의 종류와 대수 및 확보방법을 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 연락장소 또는 사무실
+        else if (wasteOffice.value === "no") {
+
+            resultTitle =
+                "연락장소 또는 사무실 확보계획을 확인해 보세요.";
+
+            resultMessage =
+                "건설폐기물 수집·운반업의 허가기준에는 연락장소 또는 사무실이 포함됩니다. " +
+                "사업계획과 실제 영업형태에 맞게 사용할 장소를 정하고 " +
+                "확보방법을 검토하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 자본금 또는 자산평가액
+        else if (wasteCapital.value === "no") {
+
+            resultTitle =
+                "자본금 또는 자산평가액 기준을 확인해 보세요.";
+
+            resultMessage =
+                "건설폐기물 수집·운반업에는 재무능력에 관한 허가기준이 있으며 " +
+                "법인과 개인에게 적용되는 기준이 다릅니다. " +
+                "사업자 형태에 맞는 기준과 이를 확인할 자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 사업계획
+        else if (wasteProcedure.value === "no") {
+
+            resultTitle =
+                "사업계획을 구체적으로 정리할 단계입니다.";
+
+            resultMessage =
+                "건설폐기물의 종류와 수집·운반계획, 차량, 연락장소 또는 사무실, " +
+                "자본금 또는 자산평가액 등의 준비계획을 구체적으로 정리한 후 " +
+                "건설폐기물 처리 사업계획서와 필요한 제출자료를 준비하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
         // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wastePlan === "unknown" ||
-            wasteVehicle === "unknown" ||
-            wasteOffice === "unknown" ||
-            wasteCapital === "unknown" ||
-            wasteProcedure === "unknown"
+        else if (
+            wasteType.value === "unknown" ||
+            wastePlan.value === "unknown" ||
+            wasteVehicle.value === "unknown" ||
+            wasteOffice.value === "unknown" ||
+            wasteCapital.value === "unknown" ||
+            wasteProcedure.value === "unknown"
         ) {
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "건설폐기물 수집·운반업은 취급하려는 폐기물과 운반계획뿐 아니라 차량, 연락장소 또는 사무실, 자본금 또는 재산 등의 허가기준을 함께 확인해야 합니다. 명확하지 않은 사항부터 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
 
+            resultTitle =
+                "건설폐기물 수집·운반업 준비과정에서 추가 확인이 필요합니다.";
 
-        // 건설폐기물 해당 여부
-        if (wasteType === "no") {
-            showResult(
-                "수집·운반하려는 폐기물의 종류부터 확인해 보세요.",
-                "먼저 취급하려는 폐기물이 건설폐기물에 해당하는지 확인한 후 적용되는 수집·운반업 허가기준을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "건설폐기물 해당 여부와 수집·운반계획, 차량, 연락장소 또는 사무실, " +
+                "자본금 또는 자산평가액 및 사업계획을 하나씩 확인해 보는 것이 좋습니다.";
 
-
-        // 수집·운반계획
-        if (wastePlan === "no") {
-            showResult(
-                "수집·운반하려는 사업내용을 구체화할 필요가 있습니다.",
-                "어떤 건설폐기물을 어디에서 수집하여 어떤 방법으로 운반할 것인지 정리한 후 차량 등 필요한 허가요건을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
-
-
-        // 차량
-        if (wasteVehicle === "no") {
-            showResult(
-                "수집·운반차량 확보계획을 검토해 보세요.",
-                "건설폐기물 수집·운반업에는 수집·운반차량에 관한 허가기준이 있으므로 취급하려는 건설폐기물과 운반방법을 확인한 후 필요한 차량을 준비하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
-
-
-        // 연락장소 또는 사무실
-        if (wasteOffice === "no") {
-            showResult(
-                "연락장소 또는 사무실 확보계획이 필요합니다.",
-                "건설폐기물 수집·운반업의 허가기준에는 연락장소 또는 사무실이 포함되므로 영업 준비과정에서 함께 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
-
-
-        // 자본금 또는 재산
-        if (wasteCapital === "no") {
-            showResult(
-                "자본금 또는 재산 요건을 확인해 보세요.",
-                "건설폐기물 수집·운반업에는 자본금 또는 재산에 관한 허가기준이 있으며 법인과 개인의 기준이 다릅니다. 사업자 형태에 맞는 기준을 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
-        }
-
-
-        // 사업계획 절차
-        if (wasteProcedure === "no") {
-            showResult(
-                "사업계획 단계부터 준비하는 것이 좋습니다.",
-                "건설폐기물 수집·운반업은 바로 허가신청을 하는 것이 아니라 건설폐기물 처리 사업계획서를 먼저 제출하여 적합 여부를 검토받는 절차가 선행됩니다.",
-                "result-check",
-                "consult.html?type=waste-construction-collection"
-            );
-            return;
+            resultClass = "result-check";
         }
 
 
         // 모두 예
+        else {
+
+            resultTitle =
+                "건설폐기물 수집·운반업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 건설폐기물의 종류와 수집·운반계획, 차량, " +
+                "연락장소 또는 사무실 및 자본금 또는 자산평가액 관련 준비사항이 " +
+                "기본적으로 정리되어 있습니다. 다음 단계로 실제 허가기준을 확인하고 " +
+                "건설폐기물 처리 사업계획서와 제출자료를 구체적으로 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
+        }
+
+
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "취급하려는 건설폐기물과 수집·운반계획, 차량, 연락장소 또는 사무실 및 자본금·재산 요건을 확인하셨다면 다음 단계로 실제 허가기준과 건설폐기물 처리 사업계획서 및 제출자료를 구체적으로 검토하는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-construction-collection"
         );
 
@@ -5831,7 +6215,10 @@ if (document.querySelector('input[name="constructionWasteType"]')) {
     return;
 }
 
+// =====================================================
 // 일반폐기물 중간처분업(기계식) 자가진단
+// =====================================================
+
 if (document.querySelector('input[name="mechanicalWasteType"]')) {
 
     const button = document.getElementById("diagnosisButton");
@@ -5839,22 +6226,22 @@ if (document.querySelector('input[name="mechanicalWasteType"]')) {
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="mechanicalWasteType"]:checked')?.value;
+            document.querySelector('input[name="mechanicalWasteType"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="mechanicalWasteMethod"]:checked')?.value;
+            document.querySelector('input[name="mechanicalWasteMethod"]:checked');
 
         const wasteFacility =
-            document.querySelector('input[name="mechanicalWasteFacility"]:checked')?.value;
+            document.querySelector('input[name="mechanicalWasteFacility"]:checked');
 
         const wasteStorage =
-            document.querySelector('input[name="mechanicalWasteStorage"]:checked')?.value;
+            document.querySelector('input[name="mechanicalWasteStorage"]:checked');
 
-        const wasteTransport =
-            document.querySelector('input[name="mechanicalWasteTransport"]:checked')?.value;
+        const wasteProcess =
+            document.querySelector('input[name="mechanicalWasteTransport"]:checked');
 
         const wastePersonnel =
-            document.querySelector('input[name="mechanicalWastePersonnel"]:checked')?.value;
+            document.querySelector('input[name="mechanicalWastePersonnel"]:checked');
 
 
         // 미응답 확인
@@ -5863,7 +6250,7 @@ if (document.querySelector('input[name="mechanicalWasteType"]')) {
             !wasteMethod ||
             !wasteFacility ||
             !wasteStorage ||
-            !wasteTransport ||
+            !wasteProcess ||
             !wastePersonnel
         ) {
             alert("모든 질문에 답변해 주세요.");
@@ -5871,102 +6258,150 @@ if (document.querySelector('input[name="mechanicalWasteType"]')) {
         }
 
 
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 처분대상 폐기물
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "처분하려는 폐기물의 종류부터 구체적으로 확인해 보세요.";
+
+            resultMessage =
+                "중간처분업은 취급하려는 폐기물의 종류와 성상에 따라 " +
+                "적용되는 처분방법과 허가기준이 달라질 수 있습니다. " +
+                "먼저 어떤 폐기물을 처리할 것인지 정하고 " +
+                "지정폐기물·건설폐기물 등에 해당하는지도 함께 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 기계적 처분방법
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "실제 폐기물 처분방법부터 구체화해 보세요.";
+
+            resultMessage =
+                "일반폐기물 중간처분업(기계식)을 준비하려면 " +
+                "파쇄·분쇄·압축·절단 등 어떤 기계적 방법으로 " +
+                "폐기물을 처리할 것인지 먼저 정해야 합니다. " +
+                "처분방법이 달라지면 적용되는 시설과 허가기준도 달라질 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 처분시설
+        else if (wasteFacility.value === "no") {
+
+            resultTitle =
+                "처분시설의 종류와 처리능력을 검토해 보세요.";
+
+            resultMessage =
+                "처분대상 폐기물과 처리방법에 맞는 처분시설을 정하고 " +
+                "해당 시설에 적용되는 처리능력 등의 기준을 확인해야 합니다. " +
+                "시설을 먼저 확보하기보다 실제 사업내용에 맞는 기준을 검토한 후 " +
+                "구체적인 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 보관시설·계량시설
+        else if (wasteStorage.value === "no") {
+
+            resultTitle =
+                "보관시설과 계량시설 등 필요한 시설·장비를 확인해 보세요.";
+
+            resultMessage =
+                "처분시설뿐 아니라 폐기물의 보관과 계량 등에 필요한 " +
+                "시설·장비도 함께 검토해야 합니다. " +
+                "처분대상 폐기물과 실제 사업내용을 기준으로 " +
+                "필요한 시설과 적용되는 기준을 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 전체 처리공정
+        else if (wasteProcess.value === "no") {
+
+            resultTitle =
+                "폐기물의 전체 처리공정을 구체적으로 정리해 보세요.";
+
+            resultMessage =
+                "폐기물이 사업장에 반입된 후 어디에 보관되고, " +
+                "어떤 시설과 방법으로 처분되며, 처리 후 어떻게 반출되는지까지 " +
+                "전체 흐름을 구체적으로 정리하는 것이 좋습니다. " +
+                "이 처리공정은 사업계획과 시설계획을 검토하는 중요한 기초가 됩니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 기술인력
+        else if (wastePersonnel.value === "no") {
+
+            resultTitle =
+                "기술인력의 자격요건과 확보계획을 확인해 보세요.";
+
+            resultMessage =
+                "중간처분업은 적용되는 기준에 맞는 기술인력을 확보해야 합니다. " +
+                "현재 인력이 필요한 자격요건을 충족하는지 확인하거나 " +
+                "사업계획에 맞는 기술인력 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
         // 잘 모르겠습니다
-        if (
-            wasteType === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteFacility === "unknown" ||
-            wasteStorage === "unknown" ||
-            wasteTransport === "unknown" ||
-            wastePersonnel === "unknown"
+        else if (
+            wasteType.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteFacility.value === "unknown" ||
+            wasteStorage.value === "unknown" ||
+            wasteProcess.value === "unknown" ||
+            wastePersonnel.value === "unknown"
         ) {
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "기계적 중간처분업은 취급하려는 폐기물과 처분방법을 먼저 확인하고, 처분시설·보관시설·계량시설 및 기술인력 등 적용되는 허가기준을 함께 검토해야 합니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
+
+            resultTitle =
+                "일반폐기물 중간처분업 준비과정에서 추가 확인이 필요합니다.";
+
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "처분대상 폐기물과 기계적 처분방법, 처분시설, " +
+                "보관·계량시설, 전체 처리공정 및 기술인력 등을 " +
+                "하나씩 확인하여 사업계획을 구체화하는 것이 좋습니다.";
+
+            resultClass = "result-check";
         }
 
 
-        // 폐기물 종류
-        if (wasteType === "no") {
-            showResult(
-                "처분하려는 폐기물의 종류부터 정하는 것이 좋습니다.",
-                "폐기물의 종류에 따라 적용되는 처분업의 유형과 허가기준이 달라질 수 있으므로 어떤 폐기물을 취급할 것인지 먼저 구체화하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
+        // 모두 예
+        else {
+
+            resultTitle =
+                "기계적 중간처분업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 처분대상 폐기물과 기계적 처분방법, " +
+                "처분시설, 보관·계량시설, 전체 처리공정 및 기술인력에 관한 " +
+                "기본적인 준비사항이 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 시설·장비 및 기술인력 기준을 확인하고 " +
+                "폐기물 처리 사업계획서와 허가신청 자료를 구체적으로 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
         }
 
 
-        // 기계적 처분 여부
-        if (wasteMethod === "no") {
-            showResult(
-                "적용되는 중간처분업 유형을 다시 확인해 보세요.",
-                "기계적 처분이 아니라 소각·화학적 처분·생물학적 처분 등을 계획하고 있다면 다른 중간처분업 기준이 적용될 수 있으므로 실제 처분방법을 먼저 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
-        }
-
-
-        // 처분시설
-        if (wasteFacility === "no") {
-            showResult(
-                "처분시설 확보계획을 검토해 보세요.",
-                "기계적 중간처분업에는 처분시설의 처리능력 등에 관한 기준이 있으므로 사업내용에 맞는 시설을 검토하고 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
-        }
-
-
-        // 보관시설·계량시설
-        if (wasteStorage === "no") {
-            showResult(
-                "보관시설과 계량시설에 대한 검토가 필요합니다.",
-                "처분시설뿐 아니라 폐기물을 보관하기 위한 시설과 계량시설도 허가기준에 포함되므로 시설계획을 함께 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
-        }
-
-
-        // 기술인력
-        if (wastePersonnel === "no") {
-            showResult(
-                "기술인력 확보계획을 검토해 보세요.",
-                "기계적 중간처분업에는 관련 자격을 갖춘 기술인력이 필요하므로 현재 인력의 자격요건을 확인하거나 필요한 인력의 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
-        }
-
-
-        // 직접 수집·운반하는 경우
-        if (wasteTransport === "yes") {
-            showResult(
-                "기본 준비사항과 함께 수집·운반차량 기준도 확인해 보세요.",
-                "처분대상 폐기물을 직접 수집·운반할 예정이므로 처분시설·보관시설·계량시설·기술인력과 함께 적용되는 수집·운반차량 기준을 확인한 후 사업계획과 허가자료를 준비하는 것이 좋습니다.",
-                "result-success",
-                "consult.html?type=waste-general-mechanical-treatment"
-            );
-            return;
-        }
-
-
-        // 직접 수집·운반하지 않는 경우
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "취급 폐기물과 기계적 처분방법, 처분시설·보관시설·계량시설 및 기술인력이 정리되어 있다면 다음 단계로 실제 시설기준과 사업계획 및 허가신청 자료를 구체적으로 검토하는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-general-mechanical-treatment"
         );
 
@@ -5975,7 +6410,10 @@ if (document.querySelector('input[name="mechanicalWasteType"]')) {
     return;
 }
 
+// =====================================================
 // 일반폐기물 중간처분업(소각) 자가진단
+// =====================================================
+
 if (document.querySelector('input[name="incinerationWasteType"]')) {
 
     const button = document.getElementById("diagnosisButton");
@@ -5983,25 +6421,27 @@ if (document.querySelector('input[name="incinerationWasteType"]')) {
     button.addEventListener("click", function () {
 
         const wasteType =
-            document.querySelector('input[name="incinerationWasteType"]:checked')?.value;
+            document.querySelector('input[name="incinerationWasteType"]:checked');
 
         const wasteMethod =
-            document.querySelector('input[name="incinerationWasteMethod"]:checked')?.value;
+            document.querySelector('input[name="incinerationWasteMethod"]:checked');
 
         const wasteFacility =
-            document.querySelector('input[name="incinerationWasteFacility"]:checked')?.value;
+            document.querySelector('input[name="incinerationWasteFacility"]:checked');
 
         const wasteStorage =
-            document.querySelector('input[name="incinerationWasteStorage"]:checked')?.value;
+            document.querySelector('input[name="incinerationWasteStorage"]:checked');
 
         const wasteLaboratory =
-            document.querySelector('input[name="incinerationWasteLaboratory"]:checked')?.value;
+            document.querySelector('input[name="incinerationWasteLaboratory"]:checked');
 
-        const wasteTransport =
-            document.querySelector('input[name="incinerationWasteTransport"]:checked')?.value;
+        // HTML name은 기존 호환성을 위해 Transport 유지
+        // 실제 의미는 '전체 처리공정 정리 여부'
+        const wasteProcess =
+            document.querySelector('input[name="incinerationWasteTransport"]:checked');
 
         const wastePersonnel =
-            document.querySelector('input[name="incinerationWastePersonnel"]:checked')?.value;
+            document.querySelector('input[name="incinerationWastePersonnel"]:checked');
 
 
         // 미응답 확인
@@ -6011,7 +6451,7 @@ if (document.querySelector('input[name="incinerationWasteType"]')) {
             !wasteFacility ||
             !wasteStorage ||
             !wasteLaboratory ||
-            !wasteTransport ||
+            !wasteProcess ||
             !wastePersonnel
         ) {
             alert("모든 질문에 답변해 주세요.");
@@ -6019,115 +6459,168 @@ if (document.querySelector('input[name="incinerationWasteType"]')) {
         }
 
 
-        // 잘 모르겠습니다가 하나라도 있는 경우
-        if (
-            wasteType === "unknown" ||
-            wasteMethod === "unknown" ||
-            wasteFacility === "unknown" ||
-            wasteStorage === "unknown" ||
-            wasteLaboratory === "unknown" ||
-            wasteTransport === "unknown" ||
-            wastePersonnel === "unknown"
+        let resultTitle;
+        let resultMessage;
+        let resultClass;
+
+
+        // 01. 폐기물 종류
+        if (wasteType.value === "no") {
+
+            resultTitle =
+                "처분하려는 폐기물의 종류부터 구체적으로 확인해 보세요.";
+
+            resultMessage =
+                "소각전문 중간처분업은 처분하려는 폐기물의 종류와 성상에 따라 " +
+                "적용되는 기준이 달라질 수 있습니다. " +
+                "먼저 어떤 폐기물을 처리할 것인지 정하고 " +
+                "지정폐기물·건설폐기물 등에 해당하는지도 함께 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 02. 소각방법
+        else if (wasteMethod.value === "no") {
+
+            resultTitle =
+                "실제 폐기물 처분방법부터 다시 확인해 보세요.";
+
+            resultMessage =
+                "일반폐기물 중간처분업(소각)을 준비하려면 " +
+                "처분대상 폐기물을 실제로 소각하는 방식으로 처리할 것인지 " +
+                "먼저 구체적으로 정해야 합니다. " +
+                "처분방법이 다르면 적용되는 중간처분업 유형과 허가기준도 달라질 수 있습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 03. 소각시설
+        else if (wasteFacility.value === "no") {
+
+            resultTitle =
+                "소각시설의 종류와 처리능력을 검토해 보세요.";
+
+            resultMessage =
+                "처분대상 폐기물과 사업계획에 맞는 소각시설을 정하고 " +
+                "해당 시설에 적용되는 처리능력 등의 기준을 확인해야 합니다. " +
+                "시설을 먼저 확보하기보다 실제 사업내용에 맞는 기준을 검토한 후 " +
+                "구체적인 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 04. 보관시설·계량시설
+        else if (wasteStorage.value === "no") {
+
+            resultTitle =
+                "보관시설과 계량시설 등 필요한 시설·장비를 확인해 보세요.";
+
+            resultMessage =
+                "소각시설뿐 아니라 폐기물의 보관과 계량 등에 필요한 " +
+                "시설·장비도 함께 검토해야 합니다. " +
+                "처분대상 폐기물과 실제 사업내용을 기준으로 " +
+                "필요한 시설과 적용되는 기준을 확인하는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 05. 실험실·측정분석 장비
+        else if (wasteLaboratory.value === "no") {
+
+            resultTitle =
+                "실험실과 측정·분석 관련 시설·장비를 확인해 보세요.";
+
+            resultMessage =
+                "소각전문 중간처분업을 준비할 때에는 " +
+                "실험실과 배출가스 측정·분석에 필요한 시설·장비 등 " +
+                "사업내용에 적용되는 관련 기준도 함께 확인해야 합니다. " +
+                "현재 준비상태와 필요한 시설·장비를 구체적으로 검토해 보는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 06. 전체 처리공정
+        else if (wasteProcess.value === "no") {
+
+            resultTitle =
+                "폐기물의 전체 처리공정을 구체적으로 정리해 보세요.";
+
+            resultMessage =
+                "폐기물이 사업장에 반입된 후 계량과 보관을 거쳐 " +
+                "어떤 시설과 방법으로 소각처분되고, 처리 후 어떻게 반출되는지까지 " +
+                "전체 흐름을 구체적으로 정리하는 것이 좋습니다. " +
+                "이 처리공정은 사업계획과 시설계획을 검토하는 중요한 기초가 됩니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 07. 기술인력
+        else if (wastePersonnel.value === "no") {
+
+            resultTitle =
+                "기술인력의 자격요건과 확보계획을 확인해 보세요.";
+
+            resultMessage =
+                "소각전문 중간처분업은 적용되는 기준에 맞는 " +
+                "기술인력을 확보해야 합니다. " +
+                "현재 인력이 필요한 자격요건을 충족하는지 확인하거나 " +
+                "사업계획에 맞는 기술인력 확보계획을 세우는 것이 좋습니다.";
+
+            resultClass = "result-check";
+        }
+
+
+        // 잘 모르겠습니다
+        else if (
+            wasteType.value === "unknown" ||
+            wasteMethod.value === "unknown" ||
+            wasteFacility.value === "unknown" ||
+            wasteStorage.value === "unknown" ||
+            wasteLaboratory.value === "unknown" ||
+            wasteProcess.value === "unknown" ||
+            wastePersonnel.value === "unknown"
         ) {
-            showResult(
-                "추가 확인이 필요한 사항이 있습니다.",
-                "소각전문 중간처분업은 취급하려는 폐기물과 소각방법뿐 아니라 소각시설, 보관·계량시설, 실험실과 측정·분석 장비 및 기술인력 등을 함께 확인해야 합니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
+
+            resultTitle =
+                "일반폐기물 중간처분업(소각) 준비과정에서 추가 확인이 필요합니다.";
+
+            resultMessage =
+                "아직 명확하지 않은 부분이 있더라도 준비를 시작할 수 있습니다. " +
+                "처분대상 폐기물과 소각방법, 소각시설, 보관·계량시설, " +
+                "실험실·측정분석 관련 사항, 전체 처리공정 및 기술인력 등을 " +
+                "하나씩 확인하여 사업계획을 구체화하는 것이 좋습니다.";
+
+            resultClass = "result-check";
         }
 
 
-        // 폐기물 종류
-        if (wasteType === "no") {
-            showResult(
-                "처분하려는 폐기물의 종류부터 정하는 것이 좋습니다.",
-                "폐기물의 종류에 따라 적용되는 처분업의 유형과 허가기준이 달라질 수 있으므로 어떤 폐기물을 소각하려는 것인지 먼저 구체화하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
+        // 모두 YES
+        else {
+
+            resultTitle =
+                "소각전문 중간처분업의 기본적인 사업계획이 어느 정도 정리되어 있습니다.";
+
+            resultMessage =
+                "현재 답변상 처분대상 폐기물과 소각방법, 소각시설, " +
+                "보관·계량시설, 실험실·측정분석 관련 사항, " +
+                "전체 처리공정 및 기술인력에 관한 기본적인 준비사항이 정리되어 있습니다. " +
+                "다음 단계로 실제 적용되는 허가기준을 확인하고 " +
+                "폐기물 처리 사업계획서와 허가신청 자료를 구체적으로 준비해 볼 수 있습니다.";
+
+            resultClass = "result-success";
         }
 
 
-        // 소각처분 여부
-        if (wasteMethod === "no") {
-            showResult(
-                "적용되는 중간처분업 유형을 다시 확인해 보세요.",
-                "소각이 아니라 기계적·화학적·생물학적 방법으로 처분할 계획이라면 다른 중간처분업 기준이 적용될 수 있으므로 실제 처분방법부터 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 소각시설
-        if (wasteFacility === "no") {
-            showResult(
-                "소각시설 확보계획을 검토해 보세요.",
-                "소각전문 중간처분업에는 소각시설의 처분능력에 관한 기준이 있으므로 사업내용에 맞는 시설을 검토하고 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 보관시설·계량시설
-        if (wasteStorage === "no") {
-            showResult(
-                "보관시설과 계량시설에 대한 검토가 필요합니다.",
-                "소각시설뿐 아니라 폐기물을 보관하기 위한 시설과 계량시설도 허가기준에 포함되므로 전체 시설계획을 함께 확인하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 실험실·측정분석 장비
-        if (wasteLaboratory === "no") {
-            showResult(
-                "실험실과 측정·분석 장비를 확인해 보세요.",
-                "소각전문 중간처분업에는 실험실과 배출가스 오염물질을 측정·분석할 수 있는 실험기기가 요구되므로 해당 시설과 장비의 확보계획을 검토하는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 기술인력
-        if (wastePersonnel === "no") {
-            showResult(
-                "기술인력 확보계획을 검토해 보세요.",
-                "소각전문 중간처분업에는 관련 자격을 갖춘 기술인력이 필요하므로 현재 인력의 자격요건을 확인하거나 필요한 인력의 확보계획을 세우는 것이 좋습니다.",
-                "result-check",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 직접 수집·운반하는 경우
-        if (wasteTransport === "yes") {
-            showResult(
-                "기본 준비사항과 함께 수집·운반차량 기준도 확인해 보세요.",
-                "처분대상 폐기물을 직접 수집·운반할 예정이므로 소각시설, 보관·계량시설, 실험실·측정장비 및 기술인력과 함께 적용되는 수집·운반차량 기준도 확인하는 것이 좋습니다.",
-                "result-success",
-                "consult.html?type=waste-general-incineration-treatment"
-            );
-            return;
-        }
-
-
-        // 직접 수집·운반하지 않는 경우
         showResult(
-            "기본적인 사업 준비사항이 어느 정도 정리되어 있습니다.",
-            "취급 폐기물과 소각방법, 소각시설, 보관·계량시설, 실험실·측정장비 및 기술인력이 정리되어 있다면 다음 단계로 실제 세부 허가기준과 사업계획 및 제출자료를 검토하는 것이 좋습니다.",
-            "result-success",
+            resultTitle,
+            resultMessage,
+            resultClass,
             "consult.html?type=waste-general-incineration-treatment"
         );
 
@@ -6135,6 +6628,7 @@ if (document.querySelector('input[name="incinerationWasteType"]')) {
 
     return;
 }
+
 
 // 동물생산업 자가진단
 if (document.querySelector('input[name="animalProductionType"]')) {
